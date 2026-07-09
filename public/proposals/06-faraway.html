@@ -1,0 +1,756 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>06 · FARAWAY — Solo Mobile Mockup</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Inter:wght@400;500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #f5efe3;
+    --sunset: #c48b6e;
+    --earth: #8b6f47;
+    --mist:  #4a5c6a;
+    --night: #2d2438;
+    --gold:  #d4a574;
+    --moss:  #88a065;
+
+    --serif: 'Cormorant Garamond', 'Times New Roman', serif;
+    --display: 'Cinzel', 'Times New Roman', serif;
+    --mono: 'Space Mono', 'Courier New', monospace;
+    --body: 'Inter', -apple-system, system-ui, sans-serif;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+
+  body {
+    min-height: 100vh;
+    background:
+      radial-gradient(1200px 800px at 30% 20%, #efe3d0 0%, transparent 60%),
+      radial-gradient(1000px 700px at 70% 80%, #ead9be 0%, transparent 55%),
+      var(--cream);
+    font-family: var(--body);
+    color: var(--mist);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 32px 16px;
+  }
+
+  /* ambient dust — outside the phone */
+  .ambient {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 0;
+  }
+  .ambient .mote {
+    position: absolute;
+    width: 4px; height: 4px;
+    border-radius: 50%;
+    background: rgba(212, 165, 116, 0.35);
+    box-shadow: 0 0 8px rgba(212,165,116,0.4);
+    animation: drift 22s linear infinite;
+  }
+  .ambient .mote.leaf {
+    width: 8px; height: 4px;
+    background: rgba(136, 160, 101, 0.35);
+    border-radius: 60% 40% 60% 40%;
+    animation-duration: 30s;
+  }
+  @keyframes drift {
+    0%   { transform: translate(0, 0) rotate(0deg); opacity: 0; }
+    10%  { opacity: 1; }
+    90%  { opacity: 1; }
+    100% { transform: translate(60px, -110vh) rotate(360deg); opacity: 0; }
+  }
+
+  /* phone frame */
+  .phone {
+    position: relative;
+    z-index: 1;
+    width: 375px;
+    height: 812px;
+    border-radius: 40px;
+    background: var(--cream);
+    box-shadow:
+      0 40px 100px -30px rgba(45,36,56,0.35),
+      0 20px 40px -20px rgba(139,111,71,0.35),
+      inset 0 0 0 1px rgba(139,111,71,0.15);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  /* subtle paper texture inside the phone */
+  .phone::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+      radial-gradient(rgba(139,111,71,0.05) 1px, transparent 1.4px),
+      radial-gradient(rgba(196,139,110,0.04) 1px, transparent 1.6px);
+    background-size: 6px 6px, 11px 11px;
+    background-position: 0 0, 3px 4px;
+    pointer-events: none;
+    z-index: 1;
+    mix-blend-mode: multiply;
+  }
+  /* soft sun-glow at top */
+  .phone::after {
+    content: "";
+    position: absolute;
+    top: -80px; left: 50%;
+    width: 500px; height: 260px;
+    transform: translateX(-50%);
+    background: radial-gradient(closest-side, rgba(212,165,116,0.55), transparent 70%);
+    pointer-events: none;
+    z-index: 1;
+  }
+  .phone > * { position: relative; z-index: 2; }
+
+  /* ---------- Header ---------- */
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 18px 8px;
+  }
+  .id-chip {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    color: var(--earth);
+    padding: 6px 10px 5px;
+    border: 1px solid rgba(139,111,71,0.35);
+    border-radius: 999px;
+    background: rgba(255,255,255,0.4);
+    position: relative;
+  }
+  .id-chip::after {
+    content: "";
+    display: block;
+    position: absolute;
+    left: 12px; right: 12px; bottom: -4px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    opacity: 0.9;
+  }
+  .round-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--display);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    color: var(--night);
+    padding: 5px 10px;
+    background: rgba(255,255,255,0.5);
+    border: 1px solid rgba(139,111,71,0.25);
+    border-radius: 999px;
+  }
+  .sun-moon {
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    background:
+      radial-gradient(circle at 30% 35%, #fff2d9 0%, #d4a574 55%, #b7834f 100%);
+    box-shadow:
+      inset -3px -1px 0 rgba(45,36,56,0.55),
+      0 0 6px rgba(212,165,116,0.6);
+  }
+
+  /* ---------- Section labels ---------- */
+  .label {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.28em;
+    color: var(--earth);
+    opacity: 0.75;
+    text-transform: uppercase;
+  }
+
+  /* ---------- Tableau ---------- */
+  .tableau-wrap {
+    padding: 6px 14px 8px;
+  }
+  .tableau-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 4px 6px;
+  }
+  .tableau-head .name {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 15px;
+    color: var(--night);
+  }
+  .tableau {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 4px;
+  }
+  .slot {
+    aspect-ratio: 3 / 5;
+    border-radius: 6px;
+    position: relative;
+    overflow: hidden;
+  }
+  .slot.empty {
+    border: 1.2px dashed rgba(139,111,71,0.45);
+    background: repeating-linear-gradient(
+      45deg,
+      rgba(139,111,71,0.03),
+      rgba(139,111,71,0.03) 3px,
+      transparent 3px, transparent 6px
+    );
+  }
+  .slot.empty::after {
+    content: attr(data-n);
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--display);
+    font-size: 10px;
+    color: rgba(139,111,71,0.45);
+  }
+  .slot.card {
+    background: #f9f2e3;
+    border: 1px solid rgba(139,111,71,0.5);
+    box-shadow:
+      0 2px 4px rgba(45,36,56,0.12),
+      inset 0 0 0 1px rgba(255,255,255,0.6);
+    display: flex;
+    flex-direction: column;
+  }
+  .slot .num {
+    position: absolute;
+    top: 2px; left: 3px;
+    font-family: var(--display);
+    font-size: 8.5px;
+    font-weight: 600;
+    color: var(--night);
+    background: rgba(245,239,227,0.85);
+    padding: 0 3px;
+    border-radius: 3px;
+    line-height: 1.2;
+  }
+  .slot .art {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    filter: drop-shadow(0 1px 2px rgba(45,36,56,0.3));
+  }
+  .slot .cond {
+    font-family: var(--mono);
+    font-size: 6.5px;
+    line-height: 1;
+    text-align: center;
+    color: var(--night);
+    padding: 1.5px 0 0;
+    background: rgba(212,165,116,0.15);
+    border-top: 0.5px solid rgba(139,111,71,0.3);
+  }
+  .slot .icons {
+    font-size: 7.5px;
+    line-height: 1;
+    text-align: center;
+    padding: 1.5px 0 2.5px;
+  }
+  /* painterly landscape gradients */
+  .art-mountain {
+    background:
+      linear-gradient(180deg, #d4a5b7 0%, #c48b6e 45%, #6b3d5c 100%);
+  }
+  .art-water {
+    background:
+      linear-gradient(180deg, #a5c4c8 0%, #7ba3ab 55%, #d4a574 100%);
+  }
+  .art-forest {
+    background:
+      linear-gradient(180deg, #a8b98a 0%, #6b8555 55%, #2d3a2a 100%);
+  }
+  .art-flowers {
+    background:
+      linear-gradient(180deg, #ecc4be 0%, #c48b6e 55%, #8b6f47 100%);
+  }
+
+  /* ---------- Score preview ---------- */
+  .score-strip {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 20px 8px;
+  }
+  .score-strip .lbl {
+    font-family: var(--display);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    color: var(--earth);
+  }
+  .score-strip .num {
+    font-family: var(--display);
+    font-size: 15px;
+    color: var(--night);
+    font-weight: 600;
+    letter-spacing: 0.05em;
+  }
+  .score-strip .num .max {
+    color: var(--earth);
+    font-size: 11px;
+    opacity: 0.8;
+  }
+  .bar {
+    flex: 1;
+    height: 5px;
+    background: rgba(139,111,71,0.15);
+    border-radius: 999px;
+    overflow: hidden;
+    position: relative;
+  }
+  .bar > i {
+    display: block;
+    height: 100%;
+    width: 26.6%;
+    background: linear-gradient(90deg, var(--gold), #b7834f);
+    border-radius: 999px;
+    box-shadow: 0 0 6px rgba(212,165,116,0.5);
+  }
+
+  /* ---------- Micro instruction ---------- */
+  .tip {
+    margin: 0 20px 8px;
+    padding: 8px 12px;
+    background: rgba(45,36,56,0.05);
+    border-left: 2px solid var(--sunset);
+    border-radius: 4px;
+    font-family: var(--mono);
+    font-size: 10px;
+    line-height: 1.5;
+    color: var(--mist);
+  }
+  .tip .slash { color: var(--sunset); }
+
+  /* ---------- Hand ---------- */
+  .hand-wrap {
+    padding: 4px 14px 6px;
+  }
+  .hand-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    padding: 0 6px 6px;
+  }
+  .hand-head .title {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 14px;
+    color: var(--night);
+  }
+  .hand {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+  }
+  .hcard {
+    position: relative;
+    border-radius: 10px;
+    background: #fbf5e7;
+    border: 1px solid rgba(139,111,71,0.4);
+    box-shadow:
+      0 4px 8px rgba(45,36,56,0.15),
+      inset 0 0 0 1px rgba(255,255,255,0.6);
+    padding: 6px 6px 7px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-height: 176px;
+  }
+  .hcard.highlight {
+    box-shadow:
+      0 0 0 2px var(--gold),
+      0 12px 22px -6px rgba(212,165,116,0.55),
+      0 6px 12px rgba(45,36,56,0.18),
+      inset 0 0 0 1px rgba(255,255,255,0.6);
+    transform: translateY(-6px);
+    animation: breathe 3.4s ease-in-out infinite;
+  }
+  @keyframes breathe {
+    0%,100% { transform: translateY(-6px) scale(1); }
+    50%     { transform: translateY(-7px) scale(1.012); }
+  }
+  .hcard .num {
+    position: absolute;
+    top: 6px; left: 8px;
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--night);
+    line-height: 1;
+    letter-spacing: 0.02em;
+  }
+  .hcard .thumb {
+    height: 58px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    filter: drop-shadow(0 2px 2px rgba(45,36,56,0.35));
+    margin-top: 14px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hcard .thumb::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 70% 20%, rgba(255,240,200,0.4), transparent 55%);
+  }
+  .hcard .name {
+    font-family: var(--serif);
+    font-style: italic;
+    font-weight: 600;
+    font-size: 12.5px;
+    line-height: 1.1;
+    color: var(--night);
+    padding: 0 2px;
+  }
+  .hcard .sub {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 9.5px;
+    color: var(--mist);
+    opacity: 0.85;
+    line-height: 1.15;
+    padding: 0 2px;
+  }
+  .hcard .row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 4px;
+    padding: 0 2px;
+    font-family: var(--mono);
+    font-size: 9px;
+    color: var(--mist);
+  }
+  .hcard .row .k { opacity: 0.6; letter-spacing: 0.14em; }
+  .hcard .row .v { display: inline-flex; gap: 2px; font-size: 10.5px; }
+  .hcard .req  { background: rgba(74,92,106,0.08); border-radius: 4px; padding: 2px 5px; }
+  .hcard .rew  { background: rgba(136,160,101,0.15); border-radius: 4px; padding: 2px 5px; }
+  .hcard .cond {
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: 10.5px;
+    color: var(--night);
+    background: linear-gradient(90deg, rgba(212,165,116,0.4), rgba(212,165,116,0.15));
+    border-radius: 4px;
+    padding: 3px 6px;
+    text-align: center;
+    letter-spacing: 0.03em;
+    margin-top: auto;
+  }
+
+  .hand-tip {
+    text-align: center;
+    font-family: var(--mono);
+    font-size: 9px;
+    color: var(--earth);
+    opacity: 0.85;
+    padding: 8px 8px 4px;
+  }
+  .hand-tip .dot { color: var(--sunset); padding: 0 4px; }
+
+  /* ---------- Sanctuary market ---------- */
+  .sanctuary {
+    margin: 4px 20px 10px;
+    padding: 8px 10px 10px;
+    background: linear-gradient(180deg, rgba(45,36,56,0.06), rgba(45,36,56,0.02));
+    border: 1px solid rgba(45,36,56,0.15);
+    border-radius: 10px;
+  }
+  .sanctuary .h {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 6px;
+  }
+  .sanctuary .h .t {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 11.5px;
+    color: var(--night);
+  }
+  .sanctuary .h .m {
+    font-family: var(--mono);
+    font-size: 8.5px;
+    letter-spacing: 0.18em;
+    color: var(--earth);
+    opacity: 0.75;
+  }
+  .backs {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+  }
+  .back {
+    aspect-ratio: 3 / 4;
+    border-radius: 6px;
+    background:
+      radial-gradient(circle at 50% 40%, rgba(212,165,116,0.35), transparent 65%),
+      linear-gradient(180deg, #3a2f4a, var(--night));
+    border: 1px solid rgba(212,165,116,0.35);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 10px rgba(45,36,56,0.35), inset 0 0 12px rgba(212,165,116,0.15);
+    position: relative;
+    overflow: hidden;
+  }
+  .back::before {
+    content: "";
+    position: absolute;
+    inset: 6px;
+    border: 1px solid rgba(212,165,116,0.4);
+    border-radius: 4px;
+  }
+  .back .glyph {
+    font-family: var(--display);
+    color: var(--gold);
+    font-size: 14px;
+    text-shadow: 0 0 8px rgba(212,165,116,0.7);
+    animation: pulse 2.6s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%,100% { opacity: 0.75; }
+    50%     { opacity: 1; }
+  }
+
+  /* ---------- CTA ---------- */
+  .cta {
+    margin-top: auto;
+    padding: 8px 16px 18px;
+    background: linear-gradient(180deg, transparent, rgba(245,239,227,0.9) 30%);
+  }
+  .cta button {
+    width: 100%;
+    border: 0;
+    border-radius: 14px;
+    padding: 14px 16px 12px;
+    background: linear-gradient(180deg, var(--sunset), #a86a4c);
+    color: #fdf6e7;
+    font-family: var(--serif);
+    font-style: italic;
+    font-weight: 600;
+    font-size: 18px;
+    letter-spacing: 0.02em;
+    box-shadow:
+      0 10px 20px -6px rgba(196,139,110,0.55),
+      inset 0 1px 0 rgba(255,255,255,0.35),
+      inset 0 -2px 0 rgba(45,36,56,0.15);
+    cursor: pointer;
+  }
+  .cta .hint {
+    text-align: center;
+    font-family: var(--mono);
+    font-size: 9.5px;
+    color: var(--earth);
+    opacity: 0.85;
+    padding-top: 6px;
+    letter-spacing: 0.08em;
+  }
+
+</style>
+</head>
+<body>
+
+  <!-- ambient dust outside the phone -->
+  <div class="ambient" id="ambient"></div>
+
+  <div class="phone">
+
+    <!-- HEADER -->
+    <div class="header">
+      <div class="id-chip">06 · FARAWAY</div>
+      <div class="round-chip">
+        <span class="sun-moon" aria-hidden="true"></span>
+        R5/8
+      </div>
+    </div>
+
+    <!-- TABLEAU -->
+    <div class="tableau-wrap">
+      <div class="tableau-head">
+        <div class="name">여정의 타블로</div>
+        <div class="label">→ 놓기 &nbsp; · &nbsp; ← 스코어링</div>
+      </div>
+
+      <div class="tableau">
+        <!-- Slot 1 · #14 코이 연못 · water · reward 🐚🐚 -->
+        <div class="slot card">
+          <span class="num">14</span>
+          <div class="art art-water">🌊</div>
+          <div class="cond">—</div>
+          <div class="icons">🐚🐚</div>
+        </div>
+
+        <!-- Slot 2 · #38 새벽 고원 · mountain · reward ☀️🌙 -->
+        <div class="slot card">
+          <span class="num">38</span>
+          <div class="art art-mountain">🏔</div>
+          <div class="cond">—</div>
+          <div class="icons">☀️🌙</div>
+        </div>
+
+        <!-- Slot 3 · #22 이끼 사원 · forest · cond 2×🐚=+8 · reward 🪶🔮 -->
+        <div class="slot card">
+          <span class="num">22</span>
+          <div class="art art-forest">🌲</div>
+          <div class="cond">2×🐚 +8</div>
+          <div class="icons">🪶🔮</div>
+        </div>
+
+        <!-- Slot 4 · #51 조수 협곡 · water · cond 3×🏔=+12 · reward 🌙 -->
+        <div class="slot card">
+          <span class="num">51</span>
+          <div class="art art-water">🌊</div>
+          <div class="cond">3×🏔 +12</div>
+          <div class="icons">🌙</div>
+        </div>
+
+        <div class="slot empty" data-n="5"></div>
+        <div class="slot empty" data-n="6"></div>
+        <div class="slot empty" data-n="7"></div>
+        <div class="slot empty" data-n="8"></div>
+      </div>
+    </div>
+
+    <!-- SCORE PREVIEW -->
+    <div class="score-strip">
+      <span class="lbl">SCORE</span>
+      <span class="num">24<span class="max"> / 90</span></span>
+      <span class="bar"><i></i></span>
+    </div>
+
+    <!-- MICRO TIP -->
+    <div class="tip">
+      <span class="slash">//</span> 다음 카드를 왼쪽 조건이 될 셋업으로? 오른쪽 스코어러로?
+    </div>
+
+    <!-- HAND -->
+    <div class="hand-wrap">
+      <div class="hand-head">
+        <div class="title">손패</div>
+        <div class="label">3 CARDS</div>
+      </div>
+
+      <div class="hand">
+        <!-- #34 별관측대 · mountain · req none · reward 🌙🌙 · 1×🐚=+5 -->
+        <div class="hcard">
+          <span class="num">34</span>
+          <div class="thumb art-mountain">🏔</div>
+          <div class="name">별관측대</div>
+          <div class="sub">밤이 오는 언덕</div>
+          <div class="row">
+            <span class="k">REQ</span>
+            <span class="v req">—</span>
+          </div>
+          <div class="row">
+            <span class="k">REW</span>
+            <span class="v rew">🌙🌙</span>
+          </div>
+          <div class="cond">1×🐚 · +5</div>
+        </div>
+
+        <!-- #61 은빛 폭포 · water · HIGHLIGHT · req 3🌙 · reward 🔮 · 3×🌙=+15 -->
+        <div class="hcard highlight">
+          <span class="num">61</span>
+          <div class="thumb art-water">🌊</div>
+          <div class="name">은빛 폭포</div>
+          <div class="sub">다섯 번째 여명의 폭포</div>
+          <div class="row">
+            <span class="k">REQ</span>
+            <span class="v req">🌙🌙🌙</span>
+          </div>
+          <div class="row">
+            <span class="k">REW</span>
+            <span class="v rew">🔮</span>
+          </div>
+          <div class="cond">3×🌙 · +15</div>
+        </div>
+
+        <!-- #12 매화 정원 · flowers · req 2🌲 · reward ☀️🐚 · 2×🌲=+6 -->
+        <div class="hcard">
+          <span class="num">12</span>
+          <div class="thumb art-flowers">🌸</div>
+          <div class="name">매화 정원</div>
+          <div class="sub">봄이 잊혀지지 않은 곳</div>
+          <div class="row">
+            <span class="k">REQ</span>
+            <span class="v req">🌲🌲</span>
+          </div>
+          <div class="row">
+            <span class="k">REW</span>
+            <span class="v rew">☀️🐚</span>
+          </div>
+          <div class="cond">2×🌲 · +6</div>
+        </div>
+      </div>
+
+      <div class="hand-tip">
+        낮은 번호 <span class="dot">→</span> 먼저 뽑음 (지역만)
+        <span class="dot">·</span>
+        높은 번호 <span class="dot">→</span> 나중에 (성소까지)
+      </div>
+    </div>
+
+    <!-- SANCTUARY -->
+    <div class="sanctuary">
+      <div class="h">
+        <div class="t">성소 시장</div>
+        <div class="m">상위 3인만 접근</div>
+      </div>
+      <div class="backs">
+        <div class="back"><span class="glyph">✦</span></div>
+        <div class="back"><span class="glyph">✧</span></div>
+        <div class="back"><span class="glyph">✦</span></div>
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="cta">
+      <button type="button">이 카드 놓기</button>
+      <div class="hint">라운드 5/8 · 손패 3장</div>
+    </div>
+
+  </div>
+
+<script>
+  // subtle ambient dust / leaf particles outside the phone
+  (function () {
+    const layer = document.getElementById('ambient');
+    if (!layer) return;
+    const N = 22;
+    for (let i = 0; i < N; i++) {
+      const m = document.createElement('span');
+      m.className = 'mote' + (Math.random() < 0.35 ? ' leaf' : '');
+      m.style.left  = Math.random() * 100 + 'vw';
+      m.style.top   = (100 + Math.random() * 10) + 'vh';
+      m.style.animationDelay = (Math.random() * -22) + 's';
+      m.style.animationDuration = (16 + Math.random() * 18) + 's';
+      m.style.opacity = 0.4 + Math.random() * 0.5;
+      layer.appendChild(m);
+    }
+  })();
+</script>
+
+</body>
+</html>
