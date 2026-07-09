@@ -679,18 +679,17 @@ function RevealRow({ attacker, snapshot, onTap, direction }: {
 
   // Direction-aware colors + entrance vector.
   const isMe = direction === 'up'
-  const glow = isMe
-    ? '0 0 24px 8px rgba(0,229,255,0.7)'
-    : '0 0 24px 8px rgba(255,51,85,0.7)'
-  const rimColor = isMe ? 'rgba(0,229,255,0.9)' : 'rgba(255,51,85,0.9)'
-  // Y offset direction: 'up' = enter from below (+60), 'down' = enter from above (-60)
-  const enterY = isMe ? 60 : -60
+  const rimColor = isMe ? 'rgba(34,233,255,0.9)' : 'rgba(255,51,85,0.9)'
+  const rimRgb = isMe ? '34,233,255' : '255,51,85'
+  // Y offset direction: 'up' = enter from below (+80), 'down' = enter from above (-80).
+  // A little longer than before so the streak has room to draw.
+  const enterY = isMe ? 80 : -80
 
   return (
-    <div className="flex gap-1 items-center min-h-[112px] perspective relative">
+    <div className="flex gap-1.5 items-center min-h-[112px] perspective relative">
       {/* Attacker source rail — a colored bar showing who is playing */}
       <div className="absolute -inset-x-4 top-1/2 -translate-y-1/2 h-[2px] pointer-events-none"
-           style={{ background: `linear-gradient(90deg, transparent, ${rimColor}, transparent)`, opacity: 0.4 }} />
+           style={{ background: `linear-gradient(90deg, transparent, ${rimColor}, transparent)`, opacity: 0.35 }} />
       <AnimatePresence initial={false}>
         {revealed.map((card, i) => {
           const isNew = i === lastIdx
@@ -699,39 +698,78 @@ function RevealRow({ attacker, snapshot, onTap, direction }: {
               key={`${card.id}-${i}`}
               initial={{
                 y: enterY,
-                x: 20,
-                scale: 0.5,
+                scale: 0.6,
                 opacity: 0,
-                rotateY: 180,
-                filter: 'brightness(2)',
+                rotateY: 90,
+                filter: 'brightness(1.4)',
               }}
               animate={{
                 y: 0,
-                x: 0,
                 scale: 1,
                 opacity: 1,
                 rotateY: 0,
                 filter: 'brightness(1)',
               }}
               exit={{
-                y: enterY,   // fly back the way they came (up for me, down for foe)
+                y: enterY,
                 scale: 0.4,
                 opacity: 0,
                 filter: 'brightness(0.4)',
+                transition: { duration: 0.28 },
               }}
-              transition={{ type: 'spring', damping: 16, stiffness: 240 }}
+              transition={{
+                type: 'spring',
+                damping: 14,       // slightly bouncier than before (was 16)
+                stiffness: 260,
+                opacity: { duration: 0.18 },
+                filter: { duration: 0.35 },
+              }}
               onClick={() => onTap?.(card)}
               className="cursor-pointer relative"
               style={{ transformStyle: 'preserve-3d' }}
             >
               {isNew && (
-                <motion.div
-                  initial={{ opacity: 0.9, scale: 0.6 }}
-                  animate={{ opacity: 0, scale: 1.6 }}
-                  transition={{ duration: 0.7 }}
-                  className="absolute inset-0 rounded pointer-events-none"
-                  style={{ boxShadow: glow }}
-                />
+                <>
+                  {/* Trailing streak — appears behind the card as it flies in.
+                      Points back toward the attacker's side. */}
+                  <motion.div
+                    aria-hidden
+                    initial={{ opacity: 0.85, scaleY: 1, y: isMe ? 60 : -60 }}
+                    animate={{ opacity: 0, scaleY: 0, y: 0 }}
+                    transition={{ duration: 0.5, ease: 'easeOut' }}
+                    className="absolute left-1/2 -translate-x-1/2 w-1 rounded-full pointer-events-none"
+                    style={{
+                      top: isMe ? '30%' : undefined,
+                      bottom: isMe ? undefined : '30%',
+                      height: 80,
+                      background: `linear-gradient(${isMe ? 'to top' : 'to bottom'}, transparent, rgba(${rimRgb},0.9))`,
+                      filter: `blur(2px) drop-shadow(0 0 6px rgba(${rimRgb},0.8))`,
+                      transformOrigin: isMe ? 'bottom center' : 'top center',
+                    }}
+                  />
+
+                  {/* Landing impact ring — expands and fades on touchdown. */}
+                  <motion.div
+                    aria-hidden
+                    initial={{ opacity: 0, scale: 0.4 }}
+                    animate={{ opacity: [0, 0.8, 0], scale: [0.4, 1.6, 1.9] }}
+                    transition={{ duration: 0.7, times: [0, 0.4, 1], ease: 'easeOut' }}
+                    className="absolute inset-0 rounded-lg pointer-events-none"
+                    style={{
+                      boxShadow: `0 0 0 2px rgba(${rimRgb},0.6), 0 0 20px 6px rgba(${rimRgb},0.55)`,
+                    }}
+                  />
+
+                  {/* Persistent soft aura on the newest card */}
+                  <motion.div
+                    aria-hidden
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: [0, 0.5, 0.3] }}
+                    transition={{ duration: 1.2, times: [0, 0.3, 1] }}
+                    className="absolute inset-0 rounded-lg pointer-events-none"
+                    style={{ boxShadow: `0 0 18px rgba(${rimRgb},0.55)` }}
+                  />
+                </>
               )}
               <Card card={card} size="sm" />
             </motion.div>
