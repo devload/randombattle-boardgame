@@ -55,22 +55,23 @@ export function Sheet({ open, onClose, title, eyebrow, children, maxHeight = 0.8
             />
 
             {(eyebrow || title) && (
-              <div className="px-5 pt-3 pb-4 flex items-baseline justify-between">
-                <div>
+              <div className="px-5 pt-3 pb-4 flex items-baseline justify-between gap-3 min-w-0">
+                <div className="min-w-0">
                   {eyebrow && (
-                    <div className="text-[10px] tracking-widest text-neon-cyan/70 font-mono">
+                    <div className="text-[10px] tracking-[0.2em] text-neon-cyan/70 font-mono uppercase truncate">
                       {eyebrow}
                     </div>
                   )}
                   {title && (
-                    <h2 className="font-display font-black text-2xl text-holo mt-0.5 tracking-wider uppercase">
+                    <h2 className="font-display font-normal text-3xl text-holo mt-1 tracking-wider uppercase leading-none truncate"
+                        style={{ letterSpacing: '0.06em' }}>
                       {title}
                     </h2>
                   )}
                 </div>
                 <button
                   onClick={onClose}
-                  className="text-white/50 hover:text-white text-xl leading-none w-9 h-9 rounded-full border border-white/20 hover:border-white/40 transition"
+                  className="shrink-0 text-white/50 hover:text-white text-xl leading-none w-9 h-9 rounded-full border border-white/20 hover:border-white/40 transition"
                   aria-label="Close"
                 >
                   ×

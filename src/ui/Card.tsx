@@ -173,9 +173,18 @@ export function Card({
         </div>
       )}
 
-      {/* Effect text (md/lg only) */}
+      {/* Effect text (md/lg only). line-clamp so long descriptions don't
+          silently overflow the card box; users see full text in the detail sheet. */}
       {!sz.hideEffect && card.effects[0] && (
-        <div className="relative font-body text-arena-textDim text-center leading-tight mt-1 text-[10px]">
+        <div
+          className="relative font-body text-arena-textDim text-center leading-snug mt-1 text-[10px] overflow-hidden"
+          style={{
+            display: '-webkit-box',
+            WebkitLineClamp: 2,
+            WebkitBoxOrient: 'vertical',
+          }}
+          title={card.effects[0].text}
+        >
           {card.effects[0].text}
         </div>
       )}
