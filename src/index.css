@@ -1,4 +1,7 @@
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;600;700&family=Share+Tech+Mono&display=swap');
+/* #05 CHALLENGERS ROLL design language fonts (Bebas Neue + Space Mono + Inter)
+   are the primary set. Older families (Orbitron / Rajdhani / Share Tech Mono)
+   kept as fallbacks so nothing regresses while porting scene-by-scene. */
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600;700;800&family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;600;700&family=Share+Tech+Mono&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -24,15 +27,63 @@
   }
 
   body {
-    font-family: 'Rajdhani', system-ui, sans-serif;
+    font-family: 'Inter', 'Rajdhani', system-ui, sans-serif;
     background:
-      radial-gradient(ellipse at 20% 10%, rgba(0, 229, 255, 0.08), transparent 40%),
+      radial-gradient(ellipse at 20% 10%, rgba(34, 233, 255, 0.08), transparent 40%),
       radial-gradient(ellipse at 80% 90%, rgba(255, 43, 214, 0.10), transparent 45%),
-      #05050c;
-    color: #f0f0f8;
+      #0a0e18;
+    color: #e8ecff;
     -webkit-font-smoothing: antialiased;
     -webkit-tap-highlight-color: transparent;
     overscroll-behavior: none;
+  }
+
+  /* PC / wide viewports: constrain the app to a phone-shaped viewport
+     centered on screen with an ambient background around it.
+     Mobile (<=520px) gets the full viewport as before. */
+  @media (min-width: 521px) {
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    #root {
+      width: min(420px, 100vw);
+      height: min(900px, 100vh);
+      max-height: 100vh;
+      border: 1px solid rgba(34, 233, 255, 0.25);
+      border-radius: 28px;
+      box-shadow:
+        0 0 0 1px rgba(255, 43, 214, 0.12),
+        0 40px 80px -20px rgba(0, 0, 0, 0.9),
+        0 0 60px rgba(34, 233, 255, 0.08);
+      overflow: hidden;
+      position: relative;
+    }
+    /* Ambient decoration outside the device frame */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(ellipse 60% 40% at 15% 20%, rgba(34, 233, 255, 0.06), transparent 60%),
+        radial-gradient(ellipse 60% 40% at 85% 80%, rgba(255, 43, 214, 0.08), transparent 60%);
+      z-index: 0;
+    }
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(34, 233, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(34, 233, 255, 0.03) 1px, transparent 1px);
+      background-size: 48px 48px;
+      z-index: 0;
+      mask-image: radial-gradient(ellipse 80% 60% at 50% 50%, black, transparent 90%);
+    }
   }
 
   html {

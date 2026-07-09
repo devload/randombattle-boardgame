@@ -6,6 +6,8 @@ import { StatsSheet } from '../ui/StatsSheet'
 import { CardCodexSheet } from '../ui/CardCodexSheet'
 import { CardDetailSheet } from '../ui/CardDetailSheet'
 import { openTutorial } from '../ui/OnboardingOverlay'
+import { HoloCTA } from '../ui/HoloCTA'
+import { Chip } from '../ui/Chip'
 import { sfx } from '../audio/sfx'
 import type { Card } from '../game/types'
 
@@ -23,27 +25,38 @@ export function LobbyScene() {
 
   return (
     <div className="absolute inset-0 scene-scroll">
-      <div className="scene-bg cyber-grid opacity-60" />
+      <div className="scene-bg cyber-grid opacity-50" />
       <div className="scene-bg scanlines" />
 
-      <div className="relative min-h-full flex flex-col justify-between px-6 py-10 pt-safe pb-safe z-10 gap-4">
-        <div className="text-center mt-8">
-          <div className="text-[10px] tracking-[0.3em] text-neon-cyan font-mono opacity-70 mb-2">
-            // SYSTEM ONLINE
-          </div>
-          <h1 className="font-display font-black text-5xl leading-none tracking-wider text-holo">
-            RANDOM<br />BATTLE
-          </h1>
-          <div className="text-xs tracking-[0.25em] text-arena-textDim font-mono mt-3">
-            A U T O · D R A F T · A R E N A
-          </div>
-          <div className="inline-block mt-3 text-[10px] tracking-[0.15em] font-mono text-neon-magenta border border-neon-magenta px-2 py-0.5">
-            v0.1 MVP
+      <div className="relative min-h-full flex flex-col justify-between px-6 py-8 pt-safe pb-safe z-10 gap-4">
+
+        {/* Header — title chip + SYSTEM ONLINE indicator */}
+        <div className="flex items-center justify-between">
+          <Chip variant="cyan" size="xs">LOBBY</Chip>
+          <div className="flex items-center gap-1.5 font-mono text-[9px] tracking-[0.25em] text-arena-textDim uppercase">
+            <span className="inline-block w-1.5 h-1.5 rounded-full bg-neon-red animate-pulse-neon" />
+            SYSTEM ONLINE
           </div>
         </div>
 
+        {/* Hero */}
+        <div className="text-center mt-4">
+          <h1 className="font-display font-normal text-6xl leading-[0.9] tracking-widest text-holo"
+              style={{ letterSpacing: '0.06em' }}>
+            RANDOM<br />BATTLE
+          </h1>
+          <div className="text-[11px] tracking-[0.3em] text-arena-textDim font-mono mt-4 uppercase">
+            // Underground Auto-Draft Arena
+          </div>
+          <div className="inline-block mt-3">
+            <Chip variant="magenta" size="xs">v0.1 · MVP</Chip>
+          </div>
+        </div>
+
+        {/* CTAs */}
         <div className="flex flex-col gap-3">
-          <button
+          <HoloCTA
+            fullWidth
             onClick={() => {
               sfx.tap()
               reset()
@@ -51,64 +64,35 @@ export function LobbyScene() {
               recordTournamentStart()
               setScene('tourboard')
             }}
-            className="w-full py-4 clip-cyber font-display font-bold text-sm tracking-[0.12em] uppercase
-                       bg-holo-gradient text-arena-void shadow-neon-cyan
-                       hover:-translate-y-0.5 transition"
           >
             ▶ NEW TOURNAMENT
-          </button>
+          </HoloCTA>
           <div className="grid grid-cols-2 gap-3">
-            <button
-              onClick={() => { sfx.tap(); openTutorial() }}
-              className="py-2.5 clip-cyber font-display font-bold text-xs tracking-[0.12em] uppercase
-                         border border-neon-cyan text-neon-cyan bg-neon-cyan/5
-                         hover:-translate-y-0.5 transition"
-            >
+            <HoloCTA variant="secondary" size="md" fullWidth
+                     onClick={() => { sfx.tap(); openTutorial() }}>
               📖 튜토리얼
-            </button>
-            <button
-              onClick={() => { sfx.tap(); setCodexOpen(true) }}
-              className="py-2.5 clip-cyber font-display font-bold text-xs tracking-[0.12em] uppercase
-                         border border-neon-magenta text-neon-magenta bg-neon-magenta/5
-                         hover:-translate-y-0.5 transition"
-            >
+            </HoloCTA>
+            <HoloCTA variant="secondary" size="md" fullWidth
+                     onClick={() => { sfx.tap(); setCodexOpen(true) }}>
               🎴 카드 도감
-            </button>
+            </HoloCTA>
           </div>
         </div>
 
+        {/* Stats snapshot */}
         {stats.totalTournaments > 0 && (
-          <div className="flex justify-around gap-2 py-2 px-3 bg-black/40 border border-arena-lineDim rounded font-mono text-[10px] text-arena-textDim">
-            <div className="text-center">
-              <div className="font-display font-black text-neon-cyan text-lg leading-none"
-                   style={{ textShadow: '0 0 6px rgba(0,229,255,0.55)' }}>
-                {stats.championships}
-              </div>
-              <div className="mt-0.5 tracking-widest">CHAMPS</div>
-            </div>
-            <div className="text-center">
-              <div className="font-display font-black text-neon-cyan text-lg leading-none"
-                   style={{ textShadow: '0 0 6px rgba(0,229,255,0.55)' }}>
-                {stats.totalMatchesWon + stats.totalMatchesLost}
-              </div>
-              <div className="mt-0.5 tracking-widest">MATCHES</div>
-            </div>
-            <div className="text-center">
-              <div className="font-display font-black text-neon-cyan text-lg leading-none"
-                   style={{ textShadow: '0 0 6px rgba(0,229,255,0.55)' }}>
-                {wr === null ? '—' : `${wr}%`}
-              </div>
-              <div className="mt-0.5 tracking-widest">WIN RATE</div>
-            </div>
+          <div className="grid grid-cols-3 gap-2 px-1">
+            <StatBlock label="CHAMPS" value={stats.championships} />
+            <StatBlock label="MATCHES" value={stats.totalMatchesWon + stats.totalMatchesLost} />
+            <StatBlock label="WIN RATE" value={wr === null ? '—' : `${wr}%`} />
           </div>
         )}
 
-        <div className="flex justify-around py-3 border-t border-arena-lineDim font-mono text-[11px] text-arena-textDim">
+        {/* Footer */}
+        <div className="flex justify-around py-3 border-t border-arena-lineDim font-mono text-[10px] tracking-widest text-arena-textDim uppercase">
           <a href="/manual/" className="px-2 py-1 text-neon-cyan hover:underline">GUIDE</a>
-          <button
-            onClick={() => setStatsOpen(true)}
-            className="px-2 py-1 text-neon-cyan hover:underline"
-          >
+          <button onClick={() => setStatsOpen(true)}
+                  className="px-2 py-1 text-neon-cyan hover:underline">
             STATS
           </button>
           <button
@@ -132,6 +116,20 @@ export function LobbyScene() {
         onCardTap={(c) => setCodexDetail(c)}
       />
       <CardDetailSheet card={codexDetail} onClose={() => setCodexDetail(null)} />
+    </div>
+  )
+}
+
+function StatBlock({ label, value }: { label: string; value: number | string }) {
+  return (
+    <div className="text-center p-2 border border-arena-lineDim rounded bg-black/40">
+      <div className="font-display font-normal text-neon-cyan text-2xl leading-none"
+           style={{ textShadow: '0 0 8px rgba(34,233,255,0.55)' }}>
+        {value}
+      </div>
+      <div className="font-mono text-[9px] tracking-widest text-arena-textDim mt-1 uppercase">
+        {label}
+      </div>
     </div>
   )
 }

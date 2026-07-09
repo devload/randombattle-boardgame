@@ -6,6 +6,8 @@ import { leaderboard, totalFans } from '../game/tournament'
 import { ROBOTS } from '../game/robots'
 import { TrophyBadge } from '../ui/TrophyIcon'
 import { Confetti } from '../ui/Confetti'
+import { HoloCTA } from '../ui/HoloCTA'
+import { Chip } from '../ui/Chip'
 import { sfx } from '../audio/sfx'
 
 export function ResultScene() {
@@ -42,16 +44,20 @@ export function ResultScene() {
 
       <div className="relative min-h-full flex flex-col p-5 pt-safe pb-safe z-10 gap-3">
 
+        {/* Header — title chip */}
+        <div className="flex items-center justify-between">
+          <Chip variant="cyan" size="xs">RESULT</Chip>
+          <Chip variant="magenta" size="xs">// TOURNAMENT COMPLETE</Chip>
+        </div>
+
         {/* Banner */}
-        <div className="text-center mt-8">
-          <div className="font-mono text-[11px] tracking-widest text-neon-magenta mb-2">
-            // TOURNAMENT COMPLETE
-          </div>
-          <div className="font-display font-black text-5xl leading-none tracking-wider text-holo">
+        <div className="text-center mt-6">
+          <div className={`font-display font-normal text-6xl leading-[0.9] tracking-widest ${winnerIsHuman ? 'text-holo' : 'text-neon-red'}`}
+               style={winnerIsHuman ? undefined : { textShadow: '0 0 20px rgba(255,51,85,0.7)' }}>
             {winnerIsHuman ? 'CHAMPION' : 'DEFEATED'}
           </div>
-          <div className="font-mono text-[10px] tracking-widest text-neon-cyan mt-1">
-            A U T O · D R A F T · {winnerIsHuman ? 'VICTORY' : 'RETRY'}
+          <div className="font-mono text-[10px] tracking-[0.3em] text-arena-textDim mt-3 uppercase">
+            {winnerIsHuman ? '// Underground Auto-Draft Victory' : '// Rematch Available'}
           </div>
         </div>
 
@@ -109,27 +115,21 @@ export function ResultScene() {
 
         {/* CTAs */}
         <div className="mt-auto flex flex-col gap-2">
-          <button
-            onClick={() => {
-              reset()
-              startTournament()
-              setScene('tourboard')
-            }}
-            className="w-full py-4 clip-cyber font-display font-bold text-sm tracking-widest uppercase
-                       bg-holo-gradient text-arena-void shadow-neon-cyan"
-          >
+          <HoloCTA fullWidth
+                   onClick={() => {
+                     reset()
+                     startTournament()
+                     setScene('tourboard')
+                   }}>
             ▶ PLAY AGAIN
-          </button>
-          <button
-            onClick={() => {
-              reset()
-              setScene('lobby')
-            }}
-            className="w-full py-3 clip-cyber font-display font-bold text-xs tracking-widest uppercase
-                       border border-neon-cyan text-neon-cyan bg-neon-cyan/5"
-          >
+          </HoloCTA>
+          <HoloCTA variant="secondary" size="md" fullWidth
+                   onClick={() => {
+                     reset()
+                     setScene('lobby')
+                   }}>
             MAIN MENU
-          </button>
+          </HoloCTA>
         </div>
       </div>
     </div>
@@ -138,12 +138,12 @@ export function ResultScene() {
 
 function StatBlock({ label, value }: { label: string; value: string | number }) {
   return (
-    <div className="text-center font-mono text-[10px] text-arena-textDim tracking-widest">
-      <div className="font-display font-black text-2xl text-neon-cyan"
-           style={{ textShadow: '0 0 8px rgba(0,229,255,0.55)' }}>
+    <div className="text-center font-mono text-[10px] text-arena-textDim tracking-widest uppercase">
+      <div className="font-display font-normal text-2xl text-neon-cyan leading-none"
+           style={{ textShadow: '0 0 8px rgba(34,233,255,0.55)' }}>
         {value}
       </div>
-      <div>{label}</div>
+      <div className="mt-1">{label}</div>
     </div>
   )
 }

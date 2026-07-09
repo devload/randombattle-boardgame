@@ -14,6 +14,8 @@ import { mulberry32, hashSeed } from '../game/rng'
 import { robotById } from '../game/robots'
 import { cardById } from '../game/cards'
 import { decideFirstPlayer } from '../game/tournament'
+import { RoundDotBar } from '../ui/RoundDotBar'
+import { Chip } from '../ui/Chip'
 import { toast } from '../store/toastStore'
 import { sfx } from '../audio/sfx'
 import type { Card, Level } from '../game/types'
@@ -181,10 +183,10 @@ export function DeckPhaseScene() {
 
       <div className="relative flex-1 flex flex-col p-3 z-10 gap-2 min-h-0">
 
-        {/* Header */}
-        <div className="flex justify-between items-center px-2 pb-1 border-b border-arena-lineDim">
-          <div className="font-display text-xs tracking-widest text-neon-cyan">◀ DECK PHASE</div>
-          <div className="font-mono text-[10px] text-neon-magenta">R{round} / 7</div>
+        {/* Header — title chip + round dot bar */}
+        <div className="flex justify-between items-center px-1 pb-1.5 border-b border-arena-lineDim">
+          <Chip variant="cyan" size="xs">DECK PHASE</Chip>
+          <RoundDotBar current={round} total={7} label="R" />
         </div>
 
         {/* Deck summary + shortcuts */}

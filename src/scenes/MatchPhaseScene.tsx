@@ -9,6 +9,8 @@ import { Card } from '../ui/Card'
 import { BenchSlots } from '../ui/BenchSlots'
 import { AnimatedNumber } from '../ui/AnimatedNumber'
 import { PowerBar } from '../ui/PowerBar'
+import { RoundDotBar } from '../ui/RoundDotBar'
+import { Chip } from '../ui/Chip'
 import { PowerBreakdown } from '../ui/PowerBreakdown'
 import { revealBreakdown } from '../game/effects'
 import { CardDetailSheet } from '../ui/CardDetailSheet'
@@ -40,6 +42,8 @@ function delayForEvent(type: string): number {
 export function MatchPhaseScene() {
   const setScene = useUI((s) => s.setScene)
   const { result, cursor, playing, mode, deckSizes, labels, start, next, setPlaying, setMode } = useMatch()
+  const round = useTournament((s) => s.round)
+  const inFinal = useTournament((s) => s.inFinal)
   const [detailCard, setDetailCard] = useState<CardData | null>(null)
   // Intro cutscene removed — it was blocking gameplay behind a dim overlay
   // when timers throttled. Match SFX intro is still played on first render.
@@ -183,6 +187,14 @@ export function MatchPhaseScene() {
       <div ref={shakeRef}
            className="relative min-h-full flex flex-col p-2 z-10 gap-1.5"
       >
+
+        {/* Scene header: title chip + round dot bar */}
+        <div className="flex items-center justify-between px-1">
+          <Chip variant="cyan" size="xs">MATCH</Chip>
+          {inFinal
+            ? <Chip variant="gold" size="xs">FINAL</Chip>
+            : <RoundDotBar current={round} total={7} label="R" />}
+        </div>
 
         {/* Opponent strip */}
         <PlayerStrip
