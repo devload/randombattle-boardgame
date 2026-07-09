@@ -1,0 +1,23 @@
+
+=== BATCH REPORT · 20 matches/pairing · 400 total · 10ms ===
+
+A→B \ B     ALPHA       CORP.BOT    GHOST.BOT   ICE.BOT     C.H.A.M.P   AVG       
+ALPHA         —         ▽  15.0%    ▽   0.0%    ▽   5.0%    ▽   0.0%       5.0%   
+CORP.BOT       55.0%      —         ▽  15.0%    ▽   0.0%    ▽   0.0%      17.5%   
+GHOST.BOT   ▲ 100.0%    ▲  70.0%      —            45.0%    ▽   0.0%      53.8%   
+ICE.BOT     ▲ 100.0%    ▲  90.0%       45.0%      —         ▽   0.0%      58.8%   
+C.H.A.M.P   ▲ 100.0%    ▲  95.0%    ▲ 100.0%    ▲ 100.0%      —           98.8%   
+
+=== RANKING (avg winrate as A-side, higher = stronger) ===
+
+  1. C.H.A.M.P    · avg 98.8%   tier 5  ●●●
+  2. ICE.BOT      · avg 58.8%   tier 4  ●●
+  3. GHOST.BOT    · avg 53.8%   tier 3  ●
+  4. CORP.BOT     · avg 17.5%   tier 2
+  5. ALPHA        · avg 5.0%   tier 1
+
+=== END REASON DISTRIBUTION ===
+
+  attacker-empty-deck: 384 (96.0%)
+  bench-overflow:       16 (4.0%)
+

@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<title>RANDOMBATTLE — Tournament Board</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./design-tokens.css">
+<link rel="stylesheet" href="./embed.css">
+<style>
+  body { display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 40px; }
+
+  .scene {
+    position: absolute;
+    inset: 0;
+    padding: 50px 16px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    z-index: 2;
+    overflow-y: auto;
+  }
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 4px;
+  }
+  .header__title {
+    font-family: var(--font-display);
+    font-size: 14px;
+    letter-spacing: 0.15em;
+    color: var(--cyan);
+  }
+  .header__round {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--magenta);
+    letter-spacing: 0.15em;
+  }
+
+  .leaderboard {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .row {
+    display: grid;
+    grid-template-columns: 24px 1fr auto auto;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    background: rgba(0, 0, 0, 0.35);
+    border: 1px solid var(--line-dim);
+    border-radius: 4px;
+    font-family: var(--font-body);
+    font-size: 13px;
+  }
+  .row--me {
+    border-color: var(--cyan);
+    background: linear-gradient(90deg, rgba(0,229,255,0.12), rgba(0,0,0,0.35));
+    box-shadow: 0 0 12px rgba(0,229,255,0.15);
+  }
+  .row--top {
+    border-color: var(--yellow);
+    background: linear-gradient(90deg, rgba(255,230,0,0.08), rgba(0,0,0,0.35));
+  }
+  .row__rank {
+    font-family: var(--font-display);
+    font-weight: 900;
+    color: var(--cyan);
+    text-align: center;
+  }
+  .row--top .row__rank { color: var(--yellow); text-shadow: 0 0 8px var(--yellow-glow); }
+  .row__name { display: flex; align-items: center; gap: 6px; font-weight: 600; }
+  .row__badge {
+    font-family: var(--font-mono);
+    font-size: 8px;
+    padding: 1px 4px;
+    border-radius: 2px;
+    letter-spacing: 0.1em;
+  }
+  .row__badge--me { background: var(--cyan); color: var(--bg-void); }
+  .row__badge--bot { background: var(--bg-panel-2); border: 1px solid var(--line); color: var(--text-dim); }
+  .row__trophies {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-dim);
+  }
+  .row__fans {
+    font-family: var(--font-display);
+    font-weight: 700;
+    color: var(--yellow);
+    text-shadow: 0 0 6px var(--yellow-glow);
+    min-width: 32px;
+    text-align: right;
+  }
+
+  .opponent-card {
+    background: linear-gradient(135deg, rgba(255,43,214,0.1), rgba(0,229,255,0.05));
+    border: 1px solid var(--magenta);
+    border-radius: 8px;
+    padding: 14px;
+    box-shadow: 0 0 20px rgba(255,43,214,0.2);
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+  .opponent-card__avatar {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, var(--magenta), var(--cyan));
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    box-shadow: var(--glow-magenta);
+  }
+  .opponent-card__meta { flex: 1; }
+  .opponent-card__label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--magenta);
+    letter-spacing: 0.15em;
+  }
+  .opponent-card__name {
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: 20px;
+    letter-spacing: 0.05em;
+    color: var(--white);
+    margin: 2px 0;
+  }
+  .opponent-card__hint {
+    font-family: var(--font-body);
+    font-size: 12px;
+    color: var(--text-dim);
+    font-style: italic;
+  }
+
+  .pile-status {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    padding: 8px 0;
+  }
+  .pile {
+    padding: 6px 12px;
+    border: 1px dashed var(--line-dim);
+    border-radius: 4px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text-muted);
+    letter-spacing: 0.1em;
+  }
+  .pile--open {
+    border-style: solid;
+    border-color: var(--cyan);
+    color: var(--cyan);
+    background: rgba(0, 229, 255, 0.06);
+    box-shadow: 0 0 8px rgba(0,229,255,0.2);
+  }
+
+  .cta-wrap {
+    margin-top: auto;
+    padding-top: 8px;
+  }
+  .cta-wrap .btn { width: 100%; padding: 16px; font-size: 14px; }
+</style>
+</head>
+<body>
+
+<div class="phone-frame">
+  <div class="cyber-grid"></div>
+  <div class="scanlines"></div>
+
+  <div class="scene">
+
+    <div class="header">
+      <div class="header__title">TOURNAMENT</div>
+      <div class="header__round">ROUND 04 / 07</div>
+    </div>
+
+    <div class="round-track">
+      <div class="round-track__dot round-track__dot--done"></div>
+      <div class="round-track__dot round-track__dot--done"></div>
+      <div class="round-track__dot round-track__dot--done"></div>
+      <div class="round-track__dot round-track__dot--current"></div>
+      <div class="round-track__dot"></div>
+      <div class="round-track__dot"></div>
+      <div class="round-track__dot"></div>
+    </div>
+
+    <h3 class="section-title">LEADERBOARD</h3>
+    <div class="leaderboard">
+      <div class="row row--top">
+        <div class="row__rank">1</div>
+        <div class="row__name">🤖 C.H.A.M.P <span class="row__badge row__badge--bot">BOT</span></div>
+        <div class="row__trophies">🏆×3</div>
+        <div class="row__fans">18</div>
+      </div>
+      <div class="row row--me">
+        <div class="row__rank">2</div>
+        <div class="row__name">👤 YOU <span class="row__badge row__badge--me">ME</span></div>
+        <div class="row__trophies">🏆×2</div>
+        <div class="row__fans">14</div>
+      </div>
+      <div class="row">
+        <div class="row__rank">3</div>
+        <div class="row__name">🤖 GOOD.BOT <span class="row__badge row__badge--bot">BOT</span></div>
+        <div class="row__trophies">🏆×2</div>
+        <div class="row__fans">11</div>
+      </div>
+      <div class="row">
+        <div class="row__rank">4</div>
+        <div class="row__name">🤖 ALPHA <span class="row__badge row__badge--bot">BOT</span></div>
+        <div class="row__trophies">🏆×1</div>
+        <div class="row__fans">7</div>
+      </div>
+      <div class="row">
+        <div class="row__rank">5</div>
+        <div class="row__name">🤖 BETA <span class="row__badge row__badge--bot">BOT</span></div>
+        <div class="row__trophies">🏆×0</div>
+        <div class="row__fans">4</div>
+      </div>
+    </div>
+
+    <h3 class="section-title" style="margin-top: 4px;">NEXT MATCH</h3>
+    <div class="opponent-card">
+      <div class="opponent-card__avatar">🥷</div>
+      <div class="opponent-card__meta">
+        <div class="opponent-card__label">// OPPONENT</div>
+        <div class="opponent-card__name">GHOST.BOT</div>
+        <div class="opponent-card__hint">"aggressive attacker · uses high power"</div>
+      </div>
+    </div>
+
+    <h3 class="section-title" style="margin-top: 4px;">DRAFT PILES OPEN</h3>
+    <div class="pile-status">
+      <div class="pile pile--open">LEVEL A</div>
+      <div class="pile pile--open">LEVEL B</div>
+      <div class="pile">LEVEL C · R5+</div>
+    </div>
+
+    <div class="cta-wrap">
+      <button class="btn btn-primary">ENTER THE ARENA →</button>
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<title>RANDOMBATTLE — Card Showcase</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./design-tokens.css">
+<style>
+  main {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 40px 24px;
+  }
+  h1 {
+    font-family: var(--font-display);
+    font-size: 32px;
+    font-weight: 900;
+    letter-spacing: 0.15em;
+    margin: 0 0 4px 0;
+    background: linear-gradient(90deg, var(--cyan), var(--magenta));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .subtitle {
+    color: var(--text-dim);
+    font-family: var(--font-mono);
+    font-size: 13px;
+    margin-bottom: 40px;
+  }
+  section { margin-bottom: 48px; }
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    align-items: flex-start;
+  }
+  .note {
+    color: var(--text-dim);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    margin-top: 8px;
+  }
+</style>
+</head>
+<body>
+<main>
+
+<h1>CARD SHOWCASE</h1>
+<div class="subtitle">// RANDOMBATTLE ・ Cyberpunk holo card system ・ S/A/B/C levels</div>
+
+<section>
+  <h2 class="section-title">LEVEL VARIANTS · Large</h2>
+  <div class="row">
+
+    <!-- S: Starter (gray) -->
+    <div class="card card--lg" data-level="S">
+      <div class="card__level">S</div>
+      <div class="card__icon">👤</div>
+      <div class="card__power">1</div>
+      <div class="card__name">STREET GRUNT</div>
+      <div class="card__effect">No special ability.<br/>Basic starter unit.</div>
+    </div>
+
+    <!-- A: Common (green) -->
+    <div class="card card--lg" data-level="A">
+      <div class="card__level">A</div>
+      <div class="card__icon">🥷</div>
+      <div class="card__power">3</div>
+      <div class="card__name">GHOST RUNNER</div>
+      <div class="card__effect">+2 power if this card is revealed first this attack.</div>
+      <div style="text-align:center;">
+        <span class="card__keyword">DURING ATTACK</span>
+      </div>
+    </div>
+
+    <!-- B: Rare (cyan) -->
+    <div class="card card--lg" data-level="B">
+      <div class="card__level">B</div>
+      <div class="card__icon">🤖</div>
+      <div class="card__power">4</div>
+      <div class="card__name">SYNTH GUARD</div>
+      <div class="card__effect">Each other SYNTH on your bench grants +1 power.</div>
+      <div style="text-align:center;">
+        <span class="card__keyword">FROM BENCH</span>
+      </div>
+    </div>
+
+    <!-- C: Elite (magenta) -->
+    <div class="card card--lg" data-level="C">
+      <div class="card__level">C</div>
+      <div class="card__icon">👹</div>
+      <div class="card__power">8</div>
+      <div class="card__name">DAEMON.EXE</div>
+      <div class="card__effect">When flag is lost, gain 3 fans. This card returns to deck.</div>
+      <div style="text-align:center;">
+        <span class="card__keyword">FLAG LOSS</span>
+      </div>
+    </div>
+
+  </div>
+  <div class="note">Level tint: S = gray · A = green · B = cyan · C = magenta<br/>Base power caps: A ≤ 3, B ≤ 5, C ≤ 10</div>
+</section>
+
+<div class="divider"></div>
+
+<section>
+  <h2 class="section-title">MEDIUM · Deck strip &amp; draft view</h2>
+  <div class="row">
+    <div class="card" data-level="S"><div class="card__level">S</div><div class="card__icon">👤</div><div class="card__power">1</div><div class="card__name">STREET GRUNT</div></div>
+    <div class="card" data-level="A"><div class="card__level">A</div><div class="card__icon">🥷</div><div class="card__power">3</div><div class="card__name">GHOST RUNNER</div></div>
+    <div class="card" data-level="A"><div class="card__level">A</div><div class="card__icon">💊</div><div class="card__power">2</div><div class="card__name">STIM PACK</div><div style="text-align:center;"><span class="card__keyword">IMMEDIATE</span></div></div>
+    <div class="card" data-level="B"><div class="card__level">B</div><div class="card__icon">🤖</div><div class="card__power">4</div><div class="card__name">SYNTH GUARD</div><div style="text-align:center;"><span class="card__keyword">FROM BENCH</span></div></div>
+    <div class="card" data-level="B"><div class="card__level">B</div><div class="card__icon">⚡</div><div class="card__power">5</div><div class="card__name">OVERCLOCK</div><div style="text-align:center;"><span class="card__keyword">DURING ATTACK</span></div></div>
+    <div class="card" data-level="C"><div class="card__level">C</div><div class="card__icon">👹</div><div class="card__power">8</div><div class="card__name">DAEMON.EXE</div><div style="text-align:center;"><span class="card__keyword">FLAG LOSS</span></div></div>
+  </div>
+  <div class="note">Draft view · 5장 드로우 표시 사이즈</div>
+</section>
+
+<div class="divider"></div>
+
+<section>
+  <h2 class="section-title">SMALL · Bench &amp; deck-count strip</h2>
+  <div class="row">
+    <div class="card card--sm" data-level="S"><div class="card__level">S</div><div class="card__icon">👤</div><div class="card__power">1</div><div class="card__name">GRUNT</div></div>
+    <div class="card card--sm" data-level="A"><div class="card__level">A</div><div class="card__icon">🥷</div><div class="card__power">3</div><div class="card__name">RUNNER</div></div>
+    <div class="card card--sm" data-level="B"><div class="card__level">B</div><div class="card__icon">🤖</div><div class="card__power">4</div><div class="card__name">SYNTH</div></div>
+    <div class="card card--sm" data-level="C"><div class="card__level">C</div><div class="card__icon">👹</div><div class="card__power">8</div><div class="card__name">DAEMON</div></div>
+  </div>
+  <div class="note">Bench 슬롯 / 덱 스트립 사이즈</div>
+</section>
+
+<div class="divider"></div>
+
+<section>
+  <h2 class="section-title">BENCH ROW · 6 slots</h2>
+  <div style="max-width: 480px;">
+    <div class="bench">
+      <div class="bench__slot bench__slot--filled" style="--card-color: var(--lvl-a); --card-glow: var(--green-glow);">🥷<span class="bench__slot__count">×2</span></div>
+      <div class="bench__slot bench__slot--filled" style="--card-color: var(--lvl-b); --card-glow: var(--cyan-glow);">🤖</div>
+      <div class="bench__slot bench__slot--filled" style="--card-color: var(--lvl-s); --card-glow: rgba(136,136,168,0.4);">👤<span class="bench__slot__count">×3</span></div>
+      <div class="bench__slot">·</div>
+      <div class="bench__slot">·</div>
+      <div class="bench__slot">·</div>
+    </div>
+  </div>
+  <div class="note">3/6 slots filled · 스택은 우하단 카운터로 표시 · 7종째 진입 시 매치 패배</div>
+</section>
+
+<div class="divider"></div>
+
+<section>
+  <h2 class="section-title">HUD ELEMENTS</h2>
+  <div class="row" style="align-items:center; gap: 32px;">
+    <div class="round-track">
+      <div class="round-track__dot round-track__dot--done"></div>
+      <div class="round-track__dot round-track__dot--done"></div>
+      <div class="round-track__dot round-track__dot--done"></div>
+      <div class="round-track__dot round-track__dot--current"></div>
+      <div class="round-track__dot"></div>
+      <div class="round-track__dot"></div>
+      <div class="round-track__dot"></div>
+    </div>
+    <div class="flag">🚩 FLAG</div>
+    <div class="trophy">🏆 12 FANS</div>
+    <button class="btn btn-primary">ENTER ARENA</button>
+    <button class="btn btn-ghost">REROLL</button>
+  </div>
+</section>
+
+</main>
+</body>
+</html>

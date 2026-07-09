@@ -1,0 +1,241 @@
+                               JOHANNES        KRENNER & MARKUS SLAWITSCHECK                               ILLUSTRATED BY JE
+                                                                                                                                FF HARVEY
+                      A M E BY
+                    AG
+
+
+
+
+                                                                        RULEBOOK
+                                     Will your dream team succeed? Helped by your Bard, your Kraken just captured the flag!
+                         You’re now waiting for your opponent’s attack ready to fight back with your Necromancer and your Rubber Duck!
+                                 From outer space aliens to deep-sea creatures, improbable allies working toward a common goal:
+
+                              WIN THE WORLD’S GREATEST CAPTURE THE FLAG TOURNAMENT !
+                                                                           CONTENTS
+
+
+                                                                                                                                            Front     Back
+                                                                                                      4 Flags              40 Fans            28 Trophies
+
+
+
+
+  8 Starter Decks                  1 Robot Deck                        1 Basic City Set
+
+         6x Cards Each                    19x Cards                         20x Cards
+
+
+
+
+                                                                                                                              4 Parks
+
+
+
+
+9 Tournament Plans                          6 Additional Sets: 40x Cards Each
+
+                                 Castle                   Funfair               Outer Space
+
+                                 Film Studio              Haunted House         Shipwreck
+                                                                                                                           3 Card Trays
+  setup
+      Take the parks according to your player count and place
+      them on the table.
+                                                                                                                                                               Setup for a 4-player game:
+      Give a Tournament Plan to each player according to the
+      number of players. Then, each player sits at the park half
+      which icon and background color is depicted in the first
+      line of their Tournament Plan.                                                                                                                                                                Note: Each card
+                                                                                                 The player count                                                                                  tray has a discard
+      Place the flag of the matching color in the middle of each                                 is highlighted in
+                                                                                                                                                                                                  compartment and a
+      park.                                                                                      white in the upper
+                                                                                                 right corner of                                                                                       Level-Pile
+      Sort all Trophies according to their round number into                                     each Tournament                                                                                     compartment.
+      piles. Then shuffle each of those piles separately. For                                    Plan.
+      each park, create a face down stack of Trophies by
+      drawing one from each pile and by stacking them in descending order (7 at the bottom,
+      and 1 on top). Place a stack on the Trophy icon of each park.
+      Form a general supply with the fans              .
+                                                                                       The Set icon in
+      Place the 3 card trays (A, B, C) at a spot that is easy to                       the top left and
+      reach.                                                                           right corners
+      Take all the cards of the Basic City Set (This Set is                            shows which
+                                                                                       Set the card
+      needed in every game).
+                                                                                       belongs to.
+      Select 5 of the 6 additional Sets and put the remaining one
+      back into the box. Then, separate all cards of each Set by           The letter in the
+      Level (A, B and C). Shuffle all Level-A cards together and           bottom right                                                             Leave 3 cards worth of space between parks.
+      place them as the Level-A-Pile, face down, in the                    shows the Level
+      corresponding card tray. Repeat these steps with the cards           of the card.
+      of Level B and Level C.
+      Note: We suggest to not play with the Outer Space Set in your first game.
+      Each player takes the 6 cards of the Starter Deck
+      matching the icon of their Tournament Plan.
+      Each player leaves a free space at the right of their deck
+      for their exhaust pile.
+
+      When playing with an odd player count the Robot Deck is
+      used (see details on p. 4)
+
+
+  goal of the game                                                                                                           deck phase
+First: Qualify yourself for the final by being one of the two players with the most fans      at the end of the 7th         Each player handles their Deck Phase independently from the other players and in their own
+match.
+Then: Win the final!
+                                                                                                                            time.
+                                                                                                                                Move to another park if necessary.
+  gameplay for 3 to 8 players (see additional rules for 2 players and solo mode on p. 4)                                    Check your Tournament Plan in which park half you are playing this round. If necessary,
+                                                                                                                            change your seat. Take your Tournament Plan, deck, won fans and Trophies with you.
+Players are participating in a 7-round tournament.
+Each round starts with the Deck Phase and is followed by the Match Phase. During the Deck Phase, players
+improve their deck by selecting new cards. During the Match Phase, each player plays against one opponent.
+                                                                                                                           Overview of a Tournament Plan:
+                                                                                                                                                                                            The letters indicate which Level
+After the 7th round, the two players with the most fans    are facing each other in the final.                                The 7 rounds of the tournament                                Pile(s) are available to you (see
+                                                                                                                              are represented by the lines                                  more details on p.3).
+ DECK PHASE (independent)                                   MATCH PHASE (with an opponent)                                    from top to bottom.
+                                                                                                                                                                                            The Trophy you are competing for
+    Move to another park (if necessary).                       Shuffle your deck and determine who begins.                    You can see in which park half you
+                                                                                                                                                                                            this Match Phase is identified by
+                                                                                                                              will play in the current round by
+
+
+                                                                                                                       2
+    Draw and pick cards.                                       Attack until one of your cards is in flag possession.                                                                        the number on it.
+    Remove cards from your deck (optional).                    If you win, take the top-most Trophy.                          the icon and its background color.
+   Draw and pick cards.                                                                                                       Attack                                       In flag possession
+Draw 5 cards from the available Level Pile of the current round.
+                                                                                                                    Total power of the cards =
+The letter A, B or C shows the available Level                                                                   First card’s base power + power                       Total power of the card =
+Pile. The amount of card icons shows how                        Pick 2 cards from Level-                                      bonuses                                 Card’s base power + power
+many cards you can pick and add to your                         A-Pile.                                                         +                                              bonuses
+deck.                                                                                                              Second card’s base power +
+                                                                                                                       power bonuses...
+                                                                Pick 2 cards from Level-
+Discard the cards you did not pick in the
+discard compartment of the corresponding                        B-Pile or pick 1 card from                   As soon as the total power of your card(s) is equal to or higher than the total power of
+card tray. When no additional card fits in                      Level-C-Pile.                                the card of your opponent, take the flag and place it on your latest revealed card. You
+the compartment, shuffle all cards in it and                                                                 must not reveal more cards than needed to get in flag possession.
+place them at the bottom of the corresponding Level Pile.
+                                                                                                             Your latest revealed card is now in flag possession. Slide all other cards that you may
+Once per Deck Phase you may discard the cards drawn this round and draw that number                          have revealed during your attack underneath your card in flag possession.
+of new cards from the same Level Pile. If you are allowed to pick 2 cards you may discard
+and draw new cards before or after you picked your first card.
+                                                                                                             Your opponent has to put the card that has just lost
+    Remove cards form your deck (optional).                                                                  the flag and all cards slided underneath it face up on
+                                                                                                                                                                                       The 6 seats of the
+At the end of the Deck Phase you may remove any number of cards from your deck. Put                          seats of their bench. Put all cards with the same name                    bench are located
+each removed card in the discard compartment of the corresponding card tray (Level A, B                      on 1 seat.                                                                on your right.
+or C). If you remove Starter Deck cards (S), put them back into the box.                                     Your opponent is on the attack now. Continue to play
+                                                                                                             until a player wins the match.
+Overview of a card:
+                                                                 Base power is indicated in upper            There are 2 ways to win:
+        Name of the card.                                        corners of each card. In Level A            l. Your opponent is on the attack but cannot get enough total power to get in flag
+             Set icon.                                           cards have a base power up to 3,            possession.
+                                                                 Level B up to 5 and Level C up to 10.
+Most of the cards are in 4 copies.                                                                           ll. Your opponent must put one or more cards on their bench but does not have enough
+Rare is used if there are 3 or less                              Many cards have effects and some            empty seats available.
+copies. Common is used If there                                  of those effects give a power bonus
+are 5 or more copies.                                            (see effects section on p.4).
+                                                                                                                  If you win, take the top-most Trophy.
+                                                                                                             If you win the match, take the Trophy of the current
+
+ match phase                                                                                                 round from your park and place it next to your              Front        Back
+                                                                                                                                                                        (Round)      (Fans)
+                                                                                                             Tournament Plan.
+You play the Match Phase with your opponent, independently of the other players.                             The back of a Trophy shows how many fans it is worth. Keep it hidden from other
+ A Shuffle your deck and start.                                                                              players. The amount of fans on the Trophies increases in later rounds.
+                                                                                                             At the end of a match, collect all cards that are part of your deck: from your bench, your
+Shuffle your deck and place it face down next to your Tournament Plan.                                       park half, your exhaust pile and your unplayed cards.
+IMPORTANT: During the Match Phase you must not look at your cards or rearrange their                         After rounds 1 to 6 continue with the Team Phase of the next round.
+order except if an effect allows you to do so.
+Determine who begins with a flag toss. That player reveals the top card of their deck, puts
+it into their park half and places the flag on their card. This card is now in flag possession.               final & game end
+                                                                                                             After round 7 every player adds up the fans depicted on their collected fans and
+From round 2 onward, the player who has the Trophy with the higher round number begins.
+                                                                                                             on the back of their Trophies. The players with the most and second most fans are
+If there is a tie, toss the flag.
+                                                                                                             facing each other in the final.
+ B Attack until one of your cards is in flag possession.
+When the card of your opponent is in flag possession you are on the attack.                                  Break ties in favor of the tied player who won more Trophies. If there is still a tie it is
+                                                                                                             broken in favor of the player who has the single Trophy with the highest round number.
+During your attack reveal cards one after the other until their total power is equal to or
+greater than the total power of the card in flag possession. Compare the total power after                   Before the final starts, you do not draw and pick new cards, but you may remove cards
+each revealed card.                                                                                          from your deck as in the Deck Phase.
+If you have to reveal more than 1 card, add up the base power and power bonuses of all                       Determine who begins as usual.
+revealed cards.
+
+                                                                                                         3
+                                                                                                             The player who wins the final is the winner of Challengers!
+ the robot                                                                                          effects
+If you play with an odd number of players, the Robot substitutes for a missing player.             When you reveal a card without keywords, you must immediately resolve the effect of
+                                                                                                   the card as much as possible.
+Place a Tournament Plan that corresponds to your player count next to the park half
+indicated in the first line of the Tournament Plan. If all players agree, it is recommended        Important: If a card gets an immediate power bonus, that card keeps it even in flag
+to use the Tournament Plan that only shows the          icon for the Robot.                        possession.
+
+The Robot start cards (S) form the Robot‘s Deck. Place it next to its Tournament Plan.             When you reveal a card with bold keywords, these indicate when their effect applies
+                                                                                                   or will be resolved.
+The Robot does nothing in the Deck Phase.
+                                                                                                      During the attack: Their effect only applies to the attack in which you reveal them.
+At the start of the Match Phase, shuffle the Robot’s Deck. Play according to the rules of             The effect is no longer active when one of your cards is in flag possession.
+the Match Phase by revealing cards for the Robot when it is on the attack.
+                                                                                                      From the bench: Their effect applies as soon as this card is on the bench and is
+If the Robot wins the match, place the Trophy of the current round back into the box.                 active as long as it remains on the bench. The power bonuses of multiple cards with
+                                                                                                      the same name add up.
+After the match, take all cards of the Robot’s Deck and its Tournament Plan. Place them
+in the park half it is playing next according to the Robot’s Tournament Plan.                         In flag possession: Their effect applies as soon as the flag is placed on this card and
+                                                                                                      is active as long as the flag remains on it.
+For Level 1 the Robot’s Deck only consists of the Robot start cards (S). If you want to play
+                                                                                                      Flag loss: Their effect is resolved when the flag is taken away from this card.
+with a higher difficulty level, during set up, shuffle the R cards and:
+                                                                                                      Therefore this card must have been in flag possession beforehand. Flag loss effects
+Level 2 replace the Alpha-card with a random R-card.                                                  are resolved prior to effects that apply when a card gets in flag possession.
+
+Level 3 as Level 2 and additionally replace the Beta-card with a random R-card.                       When picked (only in Outer Space Set ): Their effect is resolved once only in the
+                                                                                                      Deck Phase in which you pick this card.
+
+ 2-player game                                                                                     If the first revealed card that begins a match has an effect, do not forget to resolve it.
+                                                                                                   If an effect lets you take fans        , take them from the general supply and place them
+There are two changes to the game end:                                                             next to your Tournament Plan.
+l. You do not play a final. Instead, the player with the most fans    after the 7th round          With some effects you can put cards on your exhaust pile. There is no limit to the
+wins.                                                                                              number of cards in your exhaust pile. Put all cards on the exhaust pile face up, so you
+ll. You win the game immediately if you have at least 11 fans more than your                       do not mix them up with the cards of your deck.
+opponent at the end of a Match Phase. Keep your fans and won Trophies face up, so
+you can always see the number of fans each player has.
+                                                                                                   CREDITS                                                                              Follow us on:
+                                                                                                   Designers: Johannes Krenner & Markus Slawitscheck
+
+ solo mode
+                                                                                                   Producer: Sophie Gravel
+                                                                                                   Game Editors: Martin Bouchard, Roman Rybiczka & Julian Steindorfer                  /1moretimegames
+                                                                                                   Illustrator: Jeff Harvey                                                              /zmangames
+ You play alone against the Robot. The rules of the 2-Player game apply, as described              Graphic Design: Bree Lindsoe
+ above. In contrast to the multiplayer game, the Robot collects the Trophies it has won            Consultant Cultural Sensitivity: Calvin Wong Tze Loon
+ and can also win the game immediately if it has at least 11 fans more than you.                   Z-Man Games is committed to diverse representation and accessible gaming for all. If you have any
+                                                                                                   concerns or suggestions, please contact us through our website.
+ Follow the Setup with Robot as described above. If you want a special challenge include
+                                                                                                   © 2022 Z-Man Games. Z-Man Games is a ® of Z-Man Games. Gamegenic and the Gamegenic logo are TM & ©
+ the SOLO cards to the other Robot cards (R) before randomly adding 1-5 of them.                   Gamegenic GmbH, Germany. Actual components may vary from those shown.
+
+
+ If you want a real challenge, you can try even higher difficulty levels in
+ the solo mode:
+ Level 4 as Level 3 and additionally replace the Good Bot-card with a                                                                    © 2022 – 1 More Time
+                                                                                                   1995 County Rd B2 West
+ random R-card.                                                                                    Roseville, MN 55113 USA
+                                                                                                                                         Games OG                           Agency: White Castle Games
+                                                                                                                                         Nobilegasse 26/13,                 www.whitecastle.at
+                                                                                                   651-639-1905
+
+
+
+
+                                                                                               4
+                                                                                                                                         AT-1150 Vienna
+                                                                                                   info@ZManGames.com
+ Level 5 as Level 4 and additionally replace the C.H.A.M.P-card with two random R-cards.                                                 1moretimegames.com
+

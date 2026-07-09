@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<title>RANDOMBATTLE — Result</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./design-tokens.css">
+<link rel="stylesheet" href="./embed.css">
+<style>
+  body { display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 40px; }
+
+  .scene {
+    position: absolute;
+    inset: 0;
+    padding: 60px 20px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    z-index: 2;
+  }
+
+  .champ-banner {
+    text-align: center;
+    padding: 8px 0;
+  }
+  .champ-banner__label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    color: var(--magenta);
+    margin-bottom: 6px;
+  }
+  .champ-banner__title {
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: 44px;
+    line-height: 1;
+    background: linear-gradient(180deg, var(--yellow), var(--magenta));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-shadow: 0 0 40px var(--yellow-glow);
+    letter-spacing: 0.05em;
+  }
+  .champ-banner__sub {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--cyan);
+    margin-top: 4px;
+  }
+
+  .champ-hero {
+    display: flex;
+    justify-content: center;
+    padding: 8px 0;
+    position: relative;
+  }
+  .champ-hero__avatar {
+    width: 110px; height: 110px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--cyan), var(--magenta));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 64px;
+    box-shadow:
+      0 0 30px var(--cyan-glow),
+      0 0 60px var(--magenta-glow);
+  }
+  .champ-hero__crown {
+    position: absolute;
+    top: -18px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 40px;
+    filter: drop-shadow(0 0 12px var(--yellow-glow));
+  }
+
+  .champ-stats {
+    display: flex;
+    justify-content: space-around;
+    padding: 12px;
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid var(--cyan);
+    border-radius: 8px;
+    box-shadow: 0 0 20px rgba(0, 229, 255, 0.15);
+  }
+  .champ-stats .stat-block__value { font-size: 26px; }
+  .champ-stats .stat-block {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text-dim);
+    letter-spacing: 0.15em;
+  }
+
+  .final-board {
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid var(--line-dim);
+    border-radius: 6px;
+    padding: 10px;
+  }
+  .final-row {
+    display: grid;
+    grid-template-columns: 20px 1fr auto auto;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 8px;
+    font-family: var(--font-body);
+    font-size: 12px;
+    border-bottom: 1px solid var(--line-dim);
+  }
+  .final-row:last-child { border-bottom: none; }
+  .final-row--winner {
+    background: linear-gradient(90deg, rgba(255,230,0,0.1), transparent);
+    color: var(--yellow);
+  }
+  .final-row__rank {
+    font-family: var(--font-display);
+    font-weight: 900;
+    text-align: center;
+  }
+  .final-row--winner .final-row__rank {
+    color: var(--yellow);
+    text-shadow: 0 0 6px var(--yellow-glow);
+  }
+  .final-row__name b { font-family: var(--font-display); }
+  .final-row__trophies {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text-dim);
+  }
+  .final-row__fans {
+    font-family: var(--font-display);
+    font-weight: 700;
+    color: var(--cyan);
+    min-width: 32px;
+    text-align: right;
+  }
+  .final-row--winner .final-row__fans {
+    color: var(--yellow);
+    text-shadow: 0 0 6px var(--yellow-glow);
+  }
+
+  .cta-wrap {
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .cta-wrap .btn { width: 100%; padding: 15px; font-size: 13px; }
+</style>
+</head>
+<body>
+
+<div class="phone-frame">
+  <div class="cyber-grid"></div>
+  <div class="scanlines"></div>
+
+  <div class="scene">
+
+    <div class="champ-banner">
+      <div class="champ-banner__label">// TOURNAMENT COMPLETE</div>
+      <div class="champ-banner__title">CHAMPION</div>
+      <div class="champ-banner__sub">A U T O ・ D R A F T ・ V I C T O R Y</div>
+    </div>
+
+    <div class="champ-hero">
+      <div class="champ-hero__crown">👑</div>
+      <div class="champ-hero__avatar">👤</div>
+    </div>
+
+    <div class="champ-stats">
+      <div class="stat-block">
+        <div class="stat-block__value">22</div>
+        <div>FANS</div>
+      </div>
+      <div class="stat-block">
+        <div class="stat-block__value">5</div>
+        <div>TROPHIES</div>
+      </div>
+      <div class="stat-block">
+        <div class="stat-block__value">4:12</div>
+        <div>TIME</div>
+      </div>
+    </div>
+
+    <div class="final-board">
+      <div class="final-row final-row--winner">
+        <div class="final-row__rank">1</div>
+        <div class="final-row__name"><b>YOU</b> 👤</div>
+        <div class="final-row__trophies">🏆×5</div>
+        <div class="final-row__fans">22</div>
+      </div>
+      <div class="final-row">
+        <div class="final-row__rank">2</div>
+        <div class="final-row__name">🤖 C.H.A.M.P</div>
+        <div class="final-row__trophies">🏆×3</div>
+        <div class="final-row__fans">18</div>
+      </div>
+      <div class="final-row">
+        <div class="final-row__rank">3</div>
+        <div class="final-row__name">🤖 GOOD.BOT</div>
+        <div class="final-row__trophies">🏆×2</div>
+        <div class="final-row__fans">14</div>
+      </div>
+      <div class="final-row">
+        <div class="final-row__rank">4</div>
+        <div class="final-row__name">🤖 GHOST.BOT</div>
+        <div class="final-row__trophies">🏆×1</div>
+        <div class="final-row__fans">9</div>
+      </div>
+      <div class="final-row">
+        <div class="final-row__rank">5</div>
+        <div class="final-row__name">🤖 ALPHA</div>
+        <div class="final-row__trophies">🏆×0</div>
+        <div class="final-row__fans">5</div>
+      </div>
+    </div>
+
+    <div class="cta-wrap">
+      <button class="btn btn-primary">▶ PLAY AGAIN</button>
+      <button class="btn btn-ghost">MAIN MENU</button>
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>

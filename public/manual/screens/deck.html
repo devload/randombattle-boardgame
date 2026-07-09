@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<title>RANDOMBATTLE — Deck Phase</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./design-tokens.css">
+<link rel="stylesheet" href="./embed.css">
+<style>
+  body { display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 40px; }
+
+  .scene {
+    position: absolute;
+    inset: 0;
+    padding: 44px 12px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 2;
+  }
+
+  .hud-row {
+    background: transparent;
+    border: none;
+    padding: 4px 8px 8px;
+    border-bottom: 1px solid var(--line-dim);
+  }
+  .header__title {
+    font-family: var(--font-display);
+    font-size: 12px;
+    color: var(--cyan);
+    letter-spacing: 0.15em;
+  }
+  .header__round {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--magenta);
+  }
+
+  .deck-summary {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 10px;
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid var(--line-dim);
+    border-radius: 4px;
+  }
+  .deck-summary__label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text-dim);
+    letter-spacing: 0.15em;
+  }
+  .deck-summary__count {
+    font-family: var(--font-display);
+    font-weight: 900;
+    color: var(--cyan);
+    text-shadow: 0 0 6px var(--cyan-glow);
+  }
+  .deck-summary__strip {
+    display: flex;
+    gap: 2px;
+    margin-left: auto;
+  }
+  .deck-summary__chip {
+    padding: 2px 5px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    border: 1px solid var(--line);
+    border-radius: 2px;
+    color: var(--text-dim);
+  }
+  .deck-summary__chip[data-level="S"] { border-color: var(--lvl-s); color: var(--lvl-s); }
+  .deck-summary__chip[data-level="A"] { border-color: var(--lvl-a); color: var(--lvl-a); }
+  .deck-summary__chip[data-level="B"] { border-color: var(--lvl-b); color: var(--lvl-b); }
+  .deck-summary__chip[data-level="C"] { border-color: var(--lvl-c); color: var(--lvl-c); }
+
+  .instruction {
+    text-align: center;
+    padding: 8px 0 4px;
+  }
+  .instruction__label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--yellow);
+    letter-spacing: 0.2em;
+    margin-bottom: 4px;
+  }
+  .instruction__text {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--white);
+  }
+  .instruction__text b {
+    color: var(--cyan);
+    text-shadow: 0 0 6px var(--cyan-glow);
+  }
+
+  .draft-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    padding: 4px;
+    justify-items: center;
+  }
+  .draft-grid .card {
+    width: 100%;
+    height: 165px;
+    transition: transform 0.2s;
+  }
+  .draft-grid .card--picked {
+    outline: 2px solid var(--yellow);
+    outline-offset: 2px;
+    box-shadow: 0 0 20px var(--yellow-glow);
+    transform: translateY(-6px);
+  }
+  .picked-badge {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    background: var(--yellow);
+    color: var(--bg-void);
+    font-family: var(--font-display);
+    font-size: 9px;
+    font-weight: 900;
+    padding: 2px 5px;
+    border-radius: 2px;
+    letter-spacing: 0.1em;
+    z-index: 10;
+  }
+
+  .reroll-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 10px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
+    margin-top: auto;
+  }
+  .reroll-row .btn { padding: 8px 14px; font-size: 11px; }
+  .reroll-hint {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text-dim);
+  }
+
+  .cta-wrap { padding-top: 4px; }
+  .cta-wrap .btn { width: 100%; padding: 15px; font-size: 14px; }
+  .cta-wrap .btn.disabled { opacity: 0.4; pointer-events: none; }
+</style>
+</head>
+<body>
+
+<div class="phone-frame">
+  <div class="cyber-grid"></div>
+  <div class="scanlines"></div>
+
+  <div class="scene">
+
+    <div class="hud-row" style="display: flex; justify-content: space-between; align-items: center;">
+      <div class="header__title">◀ DECK PHASE</div>
+      <div class="header__round">R4 / 7</div>
+    </div>
+
+    <div class="deck-summary">
+      <div class="deck-summary__label">MY DECK</div>
+      <div class="deck-summary__count">14</div>
+      <div class="deck-summary__strip">
+        <span class="deck-summary__chip" data-level="S">S×6</span>
+        <span class="deck-summary__chip" data-level="A">A×5</span>
+        <span class="deck-summary__chip" data-level="B">B×3</span>
+      </div>
+    </div>
+
+    <div class="instruction">
+      <div class="instruction__label">// DRAFT</div>
+      <div class="instruction__text">PICK <b>2</b> FROM LEVEL A + <b>1</b> FROM B or C</div>
+    </div>
+
+    <div class="draft-grid">
+      <div class="card card--picked" data-level="A">
+        <div class="picked-badge">PICK 1</div>
+        <div class="card__level">A</div>
+        <div class="card__icon">🥷</div>
+        <div class="card__power">3</div>
+        <div class="card__name">GHOST</div>
+      </div>
+      <div class="card" data-level="A">
+        <div class="card__level">A</div>
+        <div class="card__icon">💊</div>
+        <div class="card__power">2</div>
+        <div class="card__name">STIM</div>
+      </div>
+      <div class="card card--picked" data-level="A">
+        <div class="picked-badge">PICK 2</div>
+        <div class="card__level">A</div>
+        <div class="card__icon">🗡️</div>
+        <div class="card__power">2</div>
+        <div class="card__name">BLADE</div>
+      </div>
+      <div class="card" data-level="B">
+        <div class="card__level">B</div>
+        <div class="card__icon">🤖</div>
+        <div class="card__power">4</div>
+        <div class="card__name">SYNTH</div>
+      </div>
+      <div class="card card--picked" data-level="B">
+        <div class="picked-badge">PICK 3</div>
+        <div class="card__level">B</div>
+        <div class="card__icon">⚡</div>
+        <div class="card__power">5</div>
+        <div class="card__name">OVERCLK</div>
+      </div>
+    </div>
+
+    <div class="reroll-row">
+      <div class="reroll-hint">↻ 5장 재드로우 (1회)</div>
+      <button class="btn btn-ghost">REROLL</button>
+    </div>
+
+    <div class="cta-wrap">
+      <button class="btn btn-primary">CONFIRM PICKS →</button>
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>

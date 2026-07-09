@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>RandomBattle · Player Guide</title>
+<meta name="theme-color" content="#05050c" />
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./style.css">
+</head>
+<body>
+
+<div class="container">
+
+  <header class="hero">
+    <div class="badge">// PLAYER GUIDE</div>
+    <h1 class="title">RANDOM<br>BATTLE</h1>
+    <div class="subtitle">A U T O · D R A F T · A R E N A</div>
+    <a class="play-cta" href="/">▶ PLAY NOW</a>
+  </header>
+
+  <nav class="toc">
+    <div class="toc-inner">
+      <a href="#quick">Quick</a>
+      <a href="#lobby">Lobby</a>
+      <a href="#tour">Tour Board</a>
+      <a href="#deck">Deck Pick</a>
+      <a href="#match">Match</a>
+      <a href="#result">Result</a>
+      <a href="#legend">Card Legend</a>
+      <a href="#credits">Credits</a>
+    </div>
+  </nav>
+
+  <!-- ============================================================ -->
+  <section id="quick">
+    <div class="eyebrow">// 30 SECOND GUIDE</div>
+    <h2>Quick Start</h2>
+    <div class="panel panel--cyan">
+      <ol style="margin:0; padding-left:20px; font-size:16px; line-height:1.9">
+        <li><strong>NEW TOURNAMENT</strong> 눌러 시작</li>
+        <li>매 라운드 카드 <strong>2~3장 픽</strong></li>
+        <li>매치는 <strong>자동 진행</strong> — 관전만 하면 됨</li>
+        <li>7라운드 끝나고 <strong>팬(Fans)</strong> 1등이면 챔피언</li>
+      </ol>
+    </div>
+    <p class="note" style="text-align:center; margin-top:16px">
+      아래는 화면별로 뭘 봐야 하는지 그림으로 정리한 가이드입니다.
+    </p>
+  </section>
+
+  <!-- ============================================================ -->
+  <section id="lobby">
+    <div class="eyebrow">// 01</div>
+    <h2>Lobby · 시작 화면</h2>
+    <div class="showcase">
+      <div class="phone">
+        <div class="phone-inner">
+          <iframe src="./screens/lobby.html" title="Lobby screen"></iframe>
+        </div>
+      </div>
+      <div class="showcase-notes">
+        <p><strong>NEW TOURNAMENT</strong> 버튼 하나 누르면 시작.</p>
+        <p class="note">우측 하단 <code>dev</code> 버튼은 개발용 씬 전환기 — 무시하세요.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <section id="tour">
+    <div class="eyebrow">// 02</div>
+    <h2>Tournament Board · 매 라운드 상황판</h2>
+    <div class="showcase">
+      <div class="phone">
+        <div class="phone-inner">
+          <iframe src="./screens/tourboard.html" title="Tournament board"></iframe>
+        </div>
+      </div>
+      <div class="showcase-notes">
+        <h3>여기서 확인하는 것</h3>
+        <ul>
+          <li><strong>ROUND 04 / 07</strong> — 지금 몇 라운드인지</li>
+          <li><strong>LEADERBOARD</strong> — 팬 순위. <em>YOU</em> 가 사이언으로 강조</li>
+          <li><strong>NEXT MATCH</strong> — 이번 라운드 상대 봇 + 성격 힌트</li>
+          <li><strong>DRAFT PILES OPEN</strong> — 뽑을 수 있는 카드 파일 (A / B / C)</li>
+        </ul>
+        <p><strong>ENTER THE ARENA</strong> 누르면 덱 페이즈로.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <section id="deck">
+    <div class="eyebrow">// 03</div>
+    <h2>Deck Phase · 카드 픽</h2>
+    <div class="showcase">
+      <div class="phone">
+        <div class="phone-inner">
+          <iframe src="./screens/deck.html" title="Deck phase"></iframe>
+        </div>
+      </div>
+      <div class="showcase-notes">
+        <h3>어떻게 픽하나</h3>
+        <ul>
+          <li>5장이 뜬 카드 중 <strong>2장 탭</strong> → 옐로 외곽선 = 선택됨</li>
+          <li>다음 파일(B)에서 <strong>2장 더</strong>. R5+ 는 <em>B 두 장 vs C 한 장</em></li>
+          <li>마음에 안 들면 <strong>REROLL</strong> (파일마다 1회)</li>
+          <li>다 뽑으면 <strong>CONFIRM PICKS</strong> → 매치</li>
+        </ul>
+        <div class="panel panel--warning" style="margin-top:12px">
+          <p style="margin:0"><strong>파워 상한</strong> — A ≤ 3 · B ≤ 5 · C ≤ 10</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <section id="match">
+    <div class="eyebrow">// 04</div>
+    <h2>Match Phase · 자동 대전</h2>
+    <div class="showcase">
+      <div class="phone">
+        <div class="phone-inner">
+          <iframe src="./screens/match.html" title="Match phase"></iframe>
+        </div>
+      </div>
+      <div class="showcase-notes">
+        <h3>화면 읽는 법</h3>
+        <ul>
+          <li><strong>위 = 상대</strong>, <strong>아래 = 나</strong></li>
+          <li>중앙 <strong>🚩 카드</strong> — 지금 깃발을 가진 카드</li>
+          <li>양쪽 6칸 = <strong>벤치</strong>. 7종째 채우는 사람이 패배</li>
+          <li>파워 <strong>MY POWER ≥ FLAG</strong> 되면 깃발 뺏김</li>
+          <li>매치는 자동. <code>TAP</code> 모드로 한 이벤트씩 넘길 수도 있음</li>
+        </ul>
+        <h3>승리 조건 (둘 중 하나)</h3>
+        <ul>
+          <li>상대가 <strong>덱을 다 소진</strong>하고도 못 뺏음</li>
+          <li>상대 벤치가 <strong>7종 오버플로</strong></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <section id="result">
+    <div class="eyebrow">// 05</div>
+    <h2>Result · 최종 결과</h2>
+    <div class="showcase">
+      <div class="phone">
+        <div class="phone-inner">
+          <iframe src="./screens/result.html" title="Result"></iframe>
+        </div>
+      </div>
+      <div class="showcase-notes">
+        <p>7라운드 후 <strong>팬(Fans) 1등</strong> = 챔피언.</p>
+        <p>팬은 <em>트로피</em> + <em>flag-loss 카드가 벌어준 팬</em>의 합산.</p>
+        <p><strong>PLAY AGAIN</strong>으로 다시 도전.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <section id="legend">
+    <div class="eyebrow">// 06</div>
+    <h2>Card Legend · 카드 읽기</h2>
+
+    <h3>레벨 = 색</h3>
+    <div class="card-row" style="justify-content:center; margin: 16px 0 24px">
+      <div class="card-mini" data-level="S">
+        <div class="lv">S</div><div class="icon">👤</div><div class="power">1</div><div class="name">STARTER</div>
+      </div>
+      <div class="card-mini" data-level="A">
+        <div class="lv">A</div><div class="icon">🥷</div><div class="power">3</div><div class="name">COMMON</div>
+      </div>
+      <div class="card-mini" data-level="B">
+        <div class="lv">B</div><div class="icon">🤖</div><div class="power">5</div><div class="name">RARE</div>
+      </div>
+      <div class="card-mini" data-level="C">
+        <div class="lv">C</div><div class="icon">👹</div><div class="power">8</div><div class="name">ELITE</div>
+      </div>
+    </div>
+
+    <h3>키워드 = 언제 발동하는가</h3>
+    <table>
+      <thead>
+        <tr><th>키워드</th><th>뜻</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><span class="keyword keyword--imm">IMMEDIATE</span></td><td>리빌 즉시. 계속 유지</td></tr>
+        <tr><td><span class="keyword keyword--attack">DURING ATTACK</span></td><td>어택 중일 때만</td></tr>
+        <tr><td><span class="keyword keyword--bench">FROM BENCH</span></td><td>벤치에 있을 때</td></tr>
+        <tr><td><span class="keyword keyword--flag">IN FLAG</span></td><td>깃발 상태일 때</td></tr>
+        <tr><td><span class="keyword keyword--loss">FLAG LOSS</span></td><td>깃발 뺏길 때 (1회) · 팬 획득</td></tr>
+      </tbody>
+    </table>
+
+    <h3>봇 5명</h3>
+    <table>
+      <thead><tr><th>티어</th><th>봇</th><th>스타일</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>🤖 <strong>ALPHA</strong></td><td>튜토리얼</td></tr>
+        <tr><td>2</td><td>💼 <strong>CORP.BOT</strong></td><td>벤치 시너지</td></tr>
+        <tr><td>3</td><td>🥷 <strong>GHOST.BOT</strong></td><td>어택 폭발</td></tr>
+        <tr><td>4</td><td>❄️ <strong>ICE.BOT</strong></td><td>방어형</td></tr>
+        <tr><td>5</td><td>👑 <strong>C.H.A.M.P</strong></td><td>보스</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ============================================================ -->
+  <section id="credits">
+    <div class="eyebrow">// 07</div>
+    <h2>Credits</h2>
+    <p>
+      <strong>RandomBattle</strong>은 보드게임
+      <a href="https://boardgamegeek.com/boardgame/359970/challengers" target="_blank" rel="noopener">Challengers!</a>
+      의 1인 모바일 팬 리메이크입니다.
+    </p>
+    <div class="panel panel--warning">
+      <p style="margin:0">
+        <em>Challengers!</em> 저작권 —
+        <strong>Johannes Krenner &amp; Markus Slawitscheck /
+        1 More Time Games / Z-Man Games</strong>
+      </p>
+      <p class="note" style="margin-bottom:0">
+        학습 목적 팬 리메이크 · 카드 이름·플레이버·아트 모두 재작성 · 비상업 목적.
+      </p>
+    </div>
+  </section>
+
+</div>
+
+<footer class="credits">
+  ©&nbsp;2026 · <a href="/">RandomBattle</a> · fan remake · not for commercial use<br>
+  <span style="opacity:0.6">Built with Claude Code</span>
+</footer>
+
+</body>
+</html>

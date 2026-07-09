@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="512" y2="512">
+      <stop offset="0" stop-color="#111124"/>
+      <stop offset="1" stop-color="#05050c"/>
+    </linearGradient>
+    <linearGradient id="rb" x1="0" y1="0" x2="512" y2="512">
+      <stop offset="0" stop-color="#00e5ff"/>
+      <stop offset="1" stop-color="#ff2bd6"/>
+    </linearGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="8"/>
+    </filter>
+  </defs>
+  <rect x="0" y="0" width="512" height="512" fill="url(#bg)"/>
+  <!-- cyber grid backdrop -->
+  <g stroke="#00e5ff" stroke-opacity="0.08" stroke-width="1">
+    <path d="M0 128 L512 128 M0 256 L512 256 M0 384 L512 384"/>
+    <path d="M128 0 L128 512 M256 0 L256 512 M384 0 L384 512"/>
+  </g>
+  <!-- neon RB monogram -->
+  <g filter="url(#glow)" opacity="0.7">
+    <path d="M116 132 L116 380 L172 380 L172 288 L232 380 L296 380 L232 280 Q296 264 296 200 Q296 132 232 132 Z M172 180 L216 180 Q240 180 240 208 Q240 236 216 236 L172 236 Z" fill="url(#rb)"/>
+    <path d="M320 132 L320 380 L400 380 Q456 380 456 316 Q456 272 420 260 Q448 244 448 200 Q448 132 396 132 Z M376 180 L396 180 Q404 180 404 200 Q404 220 396 220 L376 220 Z M376 268 L400 268 Q416 268 416 300 Q416 332 400 332 L376 332 Z" fill="url(#rb)"/>
+  </g>
+  <path d="M116 132 L116 380 L172 380 L172 288 L232 380 L296 380 L232 280 Q296 264 296 200 Q296 132 232 132 Z M172 180 L216 180 Q240 180 240 208 Q240 236 216 236 L172 236 Z" fill="url(#rb)"/>
+  <path d="M320 132 L320 380 L400 380 Q456 380 456 316 Q456 272 420 260 Q448 244 448 200 Q448 132 396 132 Z M376 180 L396 180 Q404 180 404 200 Q404 220 396 220 L376 220 Z M376 268 L400 268 Q416 268 416 300 Q416 332 400 332 L376 332 Z" fill="url(#rb)"/>
+  <!-- corner brackets -->
+  <g stroke="#00e5ff" stroke-width="4" fill="none">
+    <path d="M40 76 L40 40 L76 40"/>
+    <path d="M472 40 L472 76 M472 40 L436 40"/>
+    <path d="M40 436 L40 472 L76 472"/>
+    <path d="M472 472 L472 436 M472 472 L436 472"/>
+  </g>
+</svg>

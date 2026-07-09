@@ -1,0 +1,22 @@
+/* When rendered inside an iframe on the guide, strip the fake phone frame
+   chrome (device border, notch, page padding) so the scene fills the
+   iframe viewport. The iframe itself styles the phone frame. */
+
+body {
+  display: block !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  min-height: 0 !important;
+  background: var(--bg-deep) !important;
+}
+
+.phone-frame {
+  width: 100vw !important;
+  height: 100vh !important;
+  border-radius: 0 !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  overflow: hidden;
+}
+
+.phone-frame::before { display: none !important; }

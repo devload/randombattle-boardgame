@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<title>RANDOMBATTLE — Match Phase</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./design-tokens.css">
+<link rel="stylesheet" href="./embed.css">
+<style>
+  body { display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 40px; }
+
+  .scene {
+    position: absolute;
+    inset: 0;
+    padding: 44px 12px 16px;
+    display: flex;
+    flex-direction: column;
+    z-index: 2;
+    gap: 10px;
+  }
+
+  .player-strip {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 12px;
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid var(--line-dim);
+    border-radius: 6px;
+  }
+  .player-strip__avatar {
+    width: 34px; height: 34px;
+    border-radius: 4px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+    background: var(--bg-panel-2);
+    border: 1px solid var(--line);
+  }
+  .player-strip--foe .player-strip__avatar { border-color: var(--red); box-shadow: 0 0 8px var(--red-glow); }
+  .player-strip--me .player-strip__avatar { border-color: var(--cyan); box-shadow: 0 0 8px var(--cyan-glow); }
+
+  .player-strip__name {
+    font-family: var(--font-display);
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    color: var(--white);
+  }
+  .player-strip__deck {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text-dim);
+  }
+  .player-strip__deck b {
+    color: var(--cyan);
+    font-family: var(--font-display);
+    font-size: 13px;
+  }
+
+  .attack-indicator {
+    margin-left: auto;
+    font-family: var(--font-mono);
+    font-size: 9px;
+    padding: 2px 6px;
+    border-radius: 2px;
+    letter-spacing: 0.15em;
+  }
+  .attack-indicator--attacking {
+    background: var(--red);
+    color: var(--white);
+    animation: pulse 1s infinite;
+  }
+  .attack-indicator--defending {
+    background: transparent;
+    color: var(--yellow);
+    border: 1px solid var(--yellow);
+  }
+
+  .bench-row {
+    padding: 0 4px;
+  }
+
+  .arena {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    padding: 8px 0;
+    background:
+      radial-gradient(ellipse at center,
+        rgba(0, 229, 255, 0.08) 0%,
+        transparent 60%);
+  }
+
+  .power-vs {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    padding: 0 20px 8px;
+    align-items: center;
+  }
+  .power-block {
+    text-align: center;
+  }
+  .power-block__label {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    color: var(--text-dim);
+    margin-bottom: 2px;
+  }
+  .power-block__value {
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: 32px;
+    line-height: 1;
+  }
+  .power-block--me .power-block__value {
+    color: var(--cyan);
+    text-shadow: 0 0 12px var(--cyan-glow);
+  }
+  .power-block--foe .power-block__value {
+    color: var(--red);
+    text-shadow: 0 0 12px var(--red-glow);
+  }
+  .power-block__delta {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--green);
+    margin-top: 2px;
+  }
+  .power-vs__sep {
+    font-family: var(--font-display);
+    font-size: 24px;
+    color: var(--magenta);
+    text-shadow: var(--glow-magenta);
+  }
+
+  .stage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    position: relative;
+  }
+  .stage .card {
+    width: 130px;
+    height: 190px;
+  }
+  .stage .card--flag {
+    box-shadow: 0 0 30px var(--yellow-glow), 0 0 60px rgba(255,230,0,0.3);
+    border-color: var(--yellow);
+    transform: rotate(-2deg);
+  }
+
+  .flag-marker {
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 22px;
+    filter: drop-shadow(0 0 8px var(--yellow-glow));
+    z-index: 5;
+  }
+
+  .attacker-cards {
+    display: flex;
+    gap: 4px;
+    margin-top: 12px;
+    align-items: center;
+  }
+  .attacker-cards .card {
+    width: 72px;
+    height: 104px;
+  }
+  .attacker-cards .card--new {
+    animation: slideIn 0.5s ease-out;
+    box-shadow: 0 0 20px var(--cyan-glow);
+  }
+
+  @keyframes slideIn {
+    from { transform: translateX(30px) scale(0.8); opacity: 0; }
+    to { transform: translateX(0) scale(1); opacity: 1; }
+  }
+
+  .event-log {
+    padding: 8px 12px;
+    background: rgba(0, 0, 0, 0.6);
+    border: 1px solid var(--line-dim);
+    border-radius: 4px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--cyan);
+    letter-spacing: 0.1em;
+    text-align: center;
+  }
+  .event-log__prefix { color: var(--magenta); }
+
+  .continue-cta {
+    display: flex;
+    justify-content: center;
+    padding: 4px 0;
+  }
+  .continue-cta .btn {
+    padding: 10px 32px;
+    font-size: 12px;
+  }
+</style>
+</head>
+<body>
+
+<div class="phone-frame">
+  <div class="cyber-grid"></div>
+  <div class="scanlines"></div>
+
+  <div class="scene">
+
+    <!-- OPPONENT (top) -->
+    <div class="player-strip player-strip--foe">
+      <div class="player-strip__avatar">🥷</div>
+      <div>
+        <div class="player-strip__name">GHOST.BOT</div>
+        <div class="player-strip__deck">DECK <b>6</b> / 12</div>
+      </div>
+      <div class="attack-indicator attack-indicator--defending">DEFEND</div>
+    </div>
+
+    <div class="bench-row">
+      <div class="bench">
+        <div class="bench__slot bench__slot--filled" style="--card-color: var(--lvl-a); --card-glow: var(--green-glow);">🥷</div>
+        <div class="bench__slot bench__slot--filled" style="--card-color: var(--lvl-s); --card-glow: rgba(136,136,168,0.4);">👤<span class="bench__slot__count">×2</span></div>
+        <div class="bench__slot">·</div>
+        <div class="bench__slot">·</div>
+        <div class="bench__slot">·</div>
+        <div class="bench__slot">·</div>
+      </div>
+    </div>
+
+    <!-- ARENA -->
+    <div class="arena">
+      <div class="power-vs">
+        <div class="power-block power-block--me">
+          <div class="power-block__label">// MY POWER</div>
+          <div class="power-block__value">7</div>
+          <div class="power-block__delta">+2 (overclock)</div>
+        </div>
+        <div class="power-vs__sep">▶</div>
+        <div class="power-block power-block--foe">
+          <div class="power-block__label">// FLAG</div>
+          <div class="power-block__value">9</div>
+          <div class="power-block__delta">&nbsp;</div>
+        </div>
+      </div>
+
+      <div class="stage">
+        <div class="flag-marker">🚩</div>
+        <div class="card card--flag" data-level="B">
+          <div class="card__level">B</div>
+          <div class="card__icon">🤖</div>
+          <div class="card__power">9</div>
+          <div class="card__name">SYNTH GUARD</div>
+          <div style="text-align:center;">
+            <span class="card__keyword">FROM BENCH</span>
+          </div>
+        </div>
+
+        <div class="attacker-cards">
+          <div class="card card--sm" data-level="A">
+            <div class="card__level">A</div>
+            <div class="card__icon">🥷</div>
+            <div class="card__power">3</div>
+            <div class="card__name">GHOST</div>
+          </div>
+          <div class="card card--sm card--new" data-level="B">
+            <div class="card__level">B</div>
+            <div class="card__icon">⚡</div>
+            <div class="card__power">5</div>
+            <div class="card__name">OVERCLK</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="event-log">
+      <span class="event-log__prefix">&gt;&gt;</span> REVEALED <b>OVERCLOCK</b> +5 · TOTAL 7 · NEED 9
+    </div>
+
+    <div class="continue-cta">
+      <button class="btn btn-ghost">TAP TO CONTINUE ▷</button>
+    </div>
+
+    <div class="bench-row">
+      <div class="bench">
+        <div class="bench__slot bench__slot--filled" style="--card-color: var(--lvl-c); --card-glow: var(--magenta-glow);">👹</div>
+        <div class="bench__slot">·</div>
+        <div class="bench__slot">·</div>
+        <div class="bench__slot">·</div>
+        <div class="bench__slot">·</div>
+        <div class="bench__slot">·</div>
+      </div>
+    </div>
+
+    <!-- ME (bottom) -->
+    <div class="player-strip player-strip--me">
+      <div class="player-strip__avatar">👤</div>
+      <div>
+        <div class="player-strip__name">YOU</div>
+        <div class="player-strip__deck">DECK <b>4</b> / 14</div>
+      </div>
+      <div class="attack-indicator attack-indicator--attacking">◀ ATTACK</div>
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>

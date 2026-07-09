@@ -1,0 +1,112 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;600;700&family=Share+Tech+Mono&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: dark;
+  }
+
+  html, body, #root {
+    /* Fallbacks in order:
+       1. 100vh (older browsers)
+       2. -webkit-fill-available (older Safari)
+       3. 100svh (smallest viewport size) */
+    height: 100vh;
+    height: -webkit-fill-available;
+    height: 100svh;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+  }
+
+  body {
+    font-family: 'Rajdhani', system-ui, sans-serif;
+    background:
+      radial-gradient(ellipse at 20% 10%, rgba(0, 229, 255, 0.08), transparent 40%),
+      radial-gradient(ellipse at 80% 90%, rgba(255, 43, 214, 0.10), transparent 45%),
+      #05050c;
+    color: #f0f0f8;
+    -webkit-font-smoothing: antialiased;
+    -webkit-tap-highlight-color: transparent;
+    overscroll-behavior: none;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+}
+
+@layer utilities {
+  .pt-safe { padding-top: env(safe-area-inset-top); }
+  .pb-safe { padding-bottom: env(safe-area-inset-bottom); }
+
+  .text-holo {
+    background: linear-gradient(90deg, #00e5ff 0%, #ff2bd6 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .cyber-grid {
+    background-image:
+      linear-gradient(rgba(0, 229, 255, 0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 229, 255, 0.06) 1px, transparent 1px);
+    background-size: 32px 32px;
+  }
+
+  .scanlines {
+    background: repeating-linear-gradient(
+      to bottom,
+      transparent 0,
+      transparent 2px,
+      rgba(255, 255, 255, 0.02) 3px,
+      transparent 4px
+    );
+    mix-blend-mode: overlay;
+  }
+
+  .clip-cyber {
+    clip-path: polygon(
+      12px 0, 100% 0, 100% calc(100% - 12px),
+      calc(100% - 12px) 100%, 0 100%, 0 12px
+    );
+  }
+
+  /**
+   * Scene layout helper: absolute-positioned scene that allows vertical
+   * overflow so tall content on small phones (iPhone SE, etc.) can scroll.
+   * Background layers (cyber-grid, scanlines) should be siblings marked
+   * `.scene-bg` so they stay fixed while content scrolls.
+   */
+  .scene-scroll {
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    overflow-y: auto;
+  }
+
+  .scene-bg {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .perspective {
+    perspective: 800px;
+  }
+
+  .shake-anim {
+    animation: rb-shake 0.4s cubic-bezier(.36,.07,.19,.97) both;
+  }
+}
+
+@keyframes rb-shake {
+  10%, 90% { transform: translate(-1px, 0); }
+  20%, 80% { transform: translate(2px, -1px); }
+  30%, 50%, 70% { transform: translate(-4px, 2px); }
+  40%, 60% { transform: translate(4px, -2px); }
+}
