@@ -1,0 +1,1068 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>05b · BATTLE · ROLL — Battle Phase Mockup</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0a0e18;
+    --panel:#0f1830;
+    --panel-2:#152040;
+    --cyan:#22e9ff;
+    --magenta:#ff2bd6;
+    --red:#ff3355;
+    --gold:#ffd84d;
+    --green:#22ff88;
+    --orange:#ff8800;
+    --text:#e8ecff;
+    --dim:#9aa3c7;
+    --hacker:#22e9ff;
+    --warrior:#ff8800;
+    --ghost:#a26bff;
+    --boost:#ffd84d;
+    --instant:#ff2bd6;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    min-height:100vh;
+    background:
+      radial-gradient(1000px 700px at 50% -10%, #1a0f36 0%, transparent 55%),
+      radial-gradient(800px 600px at 50% 110%, #2a0424 0%, transparent 55%),
+      #05070f;
+    font-family:'Inter',system-ui,sans-serif;
+    color:var(--text);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    padding:28px 16px 60px;
+    gap:20px;
+  }
+
+  /* ---------- TITLE CHIP ---------- */
+  .title-chip{
+    display:flex;align-items:center;gap:10px;
+    padding:10px 18px;
+    background:linear-gradient(90deg,var(--magenta),var(--cyan));
+    color:#08000f;
+    font-family:'Space Mono',monospace;
+    font-size:11px;font-weight:700;
+    letter-spacing:2px;
+    border-radius:2px;
+    box-shadow:0 0 24px rgba(255,43,214,.4),0 0 40px rgba(34,233,255,.2);
+  }
+  .title-chip .dot{width:6px;height:6px;background:#08000f;border-radius:50%;}
+
+  /* ---------- PHONE FRAME ---------- */
+  .phone-wrap{
+    position:relative;
+    width:375px;height:812px;
+    filter:drop-shadow(0 30px 80px rgba(255,43,214,.25)) drop-shadow(0 20px 60px rgba(0,0,0,.7));
+  }
+  .phone{
+    position:absolute;inset:0;
+    background:var(--bg);
+    border:6px solid #050710;
+    border-radius:44px;
+    overflow:hidden;
+  }
+  .notch{
+    position:absolute;top:0;left:50%;transform:translateX(-50%);
+    width:150px;height:26px;
+    background:#000;
+    border-radius:0 0 18px 18px;
+    z-index:100;
+  }
+
+  /* neon curve */
+  .phone-glow{
+    position:absolute;inset:0;
+    border-radius:38px;
+    box-shadow:
+      inset 0 0 80px rgba(255,43,214,.08),
+      inset 0 0 200px rgba(34,233,255,.05);
+    pointer-events:none;z-index:80;
+  }
+  /* scanlines */
+  .scanlines{
+    position:absolute;inset:0;
+    background:repeating-linear-gradient(
+      to bottom,
+      rgba(255,255,255,0) 0,
+      rgba(255,255,255,0) 3px,
+      rgba(255,255,255,.02) 3px,
+      rgba(255,255,255,.02) 4px
+    );
+    pointer-events:none;z-index:70;
+    mix-blend-mode:overlay;
+  }
+
+  /* spotlight overhead */
+  .spotlight{
+    position:absolute;inset:0;
+    background:
+      radial-gradient(400px 300px at 50% 0%, rgba(255,43,214,.18) 0%, transparent 60%),
+      radial-gradient(500px 400px at 50% 100%, rgba(34,233,255,.14) 0%, transparent 65%);
+    pointer-events:none;z-index:2;
+  }
+
+  /* ---------- SCREEN ---------- */
+  .screen{
+    position:absolute;inset:0;
+    padding:38px 12px 14px;
+    display:flex;flex-direction:column;
+    gap:8px;
+    z-index:5;
+  }
+
+  /* ---------- HEADER STRIP ---------- */
+  .header{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:8px 10px;
+    background:linear-gradient(90deg, rgba(15,24,48,.9), rgba(21,32,64,.7));
+    border:1px solid rgba(255,43,214,.35);
+    border-radius:8px;
+    box-shadow:0 0 12px rgba(255,43,214,.15);
+  }
+  .hdr-title{
+    font-family:'Space Mono',monospace;
+    font-size:9px;font-weight:700;
+    letter-spacing:1.5px;
+    color:var(--magenta);
+    text-shadow:0 0 8px rgba(255,43,214,.6);
+    padding:3px 6px;
+    background:rgba(255,43,214,.1);
+    border-radius:3px;
+  }
+  .hdr-round{
+    font-family:'Bebas Neue',sans-serif;
+    font-size:20px;
+    color:var(--cyan);
+    letter-spacing:2px;
+    text-shadow:0 0 8px rgba(34,233,255,.6);
+  }
+  .hdr-opp{
+    display:flex;align-items:center;gap:6px;
+    font-family:'Space Mono',monospace;
+    font-size:9px;font-weight:700;
+    color:var(--red);
+  }
+  .hdr-opp .icon-atk{
+    display:inline-flex;align-items:center;justify-content:center;
+    width:14px;height:14px;
+    background:rgba(255,51,85,.2);
+    border:1px solid var(--red);
+    border-radius:50%;
+    font-size:8px;
+    color:var(--red);
+  }
+  .hdr-opp .tag{
+    font-size:7px;
+    padding:2px 4px;
+    background:rgba(255,51,85,.15);
+    border:1px solid rgba(255,51,85,.4);
+    border-radius:2px;
+    letter-spacing:1px;
+  }
+
+  /* ---------- OPPONENT STRIP ---------- */
+  .opp-strip{
+    display:flex;align-items:center;gap:8px;
+    padding:6px 8px;
+    background:linear-gradient(90deg, rgba(255,51,85,.08), rgba(15,24,48,.6));
+    border:1px solid rgba(255,51,85,.3);
+    border-radius:6px;
+  }
+  .opp-avatar{
+    width:32px;height:38px;
+    background:linear-gradient(180deg, #3a0812, #1a0308);
+    border:1px solid var(--red);
+    border-radius:4px;
+    display:flex;align-items:center;justify-content:center;
+    font-size:18px;
+    box-shadow:inset 0 0 8px rgba(255,51,85,.4);
+  }
+  .opp-info{flex:1;display:flex;flex-direction:column;gap:2px;}
+  .opp-label{
+    font-family:'Space Mono',monospace;
+    font-size:8px;color:var(--dim);letter-spacing:1px;
+  }
+  .opp-deck{
+    font-family:'Bebas Neue',sans-serif;
+    font-size:14px;color:var(--red);
+    letter-spacing:1.5px;
+    text-shadow:0 0 6px rgba(255,51,85,.5);
+  }
+  .opp-bench{
+    display:flex;gap:3px;
+  }
+  .opp-bench .b-slot{
+    width:14px;height:18px;
+    border:1px dashed rgba(255,51,85,.35);
+    border-radius:2px;
+    background:rgba(255,51,85,.05);
+  }
+  .opp-bench .b-slot.filled{
+    background:rgba(255,51,85,.25);
+    border-style:solid;
+    box-shadow:0 0 4px rgba(255,51,85,.4);
+  }
+
+  /* ---------- LINEUP QUEUE ---------- */
+  .lineup{
+    background:linear-gradient(180deg, rgba(15,24,48,.85), rgba(10,14,24,.6));
+    border:1px solid rgba(34,233,255,.28);
+    border-radius:8px;
+    padding:8px 8px 6px;
+    box-shadow:0 0 16px rgba(34,233,255,.08);
+  }
+  .lineup-hdr{
+    display:flex;align-items:center;justify-content:space-between;
+    margin-bottom:6px;
+  }
+  .lineup-hdr .label{
+    font-family:'Space Mono',monospace;
+    font-size:8px;font-weight:700;
+    color:var(--cyan);
+    letter-spacing:1.5px;
+  }
+  .lineup-hdr .progress{
+    font-family:'Space Mono',monospace;
+    font-size:8px;
+    color:var(--dim);
+    letter-spacing:1px;
+  }
+  .lineup-hdr .progress b{color:var(--cyan);}
+  .queue{
+    display:flex;gap:5px;
+    align-items:stretch;
+  }
+  .q-card{
+    flex:1;
+    height:64px;
+    background:linear-gradient(180deg, var(--panel-2), var(--panel));
+    border:1px solid rgba(154,163,199,.2);
+    border-radius:5px;
+    padding:4px 3px 3px;
+    display:flex;flex-direction:column;
+    justify-content:space-between;align-items:center;
+    position:relative;
+    transition:all .3s;
+  }
+  .q-card .num{
+    position:absolute;top:2px;left:3px;
+    font-family:'Space Mono',monospace;
+    font-size:7px;color:var(--dim);
+  }
+  .q-card .icon{
+    font-size:16px;
+    margin-top:8px;
+    filter:grayscale(.4) brightness(.75);
+  }
+  .q-card .name{
+    font-family:'Space Mono',monospace;
+    font-size:6.5px;font-weight:700;
+    letter-spacing:.4px;
+    color:var(--dim);
+    text-align:center;
+    line-height:1.1;
+  }
+  .q-card .qtag{
+    font-family:'Space Mono',monospace;
+    font-size:5.5px;font-weight:700;
+    letter-spacing:.5px;
+    padding:1px 3px;
+    background:rgba(154,163,199,.15);
+    color:var(--dim);
+    border-radius:2px;
+  }
+  /* revealed / done */
+  .q-card.done{
+    opacity:.45;
+    border-color:rgba(34,233,255,.35);
+  }
+  .q-card.done .icon{filter:grayscale(0) brightness(.9);}
+  .q-card.done::after{
+    content:"✓";
+    position:absolute;top:1px;right:3px;
+    font-size:8px;
+    color:var(--cyan);
+    text-shadow:0 0 4px var(--cyan);
+  }
+  /* current */
+  .q-card.current{
+    background:linear-gradient(180deg, rgba(34,233,255,.28), rgba(21,32,64,.9));
+    border:2px solid var(--cyan);
+    box-shadow:
+      0 0 16px rgba(34,233,255,.7),
+      0 0 32px rgba(34,233,255,.35),
+      inset 0 0 12px rgba(34,233,255,.25);
+    transform:translateY(-4px) scale(1.05);
+    animation:currentPulse 1.4s ease-in-out infinite;
+  }
+  .q-card.current .icon{filter:none;font-size:20px;}
+  .q-card.current .name{color:#fff;}
+  .q-card.current .qtag{background:var(--cyan);color:#000;box-shadow:0 0 8px rgba(34,233,255,.6);}
+  .q-card.current .num{color:var(--cyan);text-shadow:0 0 4px var(--cyan);}
+  @keyframes currentPulse{
+    0%,100%{box-shadow:0 0 16px rgba(34,233,255,.7),0 0 32px rgba(34,233,255,.35),inset 0 0 12px rgba(34,233,255,.25);}
+    50%{box-shadow:0 0 24px rgba(34,233,255,.9),0 0 48px rgba(34,233,255,.55),inset 0 0 16px rgba(34,233,255,.35);}
+  }
+  /* next-up */
+  .q-card.next{
+    background:linear-gradient(180deg, rgba(255,43,214,.16), rgba(21,32,64,.7));
+    border:1.5px solid rgba(255,43,214,.7);
+    box-shadow:0 0 8px rgba(255,43,214,.35);
+  }
+  .q-card.next .icon{filter:none;}
+  .q-card.next .name{color:var(--text);}
+  .q-card.next .qtag{background:rgba(255,43,214,.4);color:#fff;}
+  .q-card.next::before{
+    content:"NEXT";
+    position:absolute;top:-8px;left:50%;transform:translateX(-50%);
+    font-family:'Space Mono',monospace;
+    font-size:6px;font-weight:700;
+    color:var(--magenta);
+    background:var(--bg);
+    padding:1px 4px;
+    border-radius:2px;
+    border:1px solid var(--magenta);
+    letter-spacing:1px;
+    text-shadow:0 0 4px var(--magenta);
+  }
+  /* upcoming */
+  .q-card.up{opacity:.55;}
+  .q-card.up.far{opacity:.35;}
+
+  /* tag colors on cards */
+  .qtag.hacker{background:rgba(34,233,255,.25)!important;color:var(--hacker)!important;}
+  .qtag.boost{background:rgba(255,216,77,.25)!important;color:var(--boost)!important;}
+  .qtag.instant{background:rgba(255,43,214,.25)!important;color:var(--instant)!important;}
+  .q-card.current .qtag.hacker{background:var(--hacker)!important;color:#000!important;}
+
+  /* dual tag layout */
+  .qtags{display:flex;gap:2px;flex-wrap:wrap;justify-content:center;}
+
+  /* star badge on synth */
+  .star-badge{
+    position:absolute;top:2px;right:3px;
+    font-size:9px;
+    color:var(--gold);
+    text-shadow:0 0 4px var(--gold);
+  }
+
+  /* ---------- HUD ROW ---------- */
+  .hud{
+    display:grid;
+    grid-template-columns:1fr 1.3fr 1fr;
+    gap:6px;
+    align-items:center;
+  }
+  .hud-cell{
+    background:linear-gradient(180deg, rgba(15,24,48,.85), rgba(10,14,24,.6));
+    border:1px solid rgba(154,163,199,.15);
+    border-radius:8px;
+    padding:6px 8px;
+    display:flex;flex-direction:column;align-items:center;gap:1px;
+  }
+  .hud-label{
+    font-family:'Space Mono',monospace;
+    font-size:7px;
+    color:var(--dim);
+    letter-spacing:1.5px;
+  }
+  .hud-time{
+    font-family:'Bebas Neue',sans-serif;
+    font-size:30px;line-height:1;
+    color:var(--cyan);
+    letter-spacing:2px;
+    text-shadow:0 0 12px rgba(34,233,255,.7);
+  }
+  .hud-cell.combo{
+    background:linear-gradient(180deg, rgba(255,43,214,.2), rgba(21,32,64,.85));
+    border:1.5px solid var(--magenta);
+    box-shadow:0 0 16px rgba(255,43,214,.4);
+  }
+  .combo-txt{
+    font-family:'Bebas Neue',sans-serif;
+    font-size:34px;line-height:1;
+    color:var(--magenta);
+    letter-spacing:2px;
+    text-shadow:
+      0 0 8px var(--magenta),
+      0 0 16px rgba(255,43,214,.7),
+      2px 2px 0 #08000f;
+    animation:judder .35s ease-in-out infinite;
+    display:flex;align-items:baseline;gap:3px;
+  }
+  .combo-txt .star{
+    color:var(--gold);
+    font-size:22px;
+    text-shadow:0 0 8px var(--gold);
+  }
+  @keyframes judder{
+    0%{transform:translate(0,0) rotate(0);}
+    25%{transform:translate(-1px,1px) rotate(-.6deg);}
+    50%{transform:translate(1px,-1px) rotate(.4deg);}
+    75%{transform:translate(-1px,-1px) rotate(-.3deg);}
+    100%{transform:translate(0,0) rotate(0);}
+  }
+  .combo-sub{
+    font-family:'Space Mono',monospace;
+    font-size:7px;
+    color:var(--gold);
+    letter-spacing:1px;
+    text-shadow:0 0 4px var(--gold);
+  }
+  .hud-pow{
+    display:flex;align-items:baseline;gap:4px;
+    font-family:'Bebas Neue',sans-serif;
+    font-size:22px;letter-spacing:1.5px;
+    line-height:1;
+  }
+  .hud-pow .me{color:var(--cyan);text-shadow:0 0 8px rgba(34,233,255,.6);}
+  .hud-pow .arrow{color:var(--dim);font-size:14px;}
+  .hud-pow .tgt{color:var(--red);text-shadow:0 0 8px rgba(255,51,85,.6);}
+
+  /* ---------- ARENA ---------- */
+  .arena{
+    flex:1;
+    position:relative;
+    background:
+      radial-gradient(240px 100px at 50% 6%, rgba(255,51,85,.22) 0%, transparent 70%),
+      radial-gradient(280px 120px at 50% 94%, rgba(34,233,255,.22) 0%, transparent 70%),
+      linear-gradient(180deg, rgba(255,51,85,.05) 0%, rgba(10,14,24,.85) 40%, rgba(10,14,24,.85) 60%, rgba(34,233,255,.05) 100%);
+    border:1px solid rgba(255,43,214,.3);
+    border-radius:10px;
+    overflow:hidden;
+    padding:8px;
+    min-height:210px;
+  }
+  /* arena grid floor */
+  .arena::before{
+    content:"";
+    position:absolute;left:0;right:0;bottom:0;height:60%;
+    background:
+      linear-gradient(180deg, transparent 0%, rgba(34,233,255,.06) 100%),
+      repeating-linear-gradient(0deg, transparent 0 22px, rgba(34,233,255,.08) 22px 23px),
+      repeating-linear-gradient(90deg, transparent 0 30px, rgba(34,233,255,.06) 30px 31px);
+    transform:perspective(300px) rotateX(45deg);
+    transform-origin:bottom;
+    pointer-events:none;
+    z-index:0;
+  }
+  /* opponent flag pile */
+  .flag-pile{
+    position:absolute;top:8px;left:50%;transform:translateX(-50%);
+    display:flex;gap:-4px;
+    z-index:2;
+  }
+  .flag-card{
+    width:44px;height:56px;
+    background:linear-gradient(180deg, #4a0812, #1a0308);
+    border:1.5px solid var(--red);
+    border-radius:4px;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    gap:2px;
+    box-shadow:0 0 12px rgba(255,51,85,.35), inset 0 0 8px rgba(0,0,0,.5);
+    position:relative;
+  }
+  .flag-card + .flag-card{margin-left:-14px;transform:rotate(6deg);}
+  .flag-card .fico{font-size:16px;filter:hue-rotate(-10deg);}
+  .flag-card .fpow{
+    font-family:'Bebas Neue',sans-serif;
+    font-size:16px;
+    color:var(--red);
+    line-height:.9;
+    text-shadow:0 0 6px rgba(255,51,85,.7);
+  }
+  .flag-card .flabel{
+    position:absolute;top:2px;left:3px;
+    font-family:'Space Mono',monospace;
+    font-size:5.5px;
+    color:var(--red);
+    opacity:.8;
+    letter-spacing:.5px;
+  }
+
+  /* opponent side label */
+  .side-label{
+    position:absolute;left:8px;
+    font-family:'Space Mono',monospace;
+    font-size:7px;
+    letter-spacing:1.5px;
+    color:var(--dim);
+    z-index:2;
+  }
+  .side-label.top{top:10px;color:var(--red);text-shadow:0 0 4px rgba(255,51,85,.5);}
+  .side-label.bot{bottom:60px;color:var(--cyan);text-shadow:0 0 4px rgba(34,233,255,.5);}
+
+  /* revealed cards row (my side) */
+  .revealed-row{
+    position:absolute;
+    bottom:14px;
+    left:50%;transform:translateX(-50%);
+    display:flex;gap:14px;
+    align-items:flex-end;
+    z-index:3;
+  }
+  .r-card{
+    width:36px;height:46px;
+    background:linear-gradient(180deg, var(--panel-2), var(--panel));
+    border:1.5px solid var(--hacker);
+    border-radius:4px;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    gap:1px;
+    box-shadow:0 0 10px rgba(34,233,255,.5), inset 0 0 6px rgba(34,233,255,.15);
+    position:relative;
+  }
+  .r-card .rico{font-size:14px;}
+  .r-card .rpow{
+    font-family:'Bebas Neue',sans-serif;
+    font-size:14px;
+    color:var(--cyan);
+    line-height:.9;
+    text-shadow:0 0 5px rgba(34,233,255,.7);
+  }
+  .r-card .rtag{
+    position:absolute;top:-1px;right:-1px;
+    font-family:'Space Mono',monospace;
+    font-size:5px;font-weight:700;
+    padding:1px 2px;
+    background:var(--hacker);
+    color:#000;
+    border-radius:2px;
+    letter-spacing:.3px;
+  }
+
+  /* combo chain lines between revealed */
+  .chain-line{
+    position:absolute;
+    height:2px;
+    background:linear-gradient(90deg, transparent, var(--hacker), transparent);
+    box-shadow:0 0 6px var(--hacker), 0 0 12px rgba(34,233,255,.6);
+    z-index:2;
+    animation:chainFlow 1.6s linear infinite;
+  }
+  .chain-line.c1{
+    bottom:36px;
+    left:calc(50% - 32px);
+    width:28px;
+  }
+  .chain-line.c2{
+    bottom:36px;
+    left:calc(50% + 4px);
+    width:28px;
+  }
+  @keyframes chainFlow{
+    0%{opacity:.6;}
+    50%{opacity:1;}
+    100%{opacity:.6;}
+  }
+  /* small chain node dots */
+  .chain-dot{
+    position:absolute;
+    width:4px;height:4px;border-radius:50%;
+    background:var(--hacker);
+    box-shadow:0 0 6px var(--hacker);
+    z-index:3;
+    bottom:35px;
+  }
+  .chain-dot.d1{left:calc(50% - 32px);}
+  .chain-dot.d2{left:calc(50% - 2px);}
+  .chain-dot.d3{left:calc(50% + 32px);}
+
+  /* mid-flight card (JUST REVEALED — RUNNER) */
+  .flight-card{
+    position:absolute;
+    left:50%;top:44%;
+    transform:translate(-50%,-50%) rotate(-4deg);
+    width:56px;height:74px;
+    background:linear-gradient(180deg, #142a4a, var(--panel));
+    border:2px solid var(--hacker);
+    border-radius:6px;
+    box-shadow:
+      0 0 24px rgba(34,233,255,.85),
+      0 0 48px rgba(34,233,255,.5),
+      0 0 80px rgba(34,233,255,.3),
+      inset 0 0 12px rgba(34,233,255,.25);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    gap:2px;
+    z-index:5;
+    animation:flightWobble 1.2s ease-in-out infinite;
+  }
+  @keyframes flightWobble{
+    0%,100%{transform:translate(-50%,-50%) rotate(-4deg) scale(1);}
+    50%{transform:translate(-50%,-52%) rotate(3deg) scale(1.04);}
+  }
+  .flight-card .fico2{font-size:24px;}
+  .flight-card .fname{
+    font-family:'Space Mono',monospace;
+    font-size:7px;font-weight:700;
+    letter-spacing:.5px;
+    color:#fff;
+  }
+  .flight-card .fpow2{
+    font-family:'Bebas Neue',sans-serif;
+    font-size:20px;
+    color:var(--cyan);
+    line-height:.9;
+    text-shadow:0 0 8px var(--cyan);
+  }
+  .flight-card .ftag{
+    position:absolute;top:-8px;left:50%;transform:translateX(-50%);
+    font-family:'Space Mono',monospace;
+    font-size:6px;font-weight:700;
+    padding:2px 4px;
+    background:var(--hacker);
+    color:#000;
+    border-radius:3px;
+    letter-spacing:.5px;
+    box-shadow:0 0 8px var(--hacker);
+  }
+  /* trailing streak */
+  .flight-trail{
+    position:absolute;
+    left:20%;top:60%;
+    width:120px;height:3px;
+    background:linear-gradient(90deg, transparent, rgba(34,233,255,.5), rgba(34,233,255,.85), transparent);
+    filter:blur(2px);
+    transform:rotate(-18deg);
+    z-index:4;
+    animation:trailFade 1.2s ease-in-out infinite;
+  }
+  @keyframes trailFade{
+    0%,100%{opacity:.3;}
+    50%{opacity:.7;}
+  }
+
+  /* Balatro score pop */
+  .score-pop{
+    position:absolute;
+    left:50%;top:22%;
+    transform:translate(-50%,-50%);
+    display:flex;align-items:baseline;gap:6px;
+    z-index:8;
+    animation:popScale 1.4s ease-in-out infinite;
+    pointer-events:none;
+  }
+  @keyframes popScale{
+    0%,100%{transform:translate(-50%,-50%) scale(1);}
+    50%{transform:translate(-50%,-50%) scale(1.08);}
+  }
+  .score-pop .num{
+    font-family:'Bebas Neue',sans-serif;
+    font-size:26px;
+    color:var(--cyan);
+    text-shadow:0 0 8px var(--cyan), 2px 2px 0 #000;
+    letter-spacing:1.5px;
+  }
+  .score-pop .mult{
+    font-family:'Bebas Neue',sans-serif;
+    font-size:26px;
+    color:var(--magenta);
+    text-shadow:0 0 8px var(--magenta), 2px 2px 0 #000;
+    letter-spacing:1.5px;
+  }
+  .score-pop .eq{
+    font-family:'Bebas Neue',sans-serif;
+    font-size:22px;
+    color:var(--gold);
+    text-shadow:0 0 4px var(--gold);
+  }
+  .score-pop .total{
+    font-family:'Bebas Neue',sans-serif;
+    font-size:34px;
+    color:var(--gold);
+    text-shadow:
+      0 0 12px var(--gold),
+      0 0 24px rgba(255,216,77,.6),
+      3px 3px 0 #000;
+    letter-spacing:2px;
+  }
+  .score-pop .fans{
+    font-family:'Space Mono',monospace;
+    font-size:8px;font-weight:700;
+    color:var(--gold);
+    letter-spacing:1.5px;
+    align-self:center;
+    text-shadow:0 0 4px var(--gold);
+  }
+  .mult-chip{
+    position:absolute;
+    left:50%;top:34%;transform:translateX(-50%);
+    font-family:'Space Mono',monospace;
+    font-size:7px;font-weight:700;
+    letter-spacing:1.5px;
+    color:var(--magenta);
+    background:rgba(255,43,214,.15);
+    border:1px solid var(--magenta);
+    border-radius:3px;
+    padding:2px 5px;
+    z-index:7;
+    text-shadow:0 0 4px var(--magenta);
+    box-shadow:0 0 6px rgba(255,43,214,.4);
+  }
+
+  /* ---------- SKILL TAP HINT ---------- */
+  .skill-hint{
+    display:flex;align-items:center;justify-content:center;gap:6px;
+    padding:5px 10px;
+    background:linear-gradient(90deg, rgba(255,216,77,.14), rgba(255,43,214,.14));
+    border:1px dashed rgba(255,216,77,.55);
+    border-radius:20px;
+    font-family:'Space Mono',monospace;
+    font-size:9px;font-weight:700;
+    letter-spacing:1.5px;
+    color:var(--gold);
+    text-shadow:0 0 6px rgba(255,216,77,.5);
+    animation:hintPulse 1.6s ease-in-out infinite;
+  }
+  @keyframes hintPulse{
+    0%,100%{opacity:.75;transform:scale(1);}
+    50%{opacity:1;transform:scale(1.03);box-shadow:0 0 12px rgba(255,216,77,.35);}
+  }
+  .skill-hint .tap-ico{font-size:11px;}
+
+  /* ---------- BENCH + FANS ---------- */
+  .footer{
+    display:flex;align-items:center;gap:8px;
+    padding:6px 10px;
+    background:linear-gradient(90deg, rgba(15,24,48,.85), rgba(21,32,64,.7));
+    border:1px solid rgba(34,233,255,.28);
+    border-radius:8px;
+    box-shadow:0 0 12px rgba(34,233,255,.12);
+  }
+  .bench{
+    display:flex;gap:4px;
+    flex:1;
+  }
+  .b-slot{
+    width:26px;height:34px;
+    border:1.5px dashed rgba(154,163,199,.3);
+    border-radius:4px;
+    background:rgba(21,32,64,.4);
+    display:flex;align-items:center;justify-content:center;
+    font-size:11px;
+    color:var(--dim);
+    position:relative;
+  }
+  .b-slot.filled{
+    background:linear-gradient(180deg, rgba(34,233,255,.15), rgba(21,32,64,.6));
+    border:1.5px solid var(--cyan);
+    color:var(--cyan);
+    box-shadow:0 0 8px rgba(34,233,255,.35), inset 0 0 4px rgba(34,233,255,.2);
+  }
+  .b-slot.filled::after{
+    content:"";
+    position:absolute;top:2px;right:2px;
+    width:4px;height:4px;
+    background:var(--cyan);
+    border-radius:50%;
+    box-shadow:0 0 4px var(--cyan);
+  }
+  .fans-tally{
+    display:flex;flex-direction:column;align-items:flex-end;gap:0;
+  }
+  .fans-tally .lbl{
+    font-family:'Space Mono',monospace;
+    font-size:7px;
+    color:var(--gold);
+    letter-spacing:1.5px;
+    text-shadow:0 0 4px var(--gold);
+  }
+  .fans-tally .num{
+    font-family:'Bebas Neue',sans-serif;
+    font-size:26px;line-height:1;
+    color:var(--gold);
+    letter-spacing:1.5px;
+    text-shadow:0 0 10px rgba(255,216,77,.7), 2px 2px 0 #000;
+  }
+
+  /* footnote */
+  .footnote{
+    font-family:'Space Mono',monospace;
+    font-size:10px;
+    color:#7484a8;
+    letter-spacing:1px;
+    max-width:520px;
+    text-align:center;
+    line-height:1.6;
+  }
+  .footnote b{color:var(--magenta);}
+  .footnote i{color:var(--cyan);font-style:normal;}
+</style>
+</head>
+<body>
+
+<div class="title-chip">
+  <span class="dot"></span>
+  <span>05b · BATTLE · CHALLENGERS ROLL</span>
+  <span class="dot"></span>
+</div>
+
+<div class="phone-wrap">
+  <div class="phone">
+    <div class="notch"></div>
+    <div class="spotlight"></div>
+
+    <div class="screen">
+
+      <!-- HEADER -->
+      <div class="header">
+        <div class="hdr-title">R3 / 7</div>
+        <div class="hdr-round">BATTLE</div>
+        <div class="hdr-opp">
+          <span class="icon-atk">⚔</span>
+          <span>DAEMON.EXE</span>
+          <span class="tag">ATK-HVY</span>
+        </div>
+      </div>
+
+      <!-- OPPONENT STRIP -->
+      <div class="opp-strip">
+        <div class="opp-avatar">👹</div>
+        <div class="opp-info">
+          <div class="opp-label">OPPONENT · DECK LEFT</div>
+          <div class="opp-deck">4 CARDS</div>
+        </div>
+        <div class="opp-bench">
+          <div class="b-slot filled"></div>
+          <div class="b-slot filled"></div>
+          <div class="b-slot"></div>
+          <div class="b-slot"></div>
+        </div>
+      </div>
+
+      <!-- LINEUP QUEUE -->
+      <div class="lineup">
+        <div class="lineup-hdr">
+          <div class="label">▸ MY LINEUP QUEUE</div>
+          <div class="progress"><b>3 / 6</b> 뽑음</div>
+        </div>
+        <div class="queue">
+          <div class="q-card done">
+            <span class="num">1</span>
+            <span class="icon">🧑‍💻</span>
+            <span class="name">INTERN</span>
+            <span class="qtag hacker">HACK</span>
+          </div>
+          <div class="q-card done">
+            <span class="num">2</span>
+            <span class="icon">🧑‍💻</span>
+            <span class="name">INTERN</span>
+            <span class="qtag hacker">HACK</span>
+          </div>
+          <div class="q-card current">
+            <span class="num">3</span>
+            <span class="icon">🏃</span>
+            <span class="name">RUNNER</span>
+            <span class="qtag hacker">HACK</span>
+          </div>
+          <div class="q-card next">
+            <span class="num">4</span>
+            <span class="star-badge">★</span>
+            <span class="icon">🤖</span>
+            <span class="name">SYNTH</span>
+            <span class="qtag boost">BOOST</span>
+          </div>
+          <div class="q-card up">
+            <span class="num">5</span>
+            <span class="icon">🧊</span>
+            <span class="name">ICEKING</span>
+            <div class="qtags">
+              <span class="qtag hacker">HK</span>
+              <span class="qtag instant">INS</span>
+            </div>
+          </div>
+          <div class="q-card up far">
+            <span class="num">6</span>
+            <span class="icon">💀</span>
+            <span class="name">NULL.DMN</span>
+            <span class="qtag instant">INST</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- HUD ROW -->
+      <div class="hud">
+        <div class="hud-cell">
+          <div class="hud-label">TIME</div>
+          <div class="hud-time" id="timer">0:31</div>
+        </div>
+        <div class="hud-cell combo">
+          <div class="combo-txt"><span>COMBO ×3</span><span class="star">★</span></div>
+          <div class="combo-sub">HACKER CHAIN</div>
+        </div>
+        <div class="hud-cell">
+          <div class="hud-label">POWER ▸ FLAG</div>
+          <div class="hud-pow">
+            <span class="me">12</span>
+            <span class="arrow">▸</span>
+            <span class="tgt">15</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ARENA -->
+      <div class="arena">
+
+        <span class="side-label top">◤ OPPONENT FLAG</span>
+        <span class="side-label bot">◣ MY REVEAL</span>
+
+        <!-- opponent flag pile -->
+        <div class="flag-pile">
+          <div class="flag-card">
+            <span class="flabel">FLAG</span>
+            <span class="fico">🛡</span>
+            <span class="fpow">15</span>
+          </div>
+          <div class="flag-card">
+            <span class="flabel">RES</span>
+            <span class="fico">⚡</span>
+            <span class="fpow">9</span>
+          </div>
+        </div>
+
+        <!-- mult chip -->
+        <div class="mult-chip">×MULT LOCKED</div>
+
+        <!-- score pop (Balatro-style) -->
+        <div class="score-pop">
+          <span class="num">+8</span>
+          <span class="mult">× ×3</span>
+          <span class="eq">=</span>
+          <span class="total">24</span>
+          <span class="fans">FANS</span>
+        </div>
+
+        <!-- mid-flight card (RUNNER) -->
+        <div class="flight-card">
+          <span class="ftag">HACKER</span>
+          <span class="fico2">🏃</span>
+          <span class="fname">RUNNER</span>
+          <span class="fpow2">8</span>
+        </div>
+        <div class="flight-trail"></div>
+
+        <!-- combo chain lines -->
+        <div class="chain-line c1"></div>
+        <div class="chain-line c2"></div>
+        <div class="chain-dot d1"></div>
+        <div class="chain-dot d2"></div>
+        <div class="chain-dot d3"></div>
+
+        <!-- 3 revealed cards row -->
+        <div class="revealed-row">
+          <div class="r-card">
+            <span class="rtag">HK</span>
+            <span class="rico">🧑‍💻</span>
+            <span class="rpow">2</span>
+          </div>
+          <div class="r-card">
+            <span class="rtag">HK</span>
+            <span class="rico">🧑‍💻</span>
+            <span class="rpow">2</span>
+          </div>
+          <div class="r-card">
+            <span class="rtag">HK</span>
+            <span class="rico">🏃</span>
+            <span class="rpow">8</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- SKILL TAP HINT -->
+      <div class="skill-hint">
+        <span class="tap-ico">👆</span>
+        <span>TAP ANYWHERE · +1 POWER</span>
+      </div>
+
+      <!-- FOOTER: bench + fans -->
+      <div class="footer">
+        <div class="bench">
+          <div class="b-slot filled">🧬</div>
+          <div class="b-slot filled">🕶</div>
+          <div class="b-slot">＋</div>
+          <div class="b-slot">＋</div>
+          <div class="b-slot">＋</div>
+          <div class="b-slot">＋</div>
+        </div>
+        <div class="fans-tally">
+          <span class="lbl">TOTAL FANS</span>
+          <span class="num" id="fans">47</span>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="phone-glow"></div>
+    <div class="scanlines"></div>
+  </div>
+</div>
+
+<div class="footnote">
+  <b>BATTLE PHASE · 45s</b> — 라인업 순서대로 카드가 자동 공개된다.
+  같은 태그가 연속되면 <i>COMBO ×N</i>이 발동하고, 브리치(공격력 ≥ 상대 깃발) 시
+  <b>fans × combo_mult</b> 로 점수가 폭발한다. 화면 어디든 탭하면 <i>+1 파워 스킬</i>이 발동.
+</div>
+
+<script>
+  // Countdown feel only (45s → 0)
+  (function(){
+    const el = document.getElementById('timer');
+    let t = 31;
+    setInterval(()=>{
+      t--;
+      if(t < 0) t = 45;
+      const m = Math.floor(t/60);
+      const s = t % 60;
+      el.textContent = m + ':' + (s < 10 ? '0'+s : s);
+      if(t <= 10){
+        el.style.color = '#ff3355';
+        el.style.textShadow = '0 0 12px rgba(255,51,85,.8)';
+      } else {
+        el.style.color = '';
+        el.style.textShadow = '';
+      }
+    }, 1000);
+  })();
+
+  // Fan tally: subtle +1 jitter when score pop cycles
+  (function(){
+    const el = document.getElementById('fans');
+    let base = 47;
+    setInterval(()=>{
+      // pulse
+      el.style.transition = 'transform .18s ease-out, color .18s';
+      el.style.transform = 'scale(1.14)';
+      el.style.color = '#fff';
+      setTimeout(()=>{
+        el.style.transform = 'scale(1)';
+        el.style.color = '';
+      }, 260);
+    }, 1400);
+  })();
+
+  // Combo indicator: extra flare pop every ~1.4s
+  (function(){
+    const combo = document.querySelector('.combo-txt');
+    setInterval(()=>{
+      combo.style.transition = 'transform .12s ease-out, filter .12s';
+      combo.style.transform = 'scale(1.12)';
+      combo.style.filter = 'brightness(1.4) drop-shadow(0 0 8px #ff2bd6)';
+      setTimeout(()=>{
+        combo.style.transform = '';
+        combo.style.filter = '';
+      }, 180);
+    }, 1400);
+  })();
+</script>
+
+</body>
+</html>

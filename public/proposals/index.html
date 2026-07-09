@@ -257,6 +257,28 @@
       gap: 12px;
     }
     footer a { color: var(--cyan); text-decoration: none; }
+
+    /* Featured #05 side-by-side previews collapse on mobile */
+    .featured-grid {
+      display: grid;
+      grid-template-columns: 220px 220px 1fr;
+      gap: 20px;
+    }
+    @media (max-width: 900px) {
+      .featured-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+      }
+      .featured-grid .details { grid-column: 1 / -1; }
+    }
+    @media (max-width: 520px) {
+      .featured-grid {
+        grid-template-columns: 1fr;
+      }
+      .featured-grid .preview {
+        margin: 0 auto;
+      }
+    }
   </style>
 </head>
 <body>
@@ -277,6 +299,69 @@
 </header>
 
 <main>
+
+  <!-- ============ 05 · CHALLENGERS ROLL (featured, full-width) ============ -->
+  <section class="card" style="margin-bottom:32px; border-color:var(--accent); box-shadow: 0 0 40px rgba(255,43,214,0.15);">
+    <div class="card-header">
+      <span class="card-index">05</span>
+      <h2 class="card-title">
+        CHALLENGERS ROLL
+        <span class="sub">TFT 상점 밀도 + Balatro 곱셈 스코어링 · 30s 상점 → 45s 배틀</span>
+      </h2>
+    </div>
+
+    <div class="rec-banner" style="background: linear-gradient(135deg, rgba(255,43,214,0.15), rgba(34,233,255,0.08)); border-color: var(--accent);">
+      🚀 CURRENT DIRECTION · 자동 리빌 관전 문제 해결 · 매 라운드 마이크로 결정 20~30개
+    </div>
+
+    <div class="featured-grid">
+      <div class="preview">
+        <iframe src="05a-shop.html" loading="lazy" title="Shop phase mockup"></iframe>
+      </div>
+      <div class="preview">
+        <iframe src="05b-battle.html" loading="lazy" title="Battle phase mockup"></iframe>
+      </div>
+      <div class="details">
+        <h3>Concept</h3>
+        <p>각 라운드가 <strong>30초 상점 → 45초 배틀</strong>로 쪼개진 7라운드 로그라이트. 상점에선 골드 관리·리롤·레벨업·라인업 배치로 손이 바쁘고, 배틀에선 <strong>내가 짠 라인업</strong>이 순서대로 리빌되며 <strong>콤보 배수</strong>로 팬이 폭발.</p>
+
+        <h3>Two Phases</h3>
+        <p><strong>상점 (좌)</strong>: 5슬롯 매대 · REROLL 2G · LEVEL UP 4G · 6칸 라인업 드래그 · 같은 이름 3장 자동 승격 (★)<br/>
+        <strong>배틀 (우)</strong>: 라인업 순서대로 오토 리빌 · 같은 태그 연속 = COMBO ×N · 브리치 시 팬×배수 폭발 (Balatro 감성)</p>
+
+        <h3>Palette</h3>
+        <div class="palette">
+          <div class="swatch" style="background:#0a0e18"></div>
+          <div class="swatch" style="background:#0f1830"></div>
+          <div class="swatch" style="background:#22e9ff"></div>
+          <div class="swatch" style="background:#ff2bd6"></div>
+          <div class="swatch" style="background:#ffd84d"></div>
+          <div class="swatch" style="background:#22ff88"></div>
+        </div>
+
+        <h3>Signature Moments</h3>
+        <p>STACK PROMOTE 3장 승격 회전 · COMBO ×N 배수 폭발 · BOSS BLIND 극적 등장 · CAROUSEL 회전 접시</p>
+
+        <div class="tags">
+          <span class="tag">TFT + BALATRO</span>
+          <span class="tag">AGENCY</span>
+          <span class="tag">ROGUELITE</span>
+          <span class="tag">10-13 MIN</span>
+        </div>
+
+        <div class="actions">
+          <a class="btn" href="05a-shop.html" target="_blank">상점 목업 ↗</a>
+          <a class="btn" href="05b-battle.html" target="_blank">배틀 목업 ↗</a>
+          <a class="btn secondary" href="https://github.com/devload/randombattle-boardgame/blob/main/docs/proposals/05-challengers-roll.md" target="_blank">기획서</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div style="font-family:'Space Mono',monospace; font-size:10px; color:var(--text-dim); letter-spacing:0.2em; text-transform:uppercase; margin-bottom:16px;">
+    // Earlier explorations (retained for reference)
+  </div>
+
   <div class="grid">
 
     <!-- ============ 01 · BALATRO CEREMONY ============ -->
@@ -289,7 +374,7 @@
         </h2>
       </div>
 
-      <div class="rec-banner">⭐ RECOMMENDED · Balatro 감성 주스 + 조커 메타 언락</div>
+      <div class="rec-banner" style="opacity:0.6">◇ Balatro 감성 주스 + 조커 메타 (Superseded by #05)</div>
 
       <div class="card-body">
         <div class="preview">
@@ -428,7 +513,7 @@
         </h2>
       </div>
 
-      <div class="rec-banner">⭐ RECOMMENDED · 이중 루프 구조로 데드타임 제거</div>
+      <div class="rec-banner" style="opacity:0.6">◇ 이중 루프 구조 (Superseded by #05)</div>
 
       <div class="card-body">
         <div class="preview">
