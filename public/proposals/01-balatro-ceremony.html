@@ -1,0 +1,719 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=375, initial-scale=1" />
+<title>01 · BALATRO CEREMONY — Match Mockup</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --midnight: #0B0F1E;
+    --felt: #0F3B2E;
+    --felt-hi: #1a5a45;
+    --magenta: #FF2E9A;
+    --cyan: #22E9FF;
+    --gold: #FFD84D;
+    --ivory: #E9E4D0;
+    --purple: #7A0E5C;
+    --grid: rgba(255, 46, 154, 0.08);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    background:
+      radial-gradient(circle at 20% 10%, #1b0930 0%, transparent 45%),
+      radial-gradient(circle at 80% 90%, #0a1f30 0%, transparent 45%),
+      #05070f;
+    min-height: 100vh;
+    font-family: "Space Mono", monospace;
+    color: var(--ivory);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 32px 16px;
+    gap: 24px;
+  }
+
+  /* Phone frame */
+  .phone {
+    width: 375px;
+    height: 812px;
+    border-radius: 42px;
+    padding: 8px;
+    background: linear-gradient(160deg, #1a0f22 0%, #0a0713 100%);
+    box-shadow:
+      0 0 0 1px rgba(255, 46, 154, 0.25),
+      0 0 60px rgba(255, 46, 154, 0.25),
+      0 0 120px rgba(34, 233, 255, 0.15),
+      0 30px 80px rgba(0,0,0,0.8);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .screen {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border-radius: 34px;
+    overflow: hidden;
+    background:
+      radial-gradient(ellipse at 50% 45%, var(--felt-hi) 0%, var(--felt) 40%, #071c15 85%),
+      var(--midnight);
+    isolation: isolate;
+  }
+
+  /* Felt texture / grain */
+  .screen::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+      repeating-linear-gradient(45deg, rgba(255,255,255,0.015) 0 2px, transparent 2px 4px),
+      repeating-linear-gradient(-45deg, rgba(0,0,0,0.06) 0 2px, transparent 2px 4px);
+    mix-blend-mode: overlay;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* Neon vignette */
+  .screen::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 50% 20%, rgba(255, 46, 154, 0.18), transparent 60%),
+      radial-gradient(ellipse at 50% 90%, rgba(34, 233, 255, 0.18), transparent 55%),
+      radial-gradient(ellipse at 50% 50%, transparent 40%, rgba(0,0,0,0.55) 100%);
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  /* ---------- HEADER ---------- */
+  .header {
+    position: relative;
+    z-index: 5;
+    padding: 18px 20px 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .title-chip {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px;
+    border-radius: 999px;
+    background: linear-gradient(135deg, rgba(255, 46, 154, 0.2), rgba(122, 14, 92, 0.4));
+    border: 1px solid rgba(255, 46, 154, 0.55);
+    box-shadow: 0 0 18px rgba(255, 46, 154, 0.35), inset 0 0 12px rgba(255, 46, 154, 0.25);
+    font-family: "Bebas Neue", sans-serif;
+    letter-spacing: 2px;
+    font-size: 12px;
+    color: #ffb8de;
+  }
+  .title-chip .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--magenta); box-shadow: 0 0 8px var(--magenta); animation: pulse 1.6s ease-in-out infinite; }
+
+  .round-badge {
+    font-family: "Space Mono", monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: rgba(233, 228, 208, 0.6);
+    text-align: right;
+    line-height: 1.3;
+  }
+  .round-badge b { color: var(--gold); font-family: "Bebas Neue", sans-serif; letter-spacing: 3px; font-size: 18px; display: block; }
+
+  /* ---------- OPPONENT ---------- */
+  .opponent {
+    position: relative;
+    z-index: 5;
+    margin: 4px 20px 0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px;
+    background: linear-gradient(90deg, rgba(122, 14, 92, 0.45), rgba(11, 15, 30, 0.65));
+    border: 1px solid rgba(255, 46, 154, 0.35);
+    border-radius: 14px;
+    backdrop-filter: blur(6px);
+  }
+  .avatar {
+    width: 42px; height: 42px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, var(--magenta), var(--purple));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+    border: 1.5px solid var(--gold);
+    box-shadow: 0 0 15px rgba(255, 216, 77, 0.4);
+  }
+  .opp-info { flex: 1; }
+  .opp-name { font-family: "Bebas Neue"; letter-spacing: 2px; font-size: 18px; color: var(--ivory); }
+  .opp-meta { font-size: 9px; letter-spacing: 1.5px; color: rgba(233,228,208,0.55); margin-top: 2px; }
+  .deck-count {
+    text-align: right;
+    font-family: "Bebas Neue";
+    color: var(--cyan);
+    text-shadow: 0 0 8px rgba(34, 233, 255, 0.6);
+  }
+  .deck-count .n { font-size: 28px; line-height: 1; }
+  .deck-count .l { font-size: 8px; letter-spacing: 2px; color: rgba(34, 233, 255, 0.7); }
+
+  /* Opponent bench */
+  .bench {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 5px;
+    margin: 8px 20px 0;
+    position: relative;
+    z-index: 5;
+  }
+  .bench-slot {
+    aspect-ratio: 3 / 4;
+    border-radius: 6px;
+    background: rgba(0,0,0,0.35);
+    border: 1px dashed rgba(255, 46, 154, 0.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    color: rgba(233, 228, 208, 0.35);
+    position: relative;
+    overflow: hidden;
+  }
+  .bench-slot.filled {
+    background: linear-gradient(160deg, rgba(122, 14, 92, 0.7), rgba(11, 15, 30, 0.7));
+    border: 1px solid rgba(255, 46, 154, 0.5);
+    box-shadow: inset 0 0 8px rgba(255, 46, 154, 0.3);
+  }
+  .bench-slot.gold {
+    background: linear-gradient(160deg, rgba(255, 216, 77, 0.35), rgba(122, 14, 92, 0.4));
+    border: 1px solid var(--gold);
+    box-shadow: inset 0 0 10px rgba(255, 216, 77, 0.4), 0 0 8px rgba(255, 216, 77, 0.35);
+  }
+
+  /* ---------- COMBO BANNER ---------- */
+  .combo-banner {
+    position: relative;
+    z-index: 6;
+    margin: 12px auto 0;
+    text-align: center;
+    padding: 8px 0;
+  }
+  .combo-txt {
+    display: inline-block;
+    font-family: "Bebas Neue", sans-serif;
+    font-size: 34px;
+    letter-spacing: 4px;
+    color: var(--magenta);
+    text-shadow:
+      0 0 12px rgba(255, 46, 154, 0.9),
+      0 0 30px rgba(255, 46, 154, 0.5),
+      2px 2px 0 #4d0728;
+    animation: judder 0.4s steps(3) infinite;
+  }
+  .combo-sub {
+    display: block;
+    font-family: "Space Mono";
+    font-size: 10px;
+    letter-spacing: 6px;
+    color: var(--cyan);
+    margin-top: 2px;
+    text-shadow: 0 0 6px rgba(34, 233, 255, 0.6);
+  }
+
+  /* ---------- PILE / POWER ---------- */
+  .arena {
+    position: relative;
+    z-index: 5;
+    margin: 6px 20px 0;
+    height: 240px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .chip-pile {
+    position: relative;
+    width: 130px;
+    height: 180px;
+    perspective: 800px;
+    transform-style: preserve-3d;
+  }
+
+  .pile-card {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 100px;
+    height: 140px;
+    border-radius: 12px;
+    transform-style: preserve-3d;
+    background:
+      linear-gradient(135deg, rgba(255,255,255,0.08), rgba(0,0,0,0.25)),
+      radial-gradient(circle at 50% 50%, #2b1348, #0d0619);
+    border: 1.5px solid rgba(255, 46, 154, 0.6);
+    box-shadow:
+      0 0 15px rgba(255, 46, 154, 0.4),
+      inset 0 0 20px rgba(122, 14, 92, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--ivory);
+    font-family: "Bebas Neue";
+  }
+  .pile-card::before {
+    content: "";
+    position: absolute;
+    inset: 6px;
+    border-radius: 8px;
+    border: 1px dashed rgba(233, 228, 208, 0.15);
+  }
+  .pile-card .n { font-size: 44px; text-shadow: 0 0 12px rgba(34, 233, 255, 0.8); color: var(--cyan); }
+  .pile-card .lbl { position: absolute; top: 10px; left: 12px; font-size: 8px; letter-spacing: 2px; color: rgba(233,228,208,0.5); }
+  .pile-card .icn { position: absolute; bottom: 10px; right: 12px; font-size: 16px; }
+
+  .pile-1 { transform: translate(-50%, -50%) rotate(-14deg) translateY(24px); opacity: 0.75; }
+  .pile-2 { transform: translate(-50%, -50%) rotate(-6deg) translateY(12px); opacity: 0.85; }
+  .pile-3 { transform: translate(-50%, -50%) rotate(4deg) translateY(0); opacity: 0.95; }
+  .pile-4 {
+    transform: translate(-50%, -50%) rotate(-2deg) translateY(-14px);
+    box-shadow:
+      0 0 25px rgba(34, 233, 255, 0.7),
+      0 0 45px rgba(34, 233, 255, 0.3),
+      inset 0 0 25px rgba(34, 233, 255, 0.35);
+    border-color: var(--cyan);
+    animation: pulse-cyan 1.6s ease-in-out infinite;
+  }
+  .pile-4 .n { color: var(--gold); text-shadow: 0 0 15px rgba(255, 216, 77, 0.9); }
+
+  /* Incoming reveal card */
+  .reveal-card {
+    position: absolute;
+    right: -20px;
+    top: 50%;
+    width: 92px;
+    height: 132px;
+    border-radius: 12px;
+    background:
+      linear-gradient(135deg, rgba(255, 216, 77, 0.15), rgba(255, 46, 154, 0.15)),
+      linear-gradient(180deg, #2a0e1e 0%, #0d0619 100%);
+    border: 1.5px solid var(--gold);
+    box-shadow:
+      0 0 22px rgba(255, 216, 77, 0.55),
+      0 0 40px rgba(255, 46, 154, 0.35);
+    transform: translate(0, -50%) rotate(8deg);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 8px;
+    animation: slidein 2.4s ease-in-out infinite;
+  }
+  .reveal-card .n {
+    font-family: "Bebas Neue";
+    font-size: 54px;
+    color: var(--gold);
+    line-height: 0.9;
+    text-shadow: 0 0 14px rgba(255, 216, 77, 0.85), 2px 2px 0 rgba(0,0,0,0.6);
+  }
+  .reveal-card .nm {
+    font-family: "Bebas Neue";
+    font-size: 12px;
+    letter-spacing: 2px;
+    color: var(--ivory);
+    margin-top: 2px;
+  }
+  .reveal-card .tag {
+    font-family: "Space Mono";
+    font-size: 7px;
+    letter-spacing: 1.5px;
+    color: var(--magenta);
+    margin-top: 4px;
+    padding: 2px 4px;
+    border: 1px solid rgba(255, 46, 154, 0.5);
+    border-radius: 3px;
+  }
+
+  /* Power counter */
+  .power-hud {
+    position: absolute;
+    left: -12px;
+    top: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+  }
+  .power-hud .l {
+    font-family: "Space Mono";
+    font-size: 8px;
+    letter-spacing: 2px;
+    color: rgba(34, 233, 255, 0.7);
+  }
+  .power-hud .v {
+    font-family: "Bebas Neue";
+    font-size: 40px;
+    color: var(--cyan);
+    line-height: 1;
+    text-shadow: 0 0 12px rgba(34, 233, 255, 0.9), 0 0 30px rgba(34, 233, 255, 0.4);
+  }
+  .power-hud .vs {
+    font-family: "Space Mono";
+    font-size: 8px;
+    letter-spacing: 2px;
+    color: rgba(255, 46, 154, 0.7);
+    margin-top: 4px;
+  }
+  .power-hud .d {
+    font-family: "Bebas Neue";
+    font-size: 22px;
+    color: var(--magenta);
+    line-height: 1;
+    text-shadow: 0 0 8px rgba(255, 46, 154, 0.8);
+  }
+
+  /* ---------- PLAYER SECTION ---------- */
+  .player-band {
+    position: relative;
+    z-index: 5;
+    margin: 6px 20px 0;
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: linear-gradient(90deg, rgba(11, 15, 30, 0.7), rgba(34, 233, 255, 0.15));
+    border: 1px solid rgba(34, 233, 255, 0.35);
+    border-radius: 12px;
+  }
+  .player-band .who {
+    font-family: "Bebas Neue"; letter-spacing: 2px; font-size: 16px; color: var(--ivory);
+    display: flex; align-items: center; gap: 8px;
+  }
+  .player-band .who .chip { width: 20px; height: 20px; border-radius: 50%; background: radial-gradient(circle at 30% 30%, var(--cyan), #0e5c66); border: 1.5px solid var(--gold); }
+  .player-band .fans {
+    font-family: "Space Mono"; font-size: 10px; letter-spacing: 1.5px; color: rgba(255, 216, 77, 0.9);
+    display: flex; gap: 10px;
+  }
+  .player-band .fans b { color: var(--gold); font-family: "Bebas Neue"; font-size: 16px; letter-spacing: 2px; }
+
+  /* Player bench with samples */
+  .bench.mine .bench-slot.filled { background: linear-gradient(160deg, rgba(34, 233, 255, 0.28), rgba(11, 15, 30, 0.7)); border-color: rgba(34, 233, 255, 0.6); box-shadow: inset 0 0 8px rgba(34, 233, 255, 0.35); }
+  .bench.mine .bench-slot span { font-family: "Bebas Neue"; font-size: 16px; color: var(--ivory); text-shadow: 0 0 6px rgba(34, 233, 255, 0.7); }
+  .bench-slot .emoji { font-size: 16px; filter: drop-shadow(0 0 4px rgba(34, 233, 255, 0.5)); }
+
+  /* ---------- BOTTOM TICKER ---------- */
+  .ticker {
+    position: absolute;
+    bottom: 22px;
+    left: 20px;
+    right: 20px;
+    z-index: 6;
+    padding: 8px 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: linear-gradient(90deg, rgba(0,0,0,0.65), rgba(122, 14, 92, 0.35));
+    border: 1px solid rgba(255, 216, 77, 0.4);
+    border-radius: 10px;
+    font-family: "Space Mono";
+    font-size: 9px;
+    letter-spacing: 2px;
+    color: var(--ivory);
+  }
+  .ticker .lft { color: var(--gold); font-family: "Bebas Neue"; letter-spacing: 3px; font-size: 14px; }
+  .ticker .rgt { color: rgba(233, 228, 208, 0.6); }
+  .ticker .tap {
+    color: var(--cyan);
+    animation: blink 1.2s steps(2) infinite;
+  }
+
+  /* Chip rain particles (background) */
+  .rain {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    pointer-events: none;
+    overflow: hidden;
+  }
+  .chip {
+    position: absolute;
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, var(--magenta), var(--purple));
+    box-shadow: 0 0 8px rgba(255, 46, 154, 0.7);
+    opacity: 0.55;
+    animation: fall linear infinite;
+  }
+  .chip.c { background: radial-gradient(circle at 30% 30%, var(--cyan), #0a3540); box-shadow: 0 0 8px rgba(34, 233, 255, 0.7); }
+  .chip.g { background: radial-gradient(circle at 30% 30%, var(--gold), #7a5a12); box-shadow: 0 0 8px rgba(255, 216, 77, 0.8); width: 8px; height: 8px; }
+
+  /* Scanlines */
+  .scanlines {
+    position: absolute; inset: 0; z-index: 4;
+    background: repeating-linear-gradient(180deg, rgba(255,255,255,0.02) 0 1px, transparent 1px 3px);
+    pointer-events: none;
+    mix-blend-mode: overlay;
+  }
+
+  /* ---------- ANIMATIONS ---------- */
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.4); opacity: 0.6; }
+  }
+  @keyframes pulse-cyan {
+    0%, 100% {
+      box-shadow: 0 0 25px rgba(34, 233, 255, 0.7), 0 0 45px rgba(34, 233, 255, 0.3), inset 0 0 25px rgba(34, 233, 255, 0.35);
+    }
+    50% {
+      box-shadow: 0 0 40px rgba(34, 233, 255, 1), 0 0 70px rgba(255, 216, 77, 0.4), inset 0 0 35px rgba(34, 233, 255, 0.5);
+    }
+  }
+  @keyframes judder {
+    0% { transform: translate(0, 0); }
+    33% { transform: translate(-1px, 1px); }
+    66% { transform: translate(1px, -1px); }
+    100% { transform: translate(0, 0); }
+  }
+  @keyframes slidein {
+    0% { transform: translate(40px, -50%) rotate(20deg); opacity: 0; }
+    30% { transform: translate(0, -50%) rotate(8deg); opacity: 1; }
+    75% { transform: translate(0, -50%) rotate(8deg); opacity: 1; }
+    100% { transform: translate(-40px, -80%) rotate(-6deg); opacity: 0; }
+  }
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+  @keyframes fall {
+    0% { transform: translateY(-40px) rotate(0deg); opacity: 0; }
+    10% { opacity: 0.6; }
+    90% { opacity: 0.6; }
+    100% { transform: translateY(860px) rotate(720deg); opacity: 0; }
+  }
+
+  /* ---------- VIBE STRIP ---------- */
+  .vibe {
+    width: 375px;
+    padding: 18px 20px 20px;
+    border-radius: 24px;
+    background: linear-gradient(160deg, #0f0917 0%, #050308 100%);
+    border: 1px solid rgba(255, 46, 154, 0.2);
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .vibe h3 {
+    font-family: "Bebas Neue"; letter-spacing: 4px; font-size: 14px;
+    color: var(--magenta); text-shadow: 0 0 8px rgba(255, 46, 154, 0.6);
+  }
+  .swatches { display: flex; gap: 6px; }
+  .sw {
+    flex: 1; height: 46px; border-radius: 8px; position: relative;
+    display: flex; align-items: flex-end; padding: 4px 6px;
+    font-family: "Space Mono"; font-size: 7px; letter-spacing: 1px;
+    color: rgba(255,255,255,0.85);
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+  .icons {
+    display: flex; gap: 10px; align-items: center; justify-content: space-around;
+    font-family: "Space Mono"; font-size: 8px; letter-spacing: 1.5px;
+    color: rgba(233, 228, 208, 0.7);
+  }
+  .icons div { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+  .icons .g { font-size: 22px; }
+
+  .joker-preview {
+    display: flex; gap: 10px; align-items: center;
+    padding: 10px;
+    border: 1px dashed rgba(255, 216, 77, 0.4);
+    border-radius: 10px;
+    background: linear-gradient(135deg, rgba(255, 216, 77, 0.06), rgba(122, 14, 92, 0.2));
+  }
+  .joker-card {
+    width: 54px; height: 78px; flex-shrink: 0;
+    border-radius: 8px;
+    background: linear-gradient(180deg, #2a0e1e, #0d0619);
+    border: 1.5px solid var(--gold);
+    box-shadow: 0 0 12px rgba(255, 216, 77, 0.5);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: 4px;
+  }
+  .joker-card .emoji { font-size: 20px; filter: drop-shadow(0 0 4px rgba(255,216,77,0.7)); }
+  .joker-card .jn { font-family: "Bebas Neue"; font-size: 8px; letter-spacing: 1px; color: var(--gold); margin-top: 2px; text-align: center; }
+  .joker-txt { flex: 1; }
+  .joker-txt .h { font-family: "Bebas Neue"; letter-spacing: 2px; font-size: 12px; color: var(--gold); }
+  .joker-txt .d { font-family: "Space Mono"; font-size: 9px; color: rgba(233,228,208,0.75); margin-top: 3px; line-height: 1.3; }
+
+  .caption {
+    font-family: "Space Mono"; font-size: 9px; letter-spacing: 2px;
+    color: rgba(233, 228, 208, 0.4); text-align: center;
+  }
+</style>
+</head>
+<body>
+
+<div class="phone">
+  <div class="screen">
+
+    <!-- Chip rain background -->
+    <div class="rain" id="rain"></div>
+    <div class="scanlines"></div>
+
+    <!-- Header -->
+    <div class="header">
+      <div class="title-chip">
+        <span class="dot"></span>
+        01 · BALATRO CEREMONY
+      </div>
+      <div class="round-badge">
+        <b>04 / 07</b>
+        ROUND · THE PIT
+      </div>
+    </div>
+
+    <!-- Opponent -->
+    <div class="opponent">
+      <div class="avatar">🎭</div>
+      <div class="opp-info">
+        <div class="opp-name">DEALER · NYX</div>
+        <div class="opp-meta">HIGH ROLLER · AGGRO DECK</div>
+      </div>
+      <div class="deck-count">
+        <div class="n">7</div>
+        <div class="l">LEFT</div>
+      </div>
+    </div>
+
+    <!-- Opponent bench -->
+    <div class="bench">
+      <div class="bench-slot filled"><span class="emoji" style="filter:drop-shadow(0 0 4px rgba(255,46,154,.6));">🦇</span></div>
+      <div class="bench-slot filled"><span class="emoji" style="filter:drop-shadow(0 0 4px rgba(255,46,154,.6));">🕷️</span></div>
+      <div class="bench-slot gold"><span class="emoji">👑</span></div>
+      <div class="bench-slot filled"><span class="emoji" style="filter:drop-shadow(0 0 4px rgba(255,46,154,.6));">🎲</span></div>
+      <div class="bench-slot"></div>
+      <div class="bench-slot"></div>
+    </div>
+
+    <!-- Combo banner -->
+    <div class="combo-banner">
+      <div class="combo-txt">COMBO ×3</div>
+      <div class="combo-sub">CHIP&nbsp;&nbsp;RAIN</div>
+    </div>
+
+    <!-- Arena -->
+    <div class="arena">
+      <div class="chip-pile">
+        <!-- Power HUD -->
+        <div class="power-hud">
+          <div class="l">POWER</div>
+          <div class="v">14</div>
+          <div class="vs">VS DEF</div>
+          <div class="d">17</div>
+        </div>
+
+        <div class="pile-card pile-1"><span class="lbl">A</span><span class="n">3</span><span class="icn">🃏</span></div>
+        <div class="pile-card pile-2"><span class="lbl">A</span><span class="n">2</span><span class="icn">💀</span></div>
+        <div class="pile-card pile-3"><span class="lbl">B</span><span class="n">4</span><span class="icn">🕰️</span></div>
+        <div class="pile-card pile-4"><span class="lbl" style="color:var(--gold)">FLAG · B</span><span class="n">5</span><span class="icn">🐍</span></div>
+
+        <!-- Incoming reveal -->
+        <div class="reveal-card">
+          <div class="n">+7</div>
+          <div class="nm">GILDED FOX</div>
+          <div class="tag">COMBO ×3</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Player band -->
+    <div class="player-band">
+      <div class="who">
+        <span class="chip"></span>
+        YOU · SPARROW
+      </div>
+      <div class="fans">
+        <span>FANS <b>28</b></span>
+        <span>DECK <b>5</b></span>
+      </div>
+    </div>
+
+    <!-- Player bench -->
+    <div class="bench mine" style="margin-top:6px;">
+      <div class="bench-slot filled"><span class="emoji">🦊</span></div>
+      <div class="bench-slot filled"><span class="emoji">🗡️</span></div>
+      <div class="bench-slot filled"><span class="emoji">🐺</span></div>
+      <div class="bench-slot filled"><span class="emoji">🔥</span></div>
+      <div class="bench-slot"></div>
+      <div class="bench-slot"></div>
+    </div>
+
+    <!-- Bottom ticker -->
+    <div class="ticker">
+      <div class="lft">CASH IN →</div>
+      <div class="rgt">JOKER READY · <span style="color:var(--gold);">×2 MULT</span></div>
+      <div class="tap">TAP</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Vibe strip -->
+<div class="vibe">
+  <h3>▨ VIBE STRIP · PALETTE & MOTIFS</h3>
+
+  <div class="swatches">
+    <div class="sw" style="background:#0B0F1E;">MIDNITE</div>
+    <div class="sw" style="background:#0F3B2E;">FELT</div>
+    <div class="sw" style="background:#FF2E9A;color:#0B0F1E;">MAGENTA</div>
+    <div class="sw" style="background:#22E9FF;color:#0B0F1E;">CYAN</div>
+    <div class="sw" style="background:#FFD84D;color:#0B0F1E;">GOLD</div>
+    <div class="sw" style="background:#7A0E5C;">PURPLE</div>
+  </div>
+
+  <div class="icons">
+    <div><span class="g">🪙</span><span>CHIP CARD</span></div>
+    <div><span class="g">🎰</span><span>MULT POP</span></div>
+    <div><span class="g">🃏</span><span>JOKER</span></div>
+    <div><span class="g">💥</span><span>PILE TOPPLE</span></div>
+    <div><span class="g">🕯️</span><span>UNDERGROUND</span></div>
+  </div>
+
+  <div class="joker-preview">
+    <div class="joker-card">
+      <div class="emoji">🎩</div>
+      <div class="jn">SILK<br/>HAT</div>
+    </div>
+    <div class="joker-txt">
+      <div class="h">JOKER · SILK HAT</div>
+      <div class="d">레벨 A 카드의 파워 +1. 러닝 언락 · 조커 슬롯 1/5.</div>
+    </div>
+  </div>
+
+  <div class="caption">MOCKUP · 375 × 812 · MATCH SCENE MID-ATTACK</div>
+</div>
+
+<script>
+  // Chip rain — pure vibe
+  (function () {
+    const rain = document.getElementById('rain');
+    const kinds = ['', 'c', 'g'];
+    for (let i = 0; i < 26; i++) {
+      const c = document.createElement('div');
+      c.className = 'chip ' + kinds[i % kinds.length];
+      c.style.left = Math.random() * 100 + '%';
+      const dur = 5 + Math.random() * 6;
+      const delay = Math.random() * dur;
+      c.style.animationDuration = dur + 's';
+      c.style.animationDelay = (-delay) + 's';
+      c.style.top = '-20px';
+      rain.appendChild(c);
+    }
+  })();
+</script>
+
+</body>
+</html>

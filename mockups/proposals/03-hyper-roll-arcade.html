@@ -1,0 +1,673 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>03 · HYPER ROLL ARCADE — Match Mockup</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#0a0e2a;
+    --navy-2:#1a1f3d;
+    --orange:#ff5e00;
+    --magenta:#ff2bd6;
+    --blue:#00c8ff;
+    --green:#1aff88;
+    --ash:#2a2f4d;
+    --ink:#e9ecff;
+  }
+  *{box-sizing:border-box;image-rendering:pixelated;}
+  html,body{margin:0;padding:0;}
+  body{
+    min-height:100vh;
+    background:
+      radial-gradient(1200px 600px at 50% -10%, #21195c 0%, transparent 60%),
+      radial-gradient(900px 600px at 50% 110%, #4a0a3d 0%, transparent 55%),
+      #05071a;
+    font-family:'Space Mono',monospace;
+    color:var(--ink);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    padding:32px 16px 48px;
+    gap:24px;
+  }
+
+  /* ---------- TOP TITLE CHIP ---------- */
+  .title-chip{
+    display:flex;align-items:center;gap:10px;
+    padding:10px 16px;
+    background:linear-gradient(90deg,var(--orange),var(--magenta));
+    color:#0a0e2a;
+    font-family:'Press Start 2P',monospace;
+    font-size:11px;
+    letter-spacing:1px;
+    border:2px solid #000;
+    box-shadow:0 0 0 2px #0a0e2a,0 0 24px rgba(255,43,214,.5);
+  }
+  .title-chip .dot{width:8px;height:8px;background:#0a0e2a;}
+
+  /* ---------- PHONE FRAME ---------- */
+  .phone-wrap{
+    position:relative;
+    width:375px;height:812px;
+    filter:drop-shadow(0 30px 60px rgba(0,0,0,.6));
+  }
+  .phone{
+    position:absolute;inset:0;
+    background:var(--navy);
+    border:6px solid #000;
+    border-radius:38px;
+    overflow:hidden;
+  }
+  /* CRT curvature */
+  .crt-curve{
+    position:absolute;inset:0;
+    border-radius:34px;
+    box-shadow:
+      inset 0 0 60px rgba(0,0,0,.9),
+      inset 0 0 180px rgba(0,200,255,.06);
+    pointer-events:none;z-index:80;
+  }
+  /* CRT scanlines */
+  .scanlines{
+    position:absolute;inset:0;
+    background:repeating-linear-gradient(
+      to bottom,
+      rgba(0,0,0,0) 0,
+      rgba(0,0,0,0) 2px,
+      rgba(0,0,0,.22) 2px,
+      rgba(0,0,0,.22) 3px
+    );
+    mix-blend-mode:multiply;
+    pointer-events:none;z-index:70;
+  }
+  .noise{
+    position:absolute;inset:0;
+    background:
+      radial-gradient(2px 2px at 20% 30%, rgba(255,255,255,.06) 0, transparent 60%),
+      radial-gradient(1px 1px at 70% 80%, rgba(255,43,214,.08) 0, transparent 60%),
+      radial-gradient(1.5px 1.5px at 40% 60%, rgba(0,200,255,.06) 0, transparent 60%);
+    pointer-events:none;z-index:60;
+  }
+
+  /* ---------- SCREEN CONTENT ---------- */
+  .screen{
+    position:absolute;inset:0;
+    padding:16px 14px 14px;
+    display:flex;flex-direction:column;gap:10px;
+    z-index:10;
+  }
+
+  /* HEADER */
+  .top-bar{
+    display:flex;justify-content:space-between;align-items:center;
+    font-family:'Press Start 2P',monospace;
+    font-size:8px;color:var(--blue);
+    padding:6px 8px;
+    border:2px solid var(--ash);
+    background:rgba(0,0,0,.45);
+  }
+  .top-bar .coin{color:var(--orange);}
+  .top-bar .round{color:var(--green);}
+
+  /* OPPONENT ROW */
+  .opp-row{
+    display:flex;align-items:center;gap:10px;
+    padding:10px;
+    border:2px solid var(--magenta);
+    background:linear-gradient(180deg, rgba(255,43,214,.14), rgba(0,0,0,.35));
+    box-shadow:0 0 0 2px #000, inset 0 0 12px rgba(255,43,214,.25);
+  }
+  .cabinet-mini{
+    width:44px;height:52px;
+    background:
+      linear-gradient(180deg,#3a1a5d 0%,#1a0a2a 100%);
+    border:2px solid #000;
+    position:relative;
+    display:grid;place-items:center;
+  }
+  .cabinet-mini::before{
+    content:"";position:absolute;top:4px;left:4px;right:4px;height:20px;
+    background:linear-gradient(180deg,var(--blue),#003a66);
+    border:2px solid #000;
+  }
+  .cabinet-mini::after{
+    content:"";position:absolute;bottom:4px;left:8px;right:8px;height:6px;
+    background:var(--orange);border:1px solid #000;
+  }
+  .opp-info{flex:1;display:flex;flex-direction:column;gap:4px;}
+  .opp-name{font-family:'Press Start 2P',monospace;font-size:10px;color:#fff;letter-spacing:1px;}
+  .opp-sub{font-family:'VT323',monospace;font-size:16px;color:var(--magenta);line-height:1;}
+  .opp-hp{
+    height:8px;background:#000;border:1px solid var(--ash);
+    position:relative;overflow:hidden;
+  }
+  .opp-hp>span{
+    display:block;height:100%;width:62%;
+    background:linear-gradient(90deg,var(--orange),var(--magenta));
+    box-shadow:0 0 8px var(--magenta);
+  }
+
+  /* COMBO TOWER */
+  .combo-wrap{
+    display:grid;grid-template-columns:1fr 88px;gap:10px;
+  }
+  .combo-tower{
+    position:relative;
+    padding:10px 8px 8px;
+    border:2px solid var(--blue);
+    background:rgba(0,40,80,.3);
+    box-shadow:0 0 0 2px #000, inset 0 0 16px rgba(0,200,255,.2);
+    display:flex;flex-direction:column;align-items:center;gap:4px;
+    min-height:170px;
+  }
+  .combo-label{
+    font-family:'Press Start 2P',monospace;font-size:7px;
+    color:var(--blue);letter-spacing:1px;
+  }
+  .combo-count{
+    font-family:'Press Start 2P',monospace;
+    font-size:14px;color:var(--green);
+    text-shadow:0 0 6px var(--green), 2px 2px 0 #000;
+    margin-bottom:2px;
+  }
+  .stack{
+    display:flex;flex-direction:column-reverse;gap:2px;width:100%;align-items:center;
+  }
+  .chip{
+    width:78%;height:14px;
+    border:2px solid #000;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:0 6px;
+    font-family:'VT323',monospace;font-size:12px;color:#000;
+  }
+  .chip.c1{background:var(--orange);}
+  .chip.c2{background:var(--magenta);color:#fff;}
+  .chip.c3{background:var(--blue);}
+  .chip.c4{background:var(--green);}
+  .chip.c5{background:#ffd400;}
+
+  .power-panel{
+    display:flex;flex-direction:column;gap:6px;
+  }
+  .stat-box{
+    border:2px solid #000;
+    background:rgba(0,0,0,.55);
+    padding:6px 4px;
+    text-align:center;
+  }
+  .stat-box .k{
+    font-family:'Press Start 2P',monospace;font-size:6px;letter-spacing:1px;
+    color:var(--ink);opacity:.8;
+  }
+  .stat-box .v{
+    font-family:'VT323',monospace;font-size:28px;line-height:1;
+  }
+  .stat-box.pwr{border-color:var(--green);box-shadow:0 0 0 2px #000, inset 0 0 8px rgba(26,255,136,.35);}
+  .stat-box.pwr .v{color:var(--green);text-shadow:0 0 6px var(--green);}
+  .stat-box.tgt{border-color:var(--orange);box-shadow:0 0 0 2px #000, inset 0 0 8px rgba(255,94,0,.35);}
+  .stat-box.tgt .v{color:var(--orange);text-shadow:0 0 6px var(--orange);}
+  .stat-box.bnk{border-color:var(--magenta);box-shadow:0 0 0 2px #000, inset 0 0 8px rgba(255,43,214,.35);}
+  .stat-box.bnk .v{color:var(--magenta);font-size:20px;padding-top:4px;}
+
+  /* EVENT LOG */
+  .event-log{
+    display:flex;flex-direction:column;gap:3px;
+    padding:6px 8px;
+    border:2px solid var(--ash);
+    background:rgba(0,0,0,.5);
+    font-family:'VT323',monospace;font-size:14px;line-height:1;
+    max-height:56px;overflow:hidden;
+  }
+  .event-log .row{display:flex;gap:6px;}
+  .event-log .t{color:var(--blue);}
+  .event-log .m{color:var(--ink);}
+  .event-log .hi{color:var(--green);}
+  .event-log .warn{color:var(--magenta);}
+
+  /* CURRENT REVEAL CARD */
+  .reveal-block{
+    position:relative;
+    display:flex;gap:10px;align-items:center;
+    padding:10px;
+    border:3px solid var(--orange);
+    background:linear-gradient(180deg,#241000,#0a0410);
+    box-shadow:0 0 0 2px #000, 0 0 24px rgba(255,94,0,.5), inset 0 0 12px rgba(255,94,0,.2);
+  }
+  .coin-card{
+    width:66px;height:82px;flex-shrink:0;
+    background:
+      radial-gradient(circle at 30% 30%, #fff2, transparent 40%),
+      linear-gradient(180deg,var(--orange),#7a2a00);
+    border:3px solid #000;
+    display:flex;flex-direction:column;align-items:center;justify-content:space-between;
+    padding:4px 2px;
+    position:relative;
+  }
+  .coin-card::before{
+    content:"";position:absolute;inset:4px;
+    border:1px dashed rgba(0,0,0,.5);
+    pointer-events:none;
+  }
+  .coin-card .icon{
+    font-family:'Press Start 2P',monospace;font-size:22px;color:#000;
+    text-shadow:1px 1px 0 rgba(255,255,255,.4);
+    line-height:1;padding-top:6px;
+  }
+  .coin-card .nm{
+    font-family:'Press Start 2P',monospace;font-size:6px;color:#000;
+  }
+  .coin-card .pw{
+    font-family:'VT323',monospace;font-size:20px;color:#fff;
+    background:#000;padding:0 6px;line-height:1;
+    border:1px solid var(--orange);
+  }
+  .reveal-meta{flex:1;display:flex;flex-direction:column;gap:4px;}
+  .reveal-name{
+    font-family:'Press Start 2P',monospace;font-size:9px;color:var(--orange);
+    letter-spacing:1px;
+  }
+  .reveal-desc{
+    font-family:'VT323',monospace;font-size:14px;color:var(--ink);line-height:1.1;
+  }
+  .reveal-hint{
+    font-family:'Press Start 2P',monospace;font-size:6px;color:var(--green);
+    letter-spacing:1px;
+    animation:blink 0.6s steps(2,end) infinite;
+  }
+  @keyframes blink{50%{opacity:.3;}}
+
+  /* TIMING BAR */
+  .timing-wrap{
+    display:flex;flex-direction:column;gap:6px;
+    padding:10px 8px 12px;
+    border:3px solid var(--green);
+    background:linear-gradient(180deg,rgba(0,40,20,.5),rgba(0,0,0,.6));
+    box-shadow:0 0 0 2px #000, 0 0 26px rgba(26,255,136,.35);
+  }
+  .timing-head{
+    display:flex;justify-content:space-between;align-items:center;
+    font-family:'Press Start 2P',monospace;font-size:7px;letter-spacing:1px;
+  }
+  .timing-head .lb{color:var(--green);}
+  .timing-head .rb{color:var(--blue);}
+  .timing-bar{
+    position:relative;height:36px;
+    background:linear-gradient(90deg,#440000,#5a5a00,#004a1a,#5a5a00,#440000);
+    border:2px solid #000;
+    overflow:hidden;
+  }
+  /* zones */
+  .zone{
+    position:absolute;top:0;bottom:0;
+    border-left:2px dashed rgba(0,0,0,.5);
+    border-right:2px dashed rgba(0,0,0,.5);
+  }
+  .zone.good{
+    left:34%;width:32%;
+    background:repeating-linear-gradient(45deg,rgba(255,212,0,.35) 0 6px,rgba(255,212,0,.15) 6px 12px);
+  }
+  .zone.perfect{
+    left:46%;width:8%;
+    background:
+      linear-gradient(180deg,rgba(26,255,136,.85),rgba(26,255,136,.35));
+    box-shadow:0 0 12px var(--green),inset 0 0 8px #fff;
+  }
+  .zone.perfect::before{
+    content:"";position:absolute;inset:0;
+    background:repeating-linear-gradient(90deg,rgba(255,255,255,.5) 0 2px,transparent 2px 4px);
+    mix-blend-mode:overlay;
+  }
+  .zone-label{
+    position:absolute;top:-14px;font-family:'Press Start 2P',monospace;font-size:6px;
+    color:var(--green);letter-spacing:1px;text-shadow:0 0 4px var(--green);
+  }
+  /* indicator */
+  .indicator{
+    position:absolute;top:-4px;bottom:-4px;width:4px;
+    background:#fff;
+    box-shadow:0 0 12px #fff, 0 0 24px var(--blue);
+    left:0;
+    animation:sweep 1.5s cubic-bezier(.55,.05,.55,.95) infinite alternate;
+  }
+  @keyframes sweep{
+    0%{left:2%;}
+    100%{left:96%;}
+  }
+  /* ticks */
+  .ticks{
+    position:absolute;inset:0;
+    background:repeating-linear-gradient(90deg,rgba(0,0,0,.25) 0 1px,transparent 1px 10%);
+    pointer-events:none;
+  }
+
+  /* TAP BUTTON */
+  .tap-btn{
+    display:block;width:100%;
+    padding:14px 0;
+    background:linear-gradient(180deg,var(--green),#0a8c48);
+    color:#001a0a;
+    font-family:'Press Start 2P',monospace;font-size:18px;letter-spacing:3px;
+    border:3px solid #000;
+    box-shadow:
+      0 0 0 2px var(--green),
+      0 6px 0 #003a1a,
+      0 0 24px rgba(26,255,136,.6);
+    cursor:pointer;
+    text-shadow:2px 2px 0 rgba(0,0,0,.35);
+    animation:pulse 0.9s ease-in-out infinite;
+  }
+  .tap-btn:active{transform:translateY(3px);box-shadow:0 0 0 2px var(--green),0 3px 0 #003a1a,0 0 24px rgba(26,255,136,.6);}
+  @keyframes pulse{
+    0%,100%{filter:brightness(1);}
+    50%{filter:brightness(1.25);}
+  }
+
+  /* BENCH CABINETS (right column visible via floating panel) */
+  .bench{
+    position:absolute;top:120px;right:8px;
+    width:52px;
+    display:flex;flex-direction:column;gap:5px;
+    z-index:12;
+  }
+  .bench-title{
+    font-family:'Press Start 2P',monospace;font-size:6px;
+    color:var(--blue);letter-spacing:1px;text-align:center;
+    padding-bottom:2px;
+  }
+  .cab{
+    height:38px;position:relative;
+    background:linear-gradient(180deg,#2a1a4d,#0a0518);
+    border:2px solid #000;
+    display:grid;place-items:center;
+  }
+  .cab::before{
+    content:"";position:absolute;top:3px;left:3px;right:3px;height:14px;
+    background:linear-gradient(180deg,var(--blue),#003a66);border:1px solid #000;
+  }
+  .cab::after{
+    content:"";position:absolute;bottom:3px;left:6px;right:6px;height:4px;
+    background:var(--orange);
+  }
+  .cab.filled::before{background:linear-gradient(180deg,var(--magenta),#5a0a44);}
+  .cab.filled-2::before{background:linear-gradient(180deg,var(--green),#0a5a33);}
+  .cab.empty{opacity:.35;}
+  .cab-tag{
+    position:absolute;bottom:-3px;right:-3px;
+    font-family:'Press Start 2P',monospace;font-size:5px;
+    color:#fff;background:#000;padding:1px 2px;
+  }
+
+  /* PERFECT POPUP */
+  .perfect-pop{
+    position:absolute;
+    left:50%;top:44%;
+    transform:translate(-50%,-50%) rotate(-6deg);
+    font-family:'Press Start 2P',monospace;
+    font-size:34px;
+    color:#fff;
+    text-shadow:
+      3px 3px 0 var(--magenta),
+      6px 6px 0 var(--orange),
+      0 0 20px var(--green);
+    letter-spacing:2px;
+    pointer-events:none;
+    z-index:40;
+    animation:pop 1.8s ease-out infinite;
+  }
+  @keyframes pop{
+    0%{transform:translate(-50%,-50%) rotate(-6deg) scale(.6);opacity:0;}
+    15%{transform:translate(-50%,-50%) rotate(-6deg) scale(1.15);opacity:1;}
+    30%{transform:translate(-50%,-50%) rotate(-6deg) scale(1);opacity:1;}
+    80%{opacity:1;}
+    100%{transform:translate(-50%,-50%) rotate(-6deg) scale(1.05);opacity:0;}
+  }
+  .perfect-pop .sub{
+    display:block;font-size:8px;color:var(--green);margin-top:8px;letter-spacing:3px;
+    text-shadow:1px 1px 0 #000;
+    text-align:center;
+  }
+
+  /* pixel sparks */
+  .spark{
+    position:absolute;width:6px;height:6px;background:var(--green);
+    box-shadow:0 0 6px var(--green);
+    z-index:39;
+    animation:spark 1.6s ease-out infinite;
+  }
+  .spark.s2{background:var(--magenta);box-shadow:0 0 6px var(--magenta);}
+  .spark.s3{background:var(--orange);box-shadow:0 0 6px var(--orange);}
+  .spark.s4{background:var(--blue);box-shadow:0 0 6px var(--blue);}
+  @keyframes spark{
+    0%{transform:translate(0,0) scale(1);opacity:1;}
+    100%{transform:translate(var(--dx,20px),var(--dy,-30px)) scale(.2);opacity:0;}
+  }
+
+  /* ---------- VIBE STRIP ---------- */
+  .vibe{
+    width:min(720px,92vw);
+    background:rgba(0,0,0,.4);
+    border:2px solid var(--ash);
+    padding:14px 16px;
+    display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between;
+    font-family:'Space Mono',monospace;font-size:12px;color:var(--ink);
+  }
+  .vibe h3{
+    font-family:'Press Start 2P',monospace;font-size:10px;margin:0 0 10px;
+    color:var(--orange);letter-spacing:1px;
+  }
+  .swatches{display:flex;gap:6px;align-items:center;}
+  .sw{
+    width:26px;height:26px;border:2px solid #000;
+    display:grid;place-items:center;font-family:'VT323',monospace;font-size:9px;color:#000;
+  }
+  .sw.dark{color:#fff;}
+  .vibe .col{display:flex;flex-direction:column;gap:6px;}
+  .perfect-preview{
+    font-family:'Press Start 2P',monospace;font-size:14px;color:#fff;
+    padding:8px 12px;background:#0a0e2a;border:2px solid #000;
+    text-shadow:2px 2px 0 var(--magenta),4px 4px 0 var(--orange);
+    letter-spacing:2px;
+  }
+  .cab-icon{
+    width:52px;height:60px;
+    background:linear-gradient(180deg,#2a1a4d,#0a0518);
+    border:2px solid #000;position:relative;
+  }
+  .cab-icon::before{
+    content:"";position:absolute;top:4px;left:4px;right:4px;height:22px;
+    background:linear-gradient(180deg,var(--magenta),#5a0a44);border:1px solid #000;
+  }
+  .cab-icon::after{
+    content:"";position:absolute;bottom:6px;left:8px;right:8px;height:6px;
+    background:var(--orange);border:1px solid #000;
+  }
+  .footnote{
+    color:#8a8fbf;font-size:10px;letter-spacing:1px;
+    font-family:'Space Mono',monospace;text-align:center;
+    max-width:600px;
+  }
+</style>
+</head>
+<body>
+
+  <div class="title-chip">
+    <span class="dot"></span>
+    03 · HYPER ROLL ARCADE
+    <span class="dot"></span>
+  </div>
+
+  <div class="phone-wrap">
+    <div class="phone">
+
+      <!-- BENCH (floating over screen right edge) -->
+      <div class="bench">
+        <div class="bench-title">BENCH</div>
+        <div class="cab filled"><span class="cab-tag">1</span></div>
+        <div class="cab filled-2"><span class="cab-tag">2</span></div>
+        <div class="cab filled"><span class="cab-tag">3</span></div>
+        <div class="cab"><span class="cab-tag">4</span></div>
+        <div class="cab empty"><span class="cab-tag">5</span></div>
+        <div class="cab empty"><span class="cab-tag">6</span></div>
+      </div>
+
+      <div class="screen">
+
+        <!-- TOP BAR -->
+        <div class="top-bar">
+          <span>ROUND <span class="round">03/07</span></span>
+          <span>COIN <span class="coin">×02</span></span>
+          <span>HI <span style="color:#fff;">18420</span></span>
+        </div>
+
+        <!-- OPPONENT -->
+        <div class="opp-row" style="padding-right:66px;">
+          <div class="cabinet-mini"></div>
+          <div class="opp-info">
+            <div class="opp-name">VS · NEON KAI</div>
+            <div class="opp-sub">DECK: SYNTH RONIN</div>
+            <div class="opp-hp"><span></span></div>
+          </div>
+        </div>
+
+        <!-- COMBO TOWER + POWER PANEL -->
+        <div class="combo-wrap" style="padding-right:56px;">
+          <div class="combo-tower">
+            <div class="combo-label">FLAG PILE</div>
+            <div class="combo-count">COMBO ×5</div>
+            <div class="stack">
+              <div class="chip c1">◆ PWR<span>+2</span></div>
+              <div class="chip c2">★ FAN<span>+1</span></div>
+              <div class="chip c3">✦ PWR<span>+3</span></div>
+              <div class="chip c4">◈ TAP<span>+1</span></div>
+              <div class="chip c5">✧ PWR<span>+2</span></div>
+            </div>
+          </div>
+          <div class="power-panel">
+            <div class="stat-box pwr">
+              <div class="k">POWER</div>
+              <div class="v">08</div>
+            </div>
+            <div class="stat-box tgt">
+              <div class="k">TARGET</div>
+              <div class="v">11</div>
+            </div>
+            <div class="stat-box bnk">
+              <div class="k">FANS</div>
+              <div class="v">137</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- EVENT LOG -->
+        <div class="event-log">
+          <div class="row"><span class="t">R3·02s</span><span class="m">▸ REVEAL: BOLT KID (PWR 3)</span></div>
+          <div class="row"><span class="t">R3·01s</span><span class="hi">▸ COMBO ×3 · CHIP RAIN!</span></div>
+          <div class="row"><span class="t">R3·00s</span><span class="warn">▸ PERFECT TAP! +2 PWR bonus</span></div>
+        </div>
+
+        <!-- REVEAL CARD -->
+        <div class="reveal-block">
+          <div class="coin-card">
+            <div class="icon">⚡</div>
+            <div class="nm">BOLT</div>
+            <div class="pw">P3</div>
+          </div>
+          <div class="reveal-meta">
+            <div class="reveal-name">BOLT KID</div>
+            <div class="reveal-desc">Reveal: +3 PWR. On PERFECT tap, chain next card into combo.</div>
+            <div class="reveal-hint">▶ TAP ON GREEN ZONE!</div>
+          </div>
+        </div>
+
+        <!-- TIMING BAR -->
+        <div class="timing-wrap">
+          <div class="timing-head">
+            <span class="lb">◤ TIMING WINDOW ◥</span>
+            <span class="rb">SWEET SPOT × 8%</span>
+          </div>
+          <div class="timing-bar">
+            <div class="ticks"></div>
+            <div class="zone good"></div>
+            <div class="zone perfect"><span class="zone-label" style="left:-4px;top:-12px;">PERFECT</span></div>
+            <div class="indicator" id="ind"></div>
+          </div>
+        </div>
+
+        <!-- TAP BUTTON -->
+        <button class="tap-btn" id="tapBtn">TAP!</button>
+
+      </div>
+
+      <!-- PERFECT overlay effect -->
+      <div class="perfect-pop">
+        PERFECT!
+        <span class="sub">+2 PWR · CHIP RAIN</span>
+      </div>
+      <div class="spark" style="left:40%;top:44%;--dx:-30px;--dy:-40px;"></div>
+      <div class="spark s2" style="left:60%;top:42%;--dx:36px;--dy:-30px;"></div>
+      <div class="spark s3" style="left:45%;top:48%;--dx:-20px;--dy:38px;"></div>
+      <div class="spark s4" style="left:55%;top:48%;--dx:30px;--dy:36px;"></div>
+      <div class="spark" style="left:48%;top:38%;--dx:6px;--dy:-46px;"></div>
+      <div class="spark s2" style="left:52%;top:52%;--dx:-6px;--dy:44px;"></div>
+
+      <div class="noise"></div>
+      <div class="scanlines"></div>
+      <div class="crt-curve"></div>
+    </div>
+  </div>
+
+  <!-- VIBE STRIP -->
+  <div class="vibe">
+    <div class="col">
+      <h3>PALETTE</h3>
+      <div class="swatches">
+        <div class="sw dark" style="background:#0a0e2a;">NAVY</div>
+        <div class="sw" style="background:#ff5e00;">ORG</div>
+        <div class="sw" style="background:#ff2bd6;">MAG</div>
+        <div class="sw dark" style="background:#00c8ff;">BLU</div>
+        <div class="sw" style="background:#1aff88;">GRN</div>
+        <div class="sw" style="background:#ffd400;">SUN</div>
+      </div>
+    </div>
+    <div class="col">
+      <h3>SIGNATURE POP</h3>
+      <div class="perfect-preview">PERFECT!</div>
+    </div>
+    <div class="col">
+      <h3>CABINET</h3>
+      <div style="display:flex;gap:10px;align-items:center;">
+        <div class="cab-icon"></div>
+        <div style="font-family:'VT323',monospace;font-size:16px;color:var(--ink);line-height:1.1;">
+          UNLOCK:<br>
+          <span style="color:var(--green);">SYNTH RONIN</span><br>
+          <span style="color:var(--orange);">CHIP LORDS ▲</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footnote">
+    375×812 · MATCH MID-REVEAL · TIMING TAP COMMIT — TAP THE GREEN SWEET SPOT FOR PERFECT
+  </div>
+
+<script>
+  // Slight randomization: kick off indicator with tiny offset so preview feels alive.
+  // (Animation is CSS-driven — this is just cosmetic if the browser prefers-reduced-motion.)
+  const ind = document.getElementById('ind');
+  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    ind.style.animation = 'none';
+    ind.style.left = '50%';
+  }
+  // Tap button feedback (no game logic; mockup only)
+  const btn = document.getElementById('tapBtn');
+  btn.addEventListener('click', () => {
+    btn.style.transform = 'translateY(3px)';
+    setTimeout(() => btn.style.transform = '', 90);
+  });
+</script>
+</body>
+</html>

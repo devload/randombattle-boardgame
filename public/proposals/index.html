@@ -1,0 +1,478 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>RandomBattle · Design Proposals</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:wght@400;700&family=Inter:wght@400;600;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0a0e18;
+      --panel: #11162a;
+      --border: #232b48;
+      --text: #e8ecff;
+      --text-dim: #9aa3c7;
+      --accent: #ff2bd6;
+      --cyan: #22e9ff;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text); font-family: 'Inter', system-ui, sans-serif; }
+    body {
+      background:
+        radial-gradient(ellipse at top, rgba(34,233,255,0.06) 0%, transparent 60%),
+        radial-gradient(ellipse at bottom right, rgba(255,43,214,0.05) 0%, transparent 60%),
+        var(--bg);
+      min-height: 100vh;
+    }
+
+    header {
+      padding: 48px 24px 24px;
+      max-width: 1400px;
+      margin: 0 auto;
+      border-bottom: 1px solid var(--border);
+    }
+    .kicker {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.3em;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 56px;
+      letter-spacing: 0.04em;
+      margin: 0 0 8px;
+      line-height: 1;
+    }
+    h1 .accent { color: var(--cyan); }
+    .lede {
+      font-size: 15px;
+      line-height: 1.55;
+      color: var(--text-dim);
+      max-width: 640px;
+    }
+    .lede strong { color: var(--text); }
+    .meta-row {
+      display: flex;
+      gap: 16px;
+      margin-top: 20px;
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      color: var(--text-dim);
+      flex-wrap: wrap;
+    }
+    .meta-row a {
+      color: var(--cyan);
+      text-decoration: none;
+      border-bottom: 1px dashed var(--cyan);
+    }
+
+    main {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 32px 24px 64px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 32px;
+    }
+    @media (max-width: 900px) {
+      .grid { grid-template-columns: 1fr; }
+      h1 { font-size: 40px; }
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .card-header {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+    }
+    .card-index {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      color: var(--text-dim);
+      letter-spacing: 0.2em;
+    }
+    .card-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 32px;
+      letter-spacing: 0.06em;
+      line-height: 1;
+      margin: 0;
+    }
+    .card-title .sub {
+      display: block;
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      letter-spacing: normal;
+      color: var(--text-dim);
+      font-weight: 400;
+      margin-top: 6px;
+    }
+
+    .card-body {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 20px;
+    }
+    @media (max-width: 640px) {
+      .card-body { grid-template-columns: 1fr; }
+    }
+
+    .preview {
+      position: relative;
+      width: 220px;
+      height: 476px;
+      border-radius: 20px;
+      overflow: hidden;
+      background: #000;
+      border: 1px solid var(--border);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.6);
+    }
+    @media (max-width: 640px) {
+      .preview { width: 100%; max-width: 220px; margin: 0 auto; }
+    }
+    .preview iframe {
+      width: 375px;
+      height: 812px;
+      border: 0;
+      transform: scale(0.586); /* 220/375 */
+      transform-origin: top left;
+    }
+    .preview::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      border-radius: 20px;
+      box-shadow: inset 0 0 0 2px rgba(255,255,255,0.06);
+    }
+
+    .details h3 {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      margin: 0 0 6px;
+    }
+    .details p {
+      font-size: 14px;
+      line-height: 1.55;
+      color: var(--text);
+      margin: 0 0 16px;
+    }
+    .details p strong { color: var(--cyan); }
+    .palette {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    .swatch {
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    .tags {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+    .tag {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      padding: 4px 8px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      color: var(--text-dim);
+    }
+    .actions {
+      display: flex;
+      gap: 10px;
+      margin-top: auto;
+    }
+    .btn {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 8px 14px;
+      border: 1px solid var(--cyan);
+      color: var(--cyan);
+      background: transparent;
+      text-decoration: none;
+      border-radius: 4px;
+      transition: background 0.15s;
+    }
+    .btn:hover { background: rgba(34,233,255,0.1); }
+    .btn.secondary {
+      border-color: var(--border);
+      color: var(--text-dim);
+    }
+    .btn.secondary:hover { background: rgba(255,255,255,0.04); }
+
+    .rec-banner {
+      background: linear-gradient(135deg, rgba(255,43,214,0.1), rgba(34,233,255,0.05));
+      border: 1px solid var(--accent);
+      border-radius: 8px;
+      padding: 12px 16px;
+      margin-bottom: 12px;
+      font-size: 12px;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'Space Mono', monospace;
+      letter-spacing: 0.05em;
+    }
+
+    footer {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 24px;
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      color: var(--text-dim);
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    footer a { color: var(--cyan); text-decoration: none; }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="kicker">DESIGN PROPOSALS · V0</div>
+  <h1>RandomBattle <span class="accent">4-Way</span> Fork</h1>
+  <p class="lede">
+    같은 <strong>챌린저스!</strong> 룰(7라운드 오토드래프트 · 플래그 줄다리기 · 벤치 오버플로) 위에
+    2026년 모바일 트렌드를 하나씩 얹은 네 갈래 리디자인. 목업은 iPhone 12 mini 세로(375×812)
+    기준으로 만들어졌고 매치 씬을 중심으로 톤을 드러냅니다.
+  </p>
+  <div class="meta-row">
+    <span>📦 현재 프로덕션: <a href="/">/ (기본 사이버펑크)</a></span>
+    <span>📖 <a href="https://github.com/devload/randombattle-boardgame">github.com/devload/randombattle-boardgame</a></span>
+    <span>🗓 2026-07-09</span>
+  </div>
+</header>
+
+<main>
+  <div class="grid">
+
+    <!-- ============ 01 · BALATRO CEREMONY ============ -->
+    <section class="card">
+      <div class="card-header">
+        <span class="card-index">01</span>
+        <h2 class="card-title">
+          BALATRO CEREMONY
+          <span class="sub">네온 카지노 지하 바 · 칩 세리모니</span>
+        </h2>
+      </div>
+
+      <div class="rec-banner">⭐ RECOMMENDED · Balatro 감성 주스 + 조커 메타 언락</div>
+
+      <div class="card-body">
+        <div class="preview">
+          <iframe src="01-balatro-ceremony.html" loading="lazy" title="Balatro Ceremony mockup"></iframe>
+        </div>
+
+        <div class="details">
+          <h3>Concept</h3>
+          <p>지하 카지노에서 칩 카드가 쌓이고 무너지는 <strong>세리모니</strong>. 매 리빌마다 숫자가 튀고 콤보가 붙어 파일이 뒤집힐 때 칩 타워가 우르르 무너짐.</p>
+
+          <h3>Palette</h3>
+          <div class="palette">
+            <div class="swatch" style="background:#0B0F1E"></div>
+            <div class="swatch" style="background:#0F3B2E"></div>
+            <div class="swatch" style="background:#FF2E9A"></div>
+            <div class="swatch" style="background:#22E9FF"></div>
+            <div class="swatch" style="background:#FFD84D"></div>
+            <div class="swatch" style="background:#E9E4D0"></div>
+          </div>
+
+          <h3>Signature Moments</h3>
+          <p>PILE TOPPLES 칩 타워 붕괴 · COMBO×3 CHIP RAIN · JOKER PROC 골드 스탬프</p>
+
+          <div class="tags">
+            <span class="tag">JUICE++</span>
+            <span class="tag">JOKER META</span>
+            <span class="tag">RETENTION</span>
+          </div>
+
+          <div class="actions">
+            <a class="btn" href="01-balatro-ceremony.html" target="_blank">목업 열기 ↗</a>
+            <a class="btn secondary" href="https://github.com/devload/randombattle-boardgame/blob/main/docs/proposals/01-balatro-ceremony.md" target="_blank">기획서</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 02 · COZY SPORTS ============ -->
+    <section class="card">
+      <div class="card-header">
+        <span class="card-index">02</span>
+        <h2 class="card-title">
+          COZY SPORTS LEAGUE
+          <span class="sub">작은 마을 파이 콘테스트</span>
+        </h2>
+      </div>
+
+      <div class="card-body">
+        <div class="preview">
+          <iframe src="02-cozy-sports.html" loading="lazy" title="Cozy Sports mockup"></iframe>
+        </div>
+
+        <div class="details">
+          <h3>Concept</h3>
+          <p>동물 마을 여름 축제 <strong>파이 콘테스트</strong>. 재료 카드를 파이 위에 올려 심사위원 앞에서 리본을 뺏고 뺏김. 코지 파스텔·수채·이모지 애니.</p>
+
+          <h3>Palette</h3>
+          <div class="palette">
+            <div class="swatch" style="background:#faf3e0"></div>
+            <div class="swatch" style="background:#a5c9a5"></div>
+            <div class="swatch" style="background:#ff7e6b"></div>
+            <div class="swatch" style="background:#c5b28c"></div>
+            <div class="swatch" style="background:#ffe6a3"></div>
+            <div class="swatch" style="background:#5b4636"></div>
+          </div>
+
+          <h3>Signature Moments</h3>
+          <p>GRAND JUDGE'S TASTE 심사위원 반응 팝 · 오븐 부풀기 · 벤치 꾸벅 (귀여운 패배)</p>
+
+          <div class="tags">
+            <span class="tag">TIKTOK-READY</span>
+            <span class="tag">CASUAL</span>
+            <span class="tag">ANTI-CYBERPUNK</span>
+          </div>
+
+          <div class="actions">
+            <a class="btn" href="02-cozy-sports.html" target="_blank">목업 열기 ↗</a>
+            <a class="btn secondary" href="https://github.com/devload/randombattle-boardgame/blob/main/docs/proposals/02-cozy-sports.md" target="_blank">기획서</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 03 · HYPER ROLL ARCADE ============ -->
+    <section class="card">
+      <div class="card-header">
+        <span class="card-index">03</span>
+        <h2 class="card-title">
+          HYPER ROLL ARCADE
+          <span class="sub">리듬 탭 커밋 · 레트로 아케이드</span>
+        </h2>
+      </div>
+
+      <div class="card-body">
+        <div class="preview">
+          <iframe src="03-hyper-roll-arcade.html" loading="lazy" title="Hyper Roll Arcade mockup"></iframe>
+        </div>
+
+        <div class="details">
+          <h3>Concept</h3>
+          <p>TFT Hyper Roll 카덴스(60~90초) + <strong>탭 타이밍 커밋</strong>. 리빌마다 스윕 바에서 스윗스팟 탭 = 효과 증폭. CRT 스캔라인·픽셀 타이포.</p>
+
+          <h3>Palette</h3>
+          <div class="palette">
+            <div class="swatch" style="background:#0a0e2a"></div>
+            <div class="swatch" style="background:#ff5e00"></div>
+            <div class="swatch" style="background:#ff2bd6"></div>
+            <div class="swatch" style="background:#00c8ff"></div>
+            <div class="swatch" style="background:#1aff88"></div>
+          </div>
+
+          <h3>Signature Moments</h3>
+          <p>PERFECT TAP 화면 프리즈 + 픽셀 폭발 · FLAG FLIP CASCADE · CRT WARP 트랜지션</p>
+
+          <div class="tags">
+            <span class="tag">SKILL LAYER</span>
+            <span class="tag">ARCADE</span>
+            <span class="tag">LEADERBOARD</span>
+          </div>
+
+          <div class="actions">
+            <a class="btn" href="03-hyper-roll-arcade.html" target="_blank">목업 열기 ↗</a>
+            <a class="btn secondary" href="https://github.com/devload/randombattle-boardgame/blob/main/docs/proposals/03-hyper-roll-arcade.md" target="_blank">기획서</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 04 · TWO-LOOP ============ -->
+    <section class="card">
+      <div class="card-header">
+        <span class="card-index">04</span>
+        <h2 class="card-title">
+          TWO-LOOP TOURNAMENT
+          <span class="sub">이중 루프 정원 · 보태니컬 레트로퓨처</span>
+        </h2>
+      </div>
+
+      <div class="rec-banner">⭐ RECOMMENDED · 이중 루프 구조로 데드타임 제거</div>
+
+      <div class="card-body">
+        <div class="preview">
+          <iframe src="04-two-loop-tournament.html" loading="lazy" title="Two-Loop Tournament mockup"></iframe>
+        </div>
+
+        <div class="details">
+          <h3>Concept</h3>
+          <p>Loop A(매치) + Loop B(20초 <strong>정원 관리</strong>)의 이중 루프. 카드는 살아있는 식물 — 물주기·가지치기·융합. 앤세스트럴 시드로 러닝 간 전승.</p>
+
+          <h3>Palette</h3>
+          <div class="palette">
+            <div class="swatch" style="background:#0f5c3d"></div>
+            <div class="swatch" style="background:#6b8e5a"></div>
+            <div class="swatch" style="background:#b87333"></div>
+            <div class="swatch" style="background:#f0e8d0"></div>
+            <div class="swatch" style="background:#3d3d3d"></div>
+            <div class="swatch" style="background:#88f0ff"></div>
+          </div>
+
+          <h3>Signature Moments</h3>
+          <p>FUSION BLOOM 두 장 융합 개화 · CARDS BREATHE 카드 미세 호흡 · RAIN ROUND 회복 라운드</p>
+
+          <div class="tags">
+            <span class="tag">DUAL LOOP</span>
+            <span class="tag">META HEAVY</span>
+            <span class="tag">FRESH</span>
+          </div>
+
+          <div class="actions">
+            <a class="btn" href="04-two-loop-tournament.html" target="_blank">목업 열기 ↗</a>
+            <a class="btn secondary" href="https://github.com/devload/randombattle-boardgame/blob/main/docs/proposals/04-two-loop-tournament.md" target="_blank">기획서</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<footer>
+  <span>© 2026 RandomBattle · Fan project · Non-commercial</span>
+  <span>Play the current build → <a href="/">/ (base cyberpunk)</a></span>
+</footer>
+
+</body>
+</html>

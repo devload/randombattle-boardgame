@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>04 · TWO-LOOP TOURNAMENT — Intermission</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --emerald: #0F5C3D;
+    --emerald-deep: #063527;
+    --moss: #6B8E5A;
+    --copper: #B87333;
+    --copper-glow: #d99253;
+    --cream: #F0E8D0;
+    --concrete: #3D3D3D;
+    --concrete-dark: #232323;
+    --cyan-glow: #88F0FF;
+    --lavender: #D9B8FF;
+  }
+
+  html, body {
+    min-height: 100vh;
+    font-family: 'Cormorant Garamond', serif;
+    background:
+      radial-gradient(ellipse at 30% 20%, #1a3a2a 0%, #0a1610 60%, #050b08 100%);
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 30px 20px;
+    color: var(--cream);
+  }
+
+  /* ambient page rain */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(180deg, transparent 0%, rgba(136,240,255,0.03) 100%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .page-meta {
+    position: fixed;
+    top: 12px;
+    left: 12px;
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: rgba(240,232,208,0.35);
+    letter-spacing: 0.15em;
+    z-index: 10;
+  }
+
+  /* device frame */
+  .device {
+    width: 375px;
+    height: 812px;
+    position: relative;
+    background:
+      radial-gradient(ellipse at 50% 0%, #14432f 0%, #0a2418 40%, #050f0a 100%);
+    border-radius: 42px;
+    box-shadow:
+      0 40px 80px rgba(0,0,0,0.6),
+      0 0 0 8px #1c1c1c,
+      0 0 0 9px #2a2a2a,
+      0 0 60px rgba(136,240,255,0.08);
+    overflow: hidden;
+    z-index: 2;
+  }
+
+  /* moss-covered concrete inner frame */
+  .device::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(180deg, rgba(107,142,90,0.12) 0%, transparent 30%, transparent 70%, rgba(107,142,90,0.15) 100%),
+      radial-gradient(circle at 10% 30%, rgba(107,142,90,0.18) 0%, transparent 20%),
+      radial-gradient(circle at 90% 60%, rgba(107,142,90,0.15) 0%, transparent 22%),
+      radial-gradient(circle at 20% 90%, rgba(107,142,90,0.2) 0%, transparent 18%);
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* rain particles inside */
+  .rain {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 2;
+  }
+  .rain span {
+    position: absolute;
+    top: -20px;
+    width: 1px;
+    height: 14px;
+    background: linear-gradient(180deg, transparent, rgba(136,240,255,0.55));
+    animation: fall linear infinite;
+    opacity: 0.6;
+  }
+  @keyframes fall {
+    0% { transform: translateY(-30px); opacity: 0; }
+    20% { opacity: 0.7; }
+    100% { transform: translateY(850px); opacity: 0; }
+  }
+
+  /* main screen content */
+  .screen {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    padding: 44px 20px 24px;
+    display: flex;
+    flex-direction: column;
+    z-index: 3;
+  }
+
+  /* ============ TOP HEADER (tournament HUD) ============ */
+  .hud {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    color: rgba(240,232,208,0.7);
+    margin-bottom: 10px;
+  }
+  .hud .round {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .hud .round .r-num {
+    color: var(--cyan-glow);
+    font-weight: 700;
+  }
+  .hud .fans {
+    color: var(--copper-glow);
+    font-weight: 700;
+  }
+
+  /* project chip */
+  .chip {
+    display: inline-block;
+    padding: 4px 10px;
+    border: 1px solid rgba(184,115,51,0.5);
+    border-radius: 12px;
+    background: rgba(15,92,61,0.5);
+    color: var(--cream);
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+  }
+
+  .next-opponent {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    background: linear-gradient(90deg, rgba(0,0,0,0.35), rgba(0,0,0,0.15));
+    border: 1px solid rgba(107,142,90,0.3);
+    border-radius: 10px;
+    margin-bottom: 18px;
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+  }
+  .next-opponent .op-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 14px;
+    font-style: italic;
+    color: var(--cream);
+    letter-spacing: 0.05em;
+  }
+  .next-opponent .op-portrait {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 40% 40%, #6b8e5a, #2a3a26);
+    border: 1px solid var(--copper);
+    display: inline-block;
+    margin-right: 8px;
+    vertical-align: middle;
+  }
+
+  /* ============ TIMER ============ */
+  .timer-wrap {
+    text-align: center;
+    margin-bottom: 8px;
+    position: relative;
+  }
+  .timer-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.4em;
+    color: rgba(240,232,208,0.55);
+    margin-bottom: 4px;
+  }
+  .timer {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 600;
+    font-size: 62px;
+    line-height: 1;
+    color: var(--cream);
+    letter-spacing: 0.05em;
+    text-shadow:
+      0 0 24px rgba(136,240,255,0.25),
+      0 0 60px rgba(15,92,61,0.6);
+    font-variant-numeric: tabular-nums;
+    animation: timer-pulse 1s ease-in-out infinite;
+  }
+  @keyframes timer-pulse {
+    0%, 100% { text-shadow: 0 0 24px rgba(136,240,255,0.25), 0 0 60px rgba(15,92,61,0.6); }
+    50% { text-shadow: 0 0 30px rgba(136,240,255,0.5), 0 0 80px rgba(15,92,61,0.7); }
+  }
+  .timer-sub {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 12px;
+    color: var(--moss);
+    letter-spacing: 0.1em;
+    margin-top: 2px;
+  }
+  .points-row {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 8px;
+  }
+  .droplet {
+    width: 12px;
+    height: 16px;
+    background: linear-gradient(180deg, var(--cyan-glow), #4bb5c9);
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    transform: rotate(0deg);
+    box-shadow: 0 0 8px rgba(136,240,255,0.5);
+  }
+  .droplet.spent {
+    background: linear-gradient(180deg, #2a3a3d, #1a2325);
+    box-shadow: none;
+    opacity: 0.4;
+  }
+
+  /* ============ SECTION LABEL ============ */
+  .section-label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin: 12px 0 8px;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 13px;
+    color: rgba(240,232,208,0.6);
+    letter-spacing: 0.2em;
+  }
+  .section-label::before,
+  .section-label::after {
+    content: '';
+    height: 1px;
+    width: 40px;
+    background: linear-gradient(90deg, transparent, var(--moss));
+  }
+  .section-label::after {
+    background: linear-gradient(90deg, var(--moss), transparent);
+  }
+
+  /* ============ DECK GARDEN ============ */
+  .garden {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px 8px;
+    padding: 4px 0;
+  }
+
+  .pot {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    padding-bottom: 22px;
+    cursor: pointer;
+  }
+
+  /* the card-plant */
+  .card-plant {
+    position: relative;
+    width: 70px;
+    height: 88px;
+    border-radius: 8px 8px 6px 6px;
+    background:
+      linear-gradient(160deg, rgba(240,232,208,0.95) 0%, rgba(230,220,190,0.85) 100%);
+    border: 1px solid rgba(184,115,51,0.4);
+    padding: 8px 6px 6px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    color: var(--emerald-deep);
+    box-shadow:
+      0 4px 12px rgba(0,0,0,0.4),
+      inset 0 0 20px rgba(136,240,255,0.15),
+      0 0 12px rgba(136,240,255,0.15);
+    animation: breathe 4s ease-in-out infinite;
+    transform-origin: bottom center;
+    z-index: 2;
+  }
+  @keyframes breathe {
+    0%, 100% { transform: scale(1) translateY(0); }
+    50% { transform: scale(1.03) translateY(-1px); }
+  }
+
+  /* stagger each card so garden feels alive */
+  .pot:nth-child(1) .card-plant { animation-delay: 0s; animation-duration: 4.2s; }
+  .pot:nth-child(2) .card-plant { animation-delay: 0.4s; animation-duration: 3.8s; }
+  .pot:nth-child(3) .card-plant { animation-delay: 0.8s; animation-duration: 4.6s; }
+  .pot:nth-child(4) .card-plant { animation-delay: 0.2s; animation-duration: 4.0s; }
+  .pot:nth-child(5) .card-plant { animation-delay: 0.6s; animation-duration: 3.6s; }
+  .pot:nth-child(6) .card-plant { animation-delay: 1.0s; animation-duration: 4.4s; }
+
+  .card-plant .card-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 600;
+    font-style: italic;
+    font-size: 10.5px;
+    line-height: 1.1;
+    text-align: center;
+    color: var(--emerald-deep);
+    letter-spacing: 0.02em;
+  }
+  .card-plant .card-power {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 700;
+    font-style: italic;
+    font-size: 22px;
+    line-height: 1;
+    text-align: center;
+    color: var(--emerald);
+    text-shadow: 0 0 4px rgba(136,240,255,0.35);
+  }
+  .card-plant .level-dots {
+    display: flex;
+    justify-content: center;
+    gap: 3px;
+    margin-top: 1px;
+  }
+  .card-plant .level-dots span {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: rgba(15,92,61,0.15);
+  }
+  .card-plant .level-dots span.on {
+    background: var(--copper);
+    box-shadow: 0 0 3px var(--copper-glow);
+  }
+
+  /* leaf accent on card top */
+  .card-plant::before {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 14px;
+    height: 18px;
+    background:
+      radial-gradient(ellipse at 50% 100%, var(--moss) 0%, var(--emerald) 70%, transparent 100%);
+    border-radius: 50% 50% 40% 40% / 60% 60% 40% 40%;
+    box-shadow: 0 0 8px rgba(136,240,255,0.35);
+  }
+
+  /* the ceramic pot */
+  .pot-body {
+    position: relative;
+    width: 82px;
+    height: 34px;
+    margin-top: -6px;
+    background:
+      linear-gradient(180deg, #d99253 0%, #b87333 40%, #7d4d20 100%);
+    border-radius: 6px 6px 18px 18px / 6px 6px 30px 30px;
+    box-shadow:
+      0 4px 8px rgba(0,0,0,0.5),
+      inset 0 2px 3px rgba(255,220,180,0.4),
+      inset 0 -4px 6px rgba(0,0,0,0.3);
+    z-index: 1;
+  }
+  .pot-body::before {
+    content: '';
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    right: 4px;
+    height: 4px;
+    background: linear-gradient(180deg, #7d4d20, #5a3617);
+    border-radius: 2px;
+  }
+  .pot-body .pot-label {
+    position: absolute;
+    bottom: 4px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Space Mono', monospace;
+    font-size: 7px;
+    letter-spacing: 0.15em;
+    color: var(--cream);
+    opacity: 0.85;
+  }
+
+  /* selected pot */
+  .pot.selected .card-plant {
+    box-shadow:
+      0 6px 16px rgba(0,0,0,0.5),
+      inset 0 0 24px rgba(136,240,255,0.35),
+      0 0 20px rgba(136,240,255,0.5),
+      0 0 40px rgba(136,240,255,0.2);
+    border-color: var(--cyan-glow);
+  }
+  .pot.selected .pot-body {
+    box-shadow:
+      0 4px 8px rgba(0,0,0,0.5),
+      inset 0 2px 3px rgba(255,220,180,0.4),
+      inset 0 -4px 6px rgba(0,0,0,0.3),
+      0 0 14px rgba(136,240,255,0.4);
+  }
+
+  /* promoted / fused */
+  .pot.fused .card-plant {
+    border-color: var(--lavender);
+    background:
+      linear-gradient(160deg, rgba(240,232,208,0.98) 0%, rgba(217,184,255,0.25) 100%);
+  }
+  .pot.fused .pot-body {
+    background: linear-gradient(180deg, #f4c88e 0%, #d99253 40%, #8a5a26 100%);
+  }
+
+  /* ============ FUSION PREVIEW ============ */
+  .fusion-preview {
+    grid-column: 3 / 4;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    padding: 8px 4px;
+    border: 1px dashed rgba(217,184,255,0.5);
+    border-radius: 10px;
+    background: rgba(217,184,255,0.05);
+  }
+  .fusion-preview .fp-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 7px;
+    letter-spacing: 0.2em;
+    color: var(--lavender);
+    opacity: 0.8;
+  }
+  .fusion-preview .fp-icon {
+    font-size: 28px;
+    filter: drop-shadow(0 0 8px rgba(217,184,255,0.6));
+  }
+  .fusion-preview .fp-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 11px;
+    color: var(--lavender);
+    text-align: center;
+    line-height: 1.1;
+  }
+
+  /* ============ ACTION BAR ============ */
+  .actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+    padding: 12px 10px;
+    background:
+      linear-gradient(180deg, rgba(107,142,90,0.15), rgba(15,92,61,0.35));
+    border: 1px solid rgba(107,142,90,0.4);
+    border-radius: 16px;
+    box-shadow:
+      inset 0 1px 0 rgba(240,232,208,0.08),
+      0 -4px 16px rgba(0,0,0,0.3);
+  }
+
+  .action-btn {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    padding: 10px 4px;
+    background:
+      linear-gradient(180deg, rgba(240,232,208,0.05), rgba(0,0,0,0.25));
+    border: 1px solid rgba(184,115,51,0.35);
+    border-radius: 12px;
+    color: var(--cream);
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .action-btn:hover, .action-btn.primary {
+    background: linear-gradient(180deg, rgba(184,115,51,0.3), rgba(184,115,51,0.15));
+    border-color: var(--copper-glow);
+    box-shadow: 0 0 14px rgba(184,115,51,0.35);
+  }
+  .action-btn .a-icon {
+    font-size: 22px;
+    line-height: 1;
+  }
+  .action-btn .a-name {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    font-weight: 700;
+  }
+  .action-btn .a-cost {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 10px;
+    color: rgba(136,240,255,0.85);
+  }
+
+  /* ============ VIBE STRIP ============ */
+  .vibe-strip {
+    margin-top: 30px;
+    width: 375px;
+    padding: 14px 16px;
+    background: rgba(10,20,15,0.7);
+    border: 1px solid rgba(107,142,90,0.3);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    z-index: 2;
+    position: relative;
+  }
+  .vibe-strip .vibe-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    color: rgba(240,232,208,0.5);
+  }
+  .swatches {
+    display: flex;
+    gap: 4px;
+  }
+  .swatch {
+    width: 16px;
+    height: 16px;
+    border-radius: 4px;
+    border: 1px solid rgba(240,232,208,0.15);
+  }
+  .fused-preview-mini {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 11px;
+    color: var(--lavender);
+  }
+  .seed-icon {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    color: var(--copper-glow);
+    letter-spacing: 0.15em;
+  }
+
+  /* subtle water droplet cursor */
+  .device { cursor: crosshair; }
+</style>
+</head>
+<body>
+
+<div class="page-meta">CHALLENGERS! FAN REMAKE / DIRECTION 04</div>
+
+<div style="display:flex; flex-direction:column; align-items:center; gap:0;">
+
+<div class="device">
+  <div class="rain" id="rain"></div>
+
+  <div class="screen">
+
+    <!-- HUD -->
+    <div class="hud">
+      <div class="round">
+        <span class="chip">04 · TWO-LOOP</span>
+      </div>
+      <div class="fans">
+        FANS <span style="font-family:'Cormorant Garamond',serif; font-style:italic; font-size:15px;">128</span>
+      </div>
+    </div>
+
+    <!-- Next opponent -->
+    <div class="next-opponent">
+      <div>
+        <span class="op-portrait"></span>
+        <span style="letter-spacing:0.2em; color:rgba(240,232,208,0.55);">ROUND 04 &nbsp;→&nbsp;</span>
+        <span class="op-name">Verdant Warden</span>
+      </div>
+      <div style="color: var(--cyan-glow); font-weight:700;">◆ 12</div>
+    </div>
+
+    <!-- Timer -->
+    <div class="timer-wrap">
+      <div class="timer-label">INTERMISSION · TEND YOUR GARDEN</div>
+      <div class="timer" id="timer">0:18</div>
+      <div class="timer-sub">the deck must breathe before the duel</div>
+      <div class="points-row" title="Water droplets (action points)">
+        <div class="droplet"></div>
+        <div class="droplet"></div>
+        <div class="droplet"></div>
+        <div class="droplet spent"></div>
+        <div class="droplet spent"></div>
+      </div>
+    </div>
+
+    <!-- Section label -->
+    <div class="section-label">— THE DECK GARDEN —</div>
+
+    <!-- Garden Grid -->
+    <div class="garden">
+
+      <div class="pot selected">
+        <div class="card-plant">
+          <div class="card-name">Mossbrand<br>Runner</div>
+          <div>
+            <div class="card-power">4</div>
+            <div class="level-dots">
+              <span class="on"></span><span class="on"></span><span></span>
+            </div>
+          </div>
+        </div>
+        <div class="pot-body"><span class="pot-label">A · 04</span></div>
+      </div>
+
+      <div class="pot">
+        <div class="card-plant">
+          <div class="card-name">Copperroot<br>Herald</div>
+          <div>
+            <div class="card-power">3</div>
+            <div class="level-dots">
+              <span class="on"></span><span></span><span></span>
+            </div>
+          </div>
+        </div>
+        <div class="pot-body"><span class="pot-label">B · 03</span></div>
+      </div>
+
+      <div class="pot fused">
+        <div class="card-plant">
+          <div class="card-name">Cyan Fern<br><span style="font-size:8px; letter-spacing:0.15em; color:var(--copper);">FUSED</span></div>
+          <div>
+            <div class="card-power">6</div>
+            <div class="level-dots">
+              <span class="on"></span><span class="on"></span><span class="on"></span>
+            </div>
+          </div>
+        </div>
+        <div class="pot-body"><span class="pot-label">C · 06 ★</span></div>
+      </div>
+
+      <div class="pot">
+        <div class="card-plant">
+          <div class="card-name">Nightmoth<br>Coil</div>
+          <div>
+            <div class="card-power">2</div>
+            <div class="level-dots">
+              <span class="on"></span><span></span><span></span>
+            </div>
+          </div>
+        </div>
+        <div class="pot-body"><span class="pot-label">A · 02</span></div>
+      </div>
+
+      <div class="pot">
+        <div class="card-plant">
+          <div class="card-name">Copperroot<br>Herald</div>
+          <div>
+            <div class="card-power">3</div>
+            <div class="level-dots">
+              <span class="on"></span><span></span><span></span>
+            </div>
+          </div>
+        </div>
+        <div class="pot-body"><span class="pot-label">B · 03</span></div>
+      </div>
+
+      <div class="pot">
+        <div class="card-plant">
+          <div class="card-name">Emerald<br>Whisper</div>
+          <div>
+            <div class="card-power">5</div>
+            <div class="level-dots">
+              <span class="on"></span><span class="on"></span><span></span>
+            </div>
+          </div>
+        </div>
+        <div class="pot-body"><span class="pot-label">D · 05</span></div>
+      </div>
+
+    </div>
+
+    <!-- Actions -->
+    <div class="actions">
+      <div class="action-btn primary">
+        <div class="a-icon">💧</div>
+        <div class="a-name">WATER</div>
+        <div class="a-cost">1 drop</div>
+      </div>
+      <div class="action-btn">
+        <div class="a-icon">✂️</div>
+        <div class="a-name">PRUNE</div>
+        <div class="a-cost">1 drop</div>
+      </div>
+      <div class="action-btn">
+        <div class="a-icon">🌱</div>
+        <div class="a-name">FUSE</div>
+        <div class="a-cost">2 drops</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Vibe strip -->
+<div class="vibe-strip">
+  <div style="display:flex; flex-direction:column; gap:6px;">
+    <div class="vibe-label">PALETTE</div>
+    <div class="swatches">
+      <div class="swatch" style="background:#0F5C3D;" title="emerald"></div>
+      <div class="swatch" style="background:#6B8E5A;" title="moss"></div>
+      <div class="swatch" style="background:#B87333;" title="copper"></div>
+      <div class="swatch" style="background:#F0E8D0;" title="cream"></div>
+      <div class="swatch" style="background:#3D3D3D;" title="concrete"></div>
+      <div class="swatch" style="background:#88F0FF;" title="cyan glow"></div>
+    </div>
+  </div>
+
+  <div class="fused-preview-mini" title="fusion bloom preview">
+    <span style="font-size:20px; filter:drop-shadow(0 0 6px rgba(217,184,255,0.6));">🌸</span>
+    <span>Cyan Fern</span>
+  </div>
+
+  <div class="seed-icon" title="ancestral seed">
+    <span style="font-size:14px;">🌰</span>
+    <span>SEED × 02</span>
+  </div>
+</div>
+
+</div>
+
+<script>
+  // rain
+  const rain = document.getElementById('rain');
+  for (let i = 0; i < 40; i++) {
+    const drop = document.createElement('span');
+    drop.style.left = Math.random() * 100 + '%';
+    drop.style.animationDuration = (0.8 + Math.random() * 1.2) + 's';
+    drop.style.animationDelay = (Math.random() * 2) + 's';
+    drop.style.opacity = (0.3 + Math.random() * 0.5);
+    rain.appendChild(drop);
+  }
+
+  // countdown timer
+  const timerEl = document.getElementById('timer');
+  let seconds = 18;
+  setInterval(() => {
+    seconds -= 1;
+    if (seconds < 0) seconds = 25;
+    const m = Math.floor(seconds / 60);
+    const s = String(seconds % 60).padStart(2, '0');
+    timerEl.textContent = m + ':' + s;
+    if (seconds <= 5) {
+      timerEl.style.color = '#ffcaa8';
+    } else {
+      timerEl.style.color = '';
+    }
+  }, 1000);
+
+  // pot selection toy
+  document.querySelectorAll('.pot').forEach(p => {
+    p.addEventListener('click', () => {
+      document.querySelectorAll('.pot').forEach(x => x.classList.remove('selected'));
+      p.classList.add('selected');
+    });
+  });
+</script>
+
+</body>
+</html>
