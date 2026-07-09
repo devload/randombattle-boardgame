@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Faraway — Round Flow</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Space+Mono:wght@400;700&family=Inter:wght@400;600&display=swap" rel="stylesheet"/>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 100%; height: 100%; }
+  body {
+    background: #f5efe3;
+    font-family: 'Inter', sans-serif;
+    color: #4a5c6a;
+    padding: 32px 24px;
+    min-height: 100vh;
+    background-image:
+      radial-gradient(circle at 20% 15%, rgba(196,139,110,0.08) 0, transparent 40%);
+  }
+  .kicker {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: #c48b6e;
+    text-align: center;
+    margin-bottom: 12px;
+  }
+  h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-weight: 600;
+    font-size: 26px;
+    text-align: center;
+    color: #2d2438;
+    margin-bottom: 8px;
+    letter-spacing: 0.02em;
+  }
+  .sub {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    text-align: center;
+    letter-spacing: 0.15em;
+    color: #8b6f47;
+    margin-bottom: 40px;
+    text-transform: uppercase;
+  }
+  .wrap {
+    max-width: 780px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .step {
+    display: grid;
+    grid-template-columns: 60px 1fr;
+    gap: 20px;
+    padding: 20px 24px;
+    background: rgba(255,255,255,0.5);
+    border: 1px solid rgba(139,111,71,0.2);
+    border-radius: 14px;
+    position: relative;
+  }
+  .step::before {
+    content: '';
+    position: absolute;
+    left: 50px;
+    bottom: -18px;
+    width: 2px;
+    height: 18px;
+    background: rgba(196,139,110,0.4);
+    z-index: 0;
+  }
+  .step:last-child::before { display: none; }
+  .step-num {
+    font-family: 'Cinzel', serif;
+    font-weight: 700;
+    font-size: 42px;
+    color: #c48b6e;
+    line-height: 1;
+    text-align: center;
+    padding-top: 4px;
+    text-shadow: 0 2px 4px rgba(196,139,110,0.2);
+  }
+  .step-body h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-weight: 600;
+    font-size: 20px;
+    color: #2d2438;
+    margin-bottom: 6px;
+  }
+  .step-tag {
+    display: inline-block;
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: #8b6f47;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-left: 8px;
+    padding: 2px 8px;
+    border: 1px solid rgba(139,111,71,0.4);
+    border-radius: 4px;
+    background: rgba(139,111,71,0.06);
+  }
+  .step-body p {
+    font-size: 13px;
+    line-height: 1.7;
+    color: #4a5c6a;
+  }
+  .step-body em {
+    color: #c48b6e;
+    font-family: 'Space Mono', monospace;
+    font-style: normal;
+    font-size: 12px;
+    letter-spacing: 0.03em;
+  }
+  .step-body strong {
+    color: #2d2438;
+    font-weight: 600;
+  }
+  .step-body ul {
+    margin-top: 8px;
+    padding-left: 20px;
+  }
+  .step-body li {
+    font-size: 12.5px;
+    line-height: 1.7;
+    color: #4a5c6a;
+    margin-bottom: 4px;
+  }
+  .footer-note {
+    max-width: 780px;
+    margin: 32px auto 0;
+    padding: 20px 24px;
+    background: rgba(45,36,56,0.05);
+    border-radius: 12px;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 15px;
+    line-height: 1.7;
+    color: #4a5c6a;
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+  <div class="kicker">// FARAWAY · ONE ROUND</div>
+  <h1>한 라운드 5단계</h1>
+  <div class="sub">Repeat 8 Times</div>
+
+  <div class="wrap">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <h3>동시 카드 선택<span class="step-tag">SIMULTANEOUS · SECRET</span></h3>
+        <p>모든 플레이어가 손패 <strong>3장 중 1장을 비밀리에</strong> 선택. 앞면으로 뒤집어 자기 앞에 내려둠 (아직 안 봄).</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <h3>동시 공개 & 배치<span class="step-tag">REVEAL & PLACE</span></h3>
+        <p>카운트 후 동시 공개. 각자 <strong>가장 오른쪽 빈 슬롯</strong>에 놓음. R1은 슬롯 1, R2는 슬롯 2, ..., R8은 슬롯 8.</p>
+        <p><em>이 순간 카드의 보상 아이콘이 타블로에 활성화 → 미래 카드 조건 재료가 됨.</em></p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <h3>뽑기 순서 결정<span class="step-tag">DRAW ORDER · ASC BY NUMBER</span></h3>
+        <p>이번 라운드에 놓은 카드의 <strong>번호가 낮은 사람이 먼저</strong>.</p>
+        <p><em>예시:</em> A=34, B=12, C=61 → 순서 B(12) → A(34) → C(61)</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-body">
+        <h3>드로우 액션<span class="step-tag">EACH PLAYER IN ORDER</span></h3>
+        <p>순서대로 자기 턴에 액션 수행:</p>
+        <ul>
+          <li><strong>(a) 지역 카드 1장 (필수)</strong> — 시장 앞면 3장 중 1장 선택 → 손패로</li>
+          <li><strong>(b) 성소 카드 1장 (옵션)</strong> — 이번 놓은 카드 번호가 <em>직전 라운드보다 크면</em> (오름차순 유지) 성소 시장 1장 뽑기 가능</li>
+        </ul>
+        <p style="margin-top: 8px;"><em>즉 오름차순 배치 = 성소 접근 · 내림차순 = 지역만.</em></p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">5</div>
+      <div class="step-body">
+        <h3>시장 리필<span class="step-tag">REFILL</span></h3>
+        <p>지역 시장 · 성소 시장 각각 3장으로 채움. 다음 라운드 시작.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-note">
+    "8라운드 반복 후, 타블로 오른쪽부터 스코어링 시작"
+  </div>
+</body>
+</html>
