@@ -279,6 +279,14 @@
         margin: 0 auto;
       }
     }
+
+    /* 4-column scene grid → 2 col on medium, 1 col on small */
+    @media (max-width: 720px) {
+      .scenes-grid { grid-template-columns: repeat(2, 1fr) !important; }
+    }
+    @media (max-width: 400px) {
+      .scenes-grid { grid-template-columns: 1fr !important; }
+    }
   </style>
 </head>
 <body>
@@ -355,6 +363,57 @@
           <a class="btn secondary" href="https://github.com/devload/randombattle-boardgame/blob/main/docs/proposals/05-challengers-roll.md" target="_blank">기획서</a>
         </div>
       </div>
+    </div>
+  </section>
+
+  <!-- ============ CURRENT-GAME REDESIGN (Lobby / Deck / Match / Result) ============ -->
+  <section class="card" style="margin-bottom:32px; border-color:var(--cyan); box-shadow: 0 0 40px rgba(34,233,255,0.12);">
+    <div class="card-header">
+      <span class="card-index">05·SCENES</span>
+      <h2 class="card-title">
+        BASE GAME · #05 REDESIGN
+        <span class="sub">현 게임의 모든 씬을 #05 디자인 언어로 재정비 (룰·구조 유지, 시각 리프레시)</span>
+      </h2>
+    </div>
+
+    <div class="rec-banner" style="background: linear-gradient(135deg, rgba(34,233,255,0.12), rgba(255,43,214,0.06)); border-color: var(--cyan);">
+      🎨 DESIGN ONLY · 룰 변경 없음 · 타이포 / 카드 / HUD / 점수 팝만 #05 언어로 통일
+    </div>
+
+    <div style="display:grid; grid-template-columns: repeat(4, 1fr); gap:16px;" class="scenes-grid">
+      <div style="display:flex; flex-direction:column; gap:8px; align-items:center;">
+        <div class="preview" style="width:180px; height:390px;">
+          <iframe src="05c-lobby.html" loading="lazy" title="Lobby mockup" style="transform: scale(0.48); transform-origin: top left;"></iframe>
+        </div>
+        <div style="font-family:'Bebas Neue',sans-serif; letter-spacing:0.05em; color:var(--cyan);">LOBBY</div>
+        <a class="btn" href="05c-lobby.html" target="_blank" style="font-size:10px; padding:6px 10px;">열기 ↗</a>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:8px; align-items:center;">
+        <div class="preview" style="width:180px; height:390px;">
+          <iframe src="05d-deck.html" loading="lazy" title="Deck mockup" style="transform: scale(0.48); transform-origin: top left;"></iframe>
+        </div>
+        <div style="font-family:'Bebas Neue',sans-serif; letter-spacing:0.05em; color:var(--cyan);">DECK</div>
+        <a class="btn" href="05d-deck.html" target="_blank" style="font-size:10px; padding:6px 10px;">열기 ↗</a>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:8px; align-items:center;">
+        <div class="preview" style="width:180px; height:390px;">
+          <iframe src="05e-match.html" loading="lazy" title="Match mockup" style="transform: scale(0.48); transform-origin: top left;"></iframe>
+        </div>
+        <div style="font-family:'Bebas Neue',sans-serif; letter-spacing:0.05em; color:var(--cyan);">MATCH</div>
+        <a class="btn" href="05e-match.html" target="_blank" style="font-size:10px; padding:6px 10px;">열기 ↗</a>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:8px; align-items:center;">
+        <div class="preview" style="width:180px; height:390px;">
+          <iframe src="05f-result.html" loading="lazy" title="Result mockup" style="transform: scale(0.48); transform-origin: top left;"></iframe>
+        </div>
+        <div style="font-family:'Bebas Neue',sans-serif; letter-spacing:0.05em; color:var(--cyan);">RESULT</div>
+        <a class="btn" href="05f-result.html" target="_blank" style="font-size:10px; padding:6px 10px;">열기 ↗</a>
+      </div>
+    </div>
+
+    <div style="margin-top:20px; font-size:13px; line-height:1.6; color:var(--text-dim);">
+      <strong style="color:var(--text)">이식 대상:</strong> 위 4개 씬의 디자인 언어를 현 프로젝트(<a href="/" style="color:var(--cyan)">/</a>)에 적용.
+      타이포(Bebas Neue + Space Mono), 티어 색상 카드, HUD 라운드 도트바, 점수 팝, 홀로 CTA 등만 리팩터. 룰·씬 구조는 그대로.
     </div>
   </section>
 
