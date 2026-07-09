@@ -11,6 +11,7 @@ import { AnimatedNumber } from '../ui/AnimatedNumber'
 import { PowerBar } from '../ui/PowerBar'
 import { RoundDotBar } from '../ui/RoundDotBar'
 import { Chip } from '../ui/Chip'
+import { ScorePop } from '../ui/ScorePop'
 import { PowerBreakdown } from '../ui/PowerBreakdown'
 import { revealBreakdown } from '../game/effects'
 import { CardDetailSheet } from '../ui/CardDetailSheet'
@@ -50,6 +51,7 @@ export function MatchPhaseScene() {
   const introDone = true
   const [slash, setSlash] = useState<{ variant: SlashVariant; keyId: number } | null>(null)
   const [burstKey, setBurstKey] = useState<number | null>(null)
+  const [scorePop, setScorePop] = useState<{ value: number; tone: 'me' | 'foe'; keyId: number } | null>(null)
   const shakeRef = useRef<HTMLDivElement | null>(null)
 
   const triggerShake = () => {
@@ -133,6 +135,23 @@ export function MatchPhaseScene() {
         }, 300)
         setTimeout(() => setSlash(null), 1500)
         setTimeout(() => setBurstKey(null), 2200) // clear so it doesn't linger
+
+        // Score pop — sum of flag-loss fan effects from cards leaving flag possession.
+        // The LOSER (e.from) gains those fans as consolation, so the pop shows on
+        // their side (tone based on who benefits).
+        const fansGained = e.benched.reduce((sum, c) => {
+          return sum + c.effects.reduce((s, ef) => {
+            if (ef.trigger === 'flag-loss' && ef.body.kind === 'gain-fans') {
+              return s + ef.body.value
+            }
+            return s
+          }, 0)
+        }, 0)
+        if (fansGained > 0) {
+          const tone: 'me' | 'foe' = e.from === 'A' ? 'me' : 'foe'
+          setTimeout(() => setScorePop({ value: fansGained, tone, keyId: cursor }), 550)
+          setTimeout(() => setScorePop(null), 2200)
+        }
         break
       }
       case 'benchOverflow': {
@@ -318,6 +337,12 @@ export function MatchPhaseScene() {
 
       <CardDetailSheet card={detailCard} onClose={() => setDetailCard(null)} />
 
+      {/* Balatro-style score pop on breach */}
+      <ScorePop
+        value={scorePop?.value ?? null}
+        tone={scorePop?.tone ?? 'me'}
+        keyId={scorePop?.keyId ?? 'none'}
+      />
 
       {/* End of match modal */}
       <AnimatePresence>
@@ -404,8 +429,8 @@ export function MatchPhaseScene() {
 
 /**
  * Compact horizontal power line. Renders label + who-owns-it chip + big
- * animated number on a single row. Used stacked so attacker/defender power
- * read top-to-bottom around the power bar between them.
+ * animated Bebas number on a single row. Used stacked so attacker/defender
+ * power read top-to-bottom around the power bar between them.
  */
 function PowerLine({
   variant, label, value, who, flag = false,
@@ -419,25 +444,24 @@ function PowerLine({
   const isMe = who === '나'
   const numberColor = variant === 'attacker' ? 'text-neon-cyan' : 'text-neon-red'
   const numberGlow = variant === 'attacker'
-    ? '0 0 10px rgba(0,229,255,0.6)'
-    : '0 0 10px rgba(255,51,85,0.6)'
-  const chipBorder = isMe ? 'border-neon-cyan text-neon-cyan' : 'border-neon-red text-neon-red'
+    ? '0 0 12px rgba(34,233,255,0.65)'
+    : '0 0 12px rgba(255,51,85,0.65)'
+  const chipVariant: 'cyan' | 'red' = isMe ? 'cyan' : 'red'
 
   return (
     <div className="flex items-center justify-between gap-2 px-1">
-      <div className="flex items-center gap-2 min-w-0">
-        {flag && <span className="text-sm leading-none">🚩</span>}
-        <span className="font-mono text-[10px] tracking-[0.15em] text-arena-textDim whitespace-nowrap">
+      <div className="flex items-center gap-1.5 min-w-0">
+        {flag && (
+          <span className="text-base leading-none"
+                style={{ filter: 'drop-shadow(0 0 6px rgba(255,216,77,0.8))' }}>🚩</span>
+        )}
+        <span className="font-mono text-[10px] tracking-[0.2em] uppercase text-arena-textDim whitespace-nowrap">
           {label}
         </span>
-        {who && (
-          <span className={`font-mono text-[10px] px-1.5 py-0.5 border rounded-sm ${chipBorder} whitespace-nowrap`}>
-            {who}
-          </span>
-        )}
+        {who && <Chip variant={chipVariant} size="xs">{who}</Chip>}
       </div>
-      <div className={`font-display font-black text-2xl leading-none ${numberColor}`}
-           style={{ textShadow: numberGlow }}>
+      <div className={`font-display font-normal text-3xl leading-none ${numberColor}`}
+           style={{ textShadow: numberGlow, letterSpacing: '0.02em' }}>
         <AnimatedNumber value={value} />
       </div>
     </div>
@@ -484,24 +508,29 @@ function PlayerStrip({
   deckTotal: number
   role: 'attack' | 'defend'
 }) {
-  const border = side === 'me' ? 'border-neon-cyan shadow-neon-cyan' : 'border-neon-red shadow-neon-red'
-  const roleBadge =
-    role === 'attack'
-      ? <span className="ml-auto bg-neon-red text-white font-mono text-[10px] px-1.5 py-0.5 tracking-widest animate-pulse-neon">{side === 'me' ? '◀ 공격' : '공격 ▶'}</span>
-      : <span className="ml-auto border border-neon-yellow text-neon-yellow font-mono text-[10px] px-1.5 py-0.5 tracking-widest">방어</span>
+  const isMe = side === 'me'
+  const border = isMe ? 'border-neon-cyan' : 'border-neon-red'
+  const shadow = isMe ? 'shadow-[0_0_10px_rgba(34,233,255,0.35)]' : 'shadow-[0_0_10px_rgba(255,51,85,0.35)]'
+  const roleBadge = role === 'attack'
+    ? <Chip variant="red" size="xs">{isMe ? '◀ 공격' : '공격 ▶'}</Chip>
+    : <Chip variant="gold" size="xs">방어</Chip>
   return (
-    <div className="flex items-center gap-2 px-2 py-1.5 bg-black/40 border border-arena-lineDim rounded-md min-w-0">
-      <div className={`w-7 h-7 shrink-0 rounded flex items-center justify-center text-base bg-arena-panel2 border ${border}`}>
+    <div className={`flex items-center gap-2 px-2 py-1.5 bg-black/40 border ${border} ${shadow} rounded-md min-w-0`}>
+      <div className={`w-8 h-8 shrink-0 rounded flex items-center justify-center text-base
+                       bg-arena-panel2 border ${border}`}>
         {label.icon}
       </div>
       <div className="min-w-0 flex-shrink">
-        <div className="font-display text-[11px] tracking-widest truncate">{label.name}</div>
-        <div className="font-mono text-[9px] text-arena-textDim whitespace-nowrap">
-          DECK <span className="text-neon-cyan font-display text-[12px]">{deckRemaining}</span>
+        <div className="font-display font-normal text-[13px] tracking-widest truncate leading-none"
+             style={{ letterSpacing: '0.08em' }}>
+          {label.name}
+        </div>
+        <div className="font-mono text-[9px] text-arena-textDim whitespace-nowrap mt-1 uppercase tracking-widest">
+          DECK <span className="text-neon-cyan font-display text-[14px]">{deckRemaining}</span>
           <span className="opacity-50">/{deckTotal}</span>
         </div>
       </div>
-      {roleBadge}
+      <div className="ml-auto">{roleBadge}</div>
     </div>
   )
 }

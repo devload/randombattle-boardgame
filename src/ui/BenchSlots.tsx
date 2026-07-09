@@ -1,10 +1,10 @@
 import type { BenchStack, Level } from '../game/types.ts'
 
-const LEVEL_COLOR: Record<Level, { border: string; text: string; shadow: string }> = {
-  S: { border: 'border-lvl-s/70', text: 'text-lvl-s', shadow: 'shadow-[0_0_6px_rgba(136,136,168,0.4)]' },
-  A: { border: 'border-lvl-a/70', text: 'text-lvl-a', shadow: 'shadow-neon-green' },
-  B: { border: 'border-lvl-b/70', text: 'text-lvl-b', shadow: 'shadow-neon-cyan' },
-  C: { border: 'border-lvl-c/70', text: 'text-lvl-c', shadow: 'shadow-neon-magenta' },
+const LEVEL_COLOR: Record<Level, { border: string; text: string; shadow: string; tint: string }> = {
+  S: { border: 'border-lvl-s/70', text: 'text-lvl-s', shadow: 'shadow-[0_0_6px_rgba(136,136,168,0.4)]', tint: 'rgba(136,136,168,0.06)' },
+  A: { border: 'border-lvl-a/70', text: 'text-lvl-a', shadow: 'shadow-[0_0_8px_rgba(34,255,136,0.45)]', tint: 'rgba(34,255,136,0.08)' },
+  B: { border: 'border-lvl-b/70', text: 'text-lvl-b', shadow: 'shadow-[0_0_8px_rgba(34,233,255,0.5)]', tint: 'rgba(34,233,255,0.08)' },
+  C: { border: 'border-lvl-c/70', text: 'text-lvl-c', shadow: 'shadow-[0_0_8px_rgba(255,43,214,0.5)]', tint: 'rgba(255,43,214,0.08)' },
 }
 
 export function BenchSlots({ bench, label }: {
@@ -21,16 +21,19 @@ export function BenchSlots({ bench, label }: {
     : filled >= 3 ? 'border-neon-yellow/50' : 'border-arena-lineDim'
 
   return (
-    <div className="flex flex-col gap-0.5">
+    <div className="flex flex-col gap-1">
       {(label || filled > 0) && (
-        <div className="flex items-center justify-between px-1 text-[9px] font-mono tracking-widest">
-          <span className="text-arena-textDim">{label ?? '벤치'}</span>
-          <span className={
+        <div className="flex items-center justify-between px-1">
+          <span className="font-mono text-[9px] tracking-widest uppercase text-arena-textDim">
+            {label ?? '벤치'}
+          </span>
+          <span className={`font-mono text-[9px] tracking-widest ${
             isDanger ? 'text-neon-red'
             : filled >= 3 ? 'text-neon-yellow'
             : 'text-arena-textDim'
-          }>
-            {filled} / 6
+          }`}>
+            <span className="font-display text-[13px]">{filled}</span>
+            <span className="opacity-50"> / 6</span>
             {isDanger && <span className="ml-1 animate-pulse-neon">⚠</span>}
           </span>
         </div>
@@ -38,13 +41,12 @@ export function BenchSlots({ bench, label }: {
       <div className={`grid grid-cols-6 gap-1 p-1.5 bg-black/40 border rounded ${containerBorder}`}>
         {slots.map((stack, i) => {
           if (!stack) {
-            // Empty slot — clearer outline so the player can count remaining space.
             return (
               <div
                 key={i}
-                className="aspect-[2/3] border-2 border-dashed rounded-sm
+                className="aspect-[2/3] border border-dashed rounded-sm
                            border-arena-line/40 bg-black/20
-                           flex items-center justify-center font-mono text-[9px] text-arena-textMuted/80"
+                           flex items-center justify-center font-mono text-[9px] text-arena-textMuted/70"
               >
                 {i + 1}
               </div>
@@ -56,8 +58,8 @@ export function BenchSlots({ bench, label }: {
             <div
               key={i}
               className={`relative aspect-[2/3] border rounded-sm ${c.border} ${c.shadow}
-                         bg-gradient-to-b from-arena-panel2 to-arena-panel
                          flex items-center justify-center text-lg`}
+              style={{ background: `linear-gradient(155deg, ${c.tint} 0%, #0f1830 70%)` }}
             >
               {card.icon}
               {stack.cards.length > 1 && (
