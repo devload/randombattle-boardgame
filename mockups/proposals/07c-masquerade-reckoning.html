@@ -1,0 +1,908 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Masquerade · Reckoning</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 100%; min-height: 100%; }
+  body {
+    background: #0d0611;
+    background-image:
+      radial-gradient(ellipse at 50% 30%, rgba(212,165,116,0.10) 0%, transparent 55%),
+      radial-gradient(circle at 15% 85%, rgba(93,47,106,0.18) 0%, transparent 50%),
+      radial-gradient(circle at 85% 90%, rgba(139,0,0,0.10) 0%, transparent 45%);
+    font-family: 'Inter', sans-serif;
+    color: #f0e6d2;
+    padding: 32px 16px 64px;
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
+  }
+
+  /* ─── Phone frame ─── */
+  .phone {
+    width: 375px;
+    min-height: 812px;
+    background: #1a0f1e;
+    background-image:
+      radial-gradient(ellipse at 50% 20%, rgba(232,189,138,0.14) 0%, transparent 45%),
+      radial-gradient(ellipse at 50% 60%, rgba(139,111,71,0.08) 0%, transparent 55%),
+      radial-gradient(circle at 50% 90%, rgba(61,31,74,0.30) 0%, transparent 60%);
+    border-radius: 42px;
+    border: 1px solid rgba(139,111,71,0.35);
+    box-shadow:
+      0 40px 100px rgba(0,0,0,0.7),
+      0 0 60px rgba(212,165,116,0.08),
+      inset 0 0 0 1px rgba(232,189,138,0.05);
+    position: relative;
+    overflow: hidden;
+    padding: 20px 16px 28px;
+  }
+
+  /* dust particles */
+  .dust {
+    position: absolute; inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 0;
+  }
+  .dust span {
+    position: absolute;
+    width: 2px; height: 2px;
+    background: #e8bd8a;
+    border-radius: 50%;
+    opacity: 0.4;
+    box-shadow: 0 0 6px rgba(232,189,138,0.6);
+    animation: drift linear infinite;
+  }
+  @keyframes drift {
+    0%   { transform: translateY(20px) translateX(0); opacity: 0; }
+    10%  { opacity: 0.5; }
+    90%  { opacity: 0.3; }
+    100% { transform: translateY(-780px) translateX(20px); opacity: 0; }
+  }
+
+  .stage { position: relative; z-index: 1; }
+
+  /* ─── Header ─── */
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 18px;
+  }
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 10px;
+    background: rgba(139,111,71,0.15);
+    border: 1px solid rgba(212,165,116,0.35);
+    border-radius: 999px;
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    color: #d4a574;
+    text-transform: uppercase;
+  }
+  .chip .dot {
+    width: 5px; height: 5px; border-radius: 50%;
+    background: #e8bd8a;
+    box-shadow: 0 0 6px #e8bd8a;
+  }
+  .mono-r {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    color: rgba(240,230,210,0.55);
+    text-transform: uppercase;
+  }
+
+  /* ─── Title ─── */
+  .title-block {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  h1 {
+    font-family: 'Cinzel', serif;
+    font-weight: 700;
+    font-size: 26px;
+    letter-spacing: 0.32em;
+    color: #e8bd8a;
+    text-shadow:
+      0 0 12px rgba(232,189,138,0.4),
+      0 2px 0 rgba(0,0,0,0.4);
+  }
+  .title-sub {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 13px;
+    color: rgba(240,230,210,0.6);
+    margin-top: 4px;
+    letter-spacing: 0.04em;
+  }
+
+  /* ─── Scoreboard ─── */
+  .scoreboard {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 18px;
+  }
+  .score-card {
+    background: linear-gradient(160deg, rgba(61,31,74,0.55) 0%, rgba(26,15,30,0.7) 100%);
+    border: 1px solid rgba(139,111,71,0.35);
+    border-radius: 14px;
+    padding: 12px 12px 10px;
+    position: relative;
+    overflow: hidden;
+  }
+  .score-card.me {
+    border-color: rgba(212,165,116,0.65);
+    box-shadow:
+      inset 0 0 20px rgba(212,165,116,0.10),
+      0 0 20px rgba(212,165,116,0.10);
+  }
+  .score-card .side {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 6px;
+  }
+  .score-card .who {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 13px;
+    color: #f0e6d2;
+    letter-spacing: 0.02em;
+  }
+  .score-card.me .who { color: #e8bd8a; }
+  .lead-chip {
+    font-family: 'Space Mono', monospace;
+    font-size: 8px;
+    padding: 2px 6px;
+    border-radius: 4px;
+    background: rgba(232,189,138,0.15);
+    border: 1px solid rgba(232,189,138,0.4);
+    color: #e8bd8a;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+  .total {
+    font-family: 'Cinzel', serif;
+    font-weight: 700;
+    font-size: 38px;
+    line-height: 1;
+    color: #e8bd8a;
+    text-shadow: 0 0 14px rgba(232,189,138,0.4);
+    letter-spacing: 0.03em;
+    margin: 2px 0 4px;
+  }
+  .score-card:not(.me) .total {
+    color: rgba(240,230,210,0.55);
+    text-shadow: none;
+  }
+  .break {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.10em;
+    color: rgba(240,230,210,0.55);
+    text-transform: uppercase;
+  }
+  .break b {
+    color: #d4a574;
+    font-weight: 700;
+  }
+
+  /* ─── Scan direction hint ─── */
+  .scan-hint {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+    padding: 8px 12px;
+    background: rgba(139,111,71,0.10);
+    border: 1px solid rgba(139,111,71,0.28);
+    border-radius: 10px;
+    margin-bottom: 14px;
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.13em;
+    color: rgba(240,230,210,0.65);
+    text-transform: uppercase;
+  }
+  .scan-hint .mid {
+    color: #e8bd8a;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-shadow: 0 0 6px rgba(232,189,138,0.4);
+  }
+
+  /* ─── Gallery strip ─── */
+  .gallery-wrap {
+    position: relative;
+    padding: 22px 4px 34px;
+    margin: 0 -4px 6px;
+  }
+  /* spotlight cone above card #5 */
+  .spotlight {
+    position: absolute;
+    top: -6px;
+    left: 50%;
+    width: 108px;
+    height: 240px;
+    background: radial-gradient(ellipse 60% 100% at 50% 0%,
+      rgba(232,189,138,0.32) 0%,
+      rgba(232,189,138,0.14) 30%,
+      transparent 65%);
+    transform: translateX(-50%);
+    pointer-events: none;
+    z-index: 0;
+    animation: spot 2.4s ease-in-out infinite;
+  }
+  @keyframes spot {
+    0%, 100% { opacity: 0.85; }
+    50%      { opacity: 1; }
+  }
+
+  .gallery {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 3px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .card {
+    position: relative;
+    aspect-ratio: 2 / 3.1;
+    border-radius: 5px;
+    background: linear-gradient(160deg, #f0e6d2 0%, #d9c9a8 100%);
+    border: 1px solid #8b6f47;
+    box-shadow:
+      0 4px 8px rgba(0,0,0,0.4),
+      inset 0 0 0 1px rgba(232,189,138,0.4);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 3px 2px 4px;
+    color: #2d1a1e;
+    opacity: 1;
+    transition: transform 0.3s ease;
+  }
+  .card.dim { opacity: 0.35; filter: saturate(0.4); }
+  .card.dim .aura { display: none; }
+
+  .card .slot-n {
+    font-family: 'Space Mono', monospace;
+    font-size: 7px;
+    color: rgba(45,26,30,0.55);
+    letter-spacing: 0.10em;
+  }
+  .card .portrait {
+    font-size: 20px;
+    line-height: 1;
+    filter: grayscale(0.15);
+  }
+  .card .name {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 6.5px;
+    line-height: 1.05;
+    text-align: center;
+    padding: 0 1px;
+    color: #2d1a1e;
+    font-weight: 600;
+  }
+  .card .idbadge {
+    font-size: 8px;
+    line-height: 1;
+  }
+
+  /* identity auras */
+  .aura {
+    position: absolute;
+    inset: -3px;
+    border-radius: 7px;
+    pointer-events: none;
+    z-index: -1;
+  }
+  .aura.royalty {
+    box-shadow:
+      0 0 0 1.5px rgba(212,165,116,0.85),
+      0 0 12px rgba(212,165,116,0.6),
+      0 0 22px rgba(212,165,116,0.25);
+  }
+  .aura.thief {
+    box-shadow:
+      0 0 0 1.5px rgba(139,0,0,0.85),
+      0 0 12px rgba(139,0,0,0.6),
+      0 0 22px rgba(139,0,0,0.3);
+  }
+  .aura.scholar {
+    box-shadow:
+      0 0 0 1.5px rgba(74,92,106,0.85),
+      0 0 12px rgba(74,92,106,0.6),
+      0 0 22px rgba(74,92,106,0.3);
+  }
+  .aura.hunter {
+    box-shadow:
+      0 0 0 1.5px rgba(136,160,101,0.85),
+      0 0 12px rgba(136,160,101,0.5),
+      0 0 22px rgba(136,160,101,0.25);
+  }
+  .aura.mystic {
+    box-shadow:
+      0 0 0 1.5px rgba(93,47,106,0.9),
+      0 0 12px rgba(93,47,106,0.6),
+      0 0 22px rgba(93,47,106,0.3);
+  }
+
+  /* currently scoring card */
+  .card.active {
+    transform: scale(1.20) translateY(-6px);
+    z-index: 5;
+  }
+  .card.active .aura.scholar {
+    animation: goldPulse 1.6s ease-in-out infinite;
+  }
+  @keyframes goldPulse {
+    0%, 100% {
+      box-shadow:
+        0 0 0 2px rgba(232,189,138,0.95),
+        0 0 16px rgba(232,189,138,0.75),
+        0 0 32px rgba(232,189,138,0.5);
+    }
+    50% {
+      box-shadow:
+        0 0 0 3px rgba(232,189,138,1),
+        0 0 24px rgba(232,189,138,0.95),
+        0 0 48px rgba(232,189,138,0.7);
+    }
+  }
+  .card.active {
+    border-color: #e8bd8a;
+  }
+
+  /* score pop under each scored card */
+  .pop {
+    position: absolute;
+    left: 50%;
+    top: calc(100% + 4px);
+    transform: translateX(-50%);
+    font-family: 'Cinzel', serif;
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    white-space: nowrap;
+  }
+  .pop.gold  { color: #e8bd8a; text-shadow: 0 0 6px rgba(232,189,138,0.6); }
+  .pop.red   { color: #d47070; text-shadow: 0 0 6px rgba(139,0,0,0.6); }
+  .pop.blue  { color: #7f95a3; text-shadow: 0 0 6px rgba(74,92,106,0.6); }
+  .pop.mystic{ color: #b087c1; text-shadow: 0 0 6px rgba(93,47,106,0.7); }
+
+  .pop.big {
+    top: calc(100% + 8px);
+    font-size: 22px;
+    color: #e8bd8a;
+    text-shadow:
+      0 0 8px rgba(232,189,138,0.9),
+      0 0 16px rgba(232,189,138,0.6),
+      0 0 28px rgba(212,165,116,0.4);
+    animation: popIn 0.7s cubic-bezier(0.3,1.6,0.4,1) forwards;
+  }
+  @keyframes popIn {
+    0%   { opacity: 0; transform: translateX(-50%) translateY(6px) scale(0.6); }
+    60%  { opacity: 1; transform: translateX(-50%) translateY(-4px) scale(1.15); }
+    100% { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
+  }
+
+  /* sparkle particles around active pop */
+  .sparkles {
+    position: absolute;
+    left: 50%;
+    top: calc(100% + 14px);
+    transform: translateX(-50%);
+    width: 60px; height: 30px;
+    pointer-events: none;
+  }
+  .sparkles span {
+    position: absolute;
+    width: 3px; height: 3px;
+    background: #e8bd8a;
+    border-radius: 50%;
+    box-shadow: 0 0 6px #e8bd8a;
+    animation: spark 1.4s ease-out infinite;
+  }
+  .sparkles span:nth-child(1) { left: 10%; animation-delay: 0.0s; }
+  .sparkles span:nth-child(2) { left: 30%; animation-delay: 0.3s; }
+  .sparkles span:nth-child(3) { left: 55%; animation-delay: 0.6s; }
+  .sparkles span:nth-child(4) { left: 78%; animation-delay: 0.9s; }
+  .sparkles span:nth-child(5) { left: 90%; animation-delay: 1.2s; }
+  @keyframes spark {
+    0%   { opacity: 0; transform: translateY(0) scale(0.4); }
+    50%  { opacity: 1; transform: translateY(-8px) scale(1); }
+    100% { opacity: 0; transform: translateY(-14px) scale(0.4); }
+  }
+
+  /* steal arrow between #2 and #3 */
+  .steal-arrow {
+    position: absolute;
+    top: 12%;
+    left: calc((100%/8) * 1 + 45%);
+    width: calc(100%/8);
+    height: 10px;
+    z-index: 6;
+    pointer-events: none;
+  }
+  .steal-arrow svg {
+    width: 100%; height: 100%;
+    overflow: visible;
+  }
+  .steal-chip {
+    position: absolute;
+    top: -2px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Space Mono', monospace;
+    font-size: 7px;
+    letter-spacing: 0.12em;
+    color: #ff9c9c;
+    background: rgba(139,0,0,0.35);
+    padding: 1px 5px;
+    border-radius: 3px;
+    border: 1px solid rgba(139,0,0,0.7);
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  /* row labels (slot numbers) */
+  .row-slots {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 3px;
+    margin-top: 4px;
+    padding: 0 2px;
+  }
+  .row-slots span {
+    text-align: center;
+    font-family: 'Space Mono', monospace;
+    font-size: 8px;
+    color: rgba(240,230,210,0.35);
+    letter-spacing: 0.10em;
+  }
+  .row-slots span.here { color: #e8bd8a; }
+
+  /* ─── Scoring detail panel ─── */
+  .detail {
+    background: linear-gradient(160deg, rgba(74,92,106,0.22) 0%, rgba(26,15,30,0.85) 100%);
+    border: 1px solid rgba(74,92,106,0.55);
+    border-radius: 12px;
+    padding: 14px 14px 12px;
+    margin-top: 14px;
+    position: relative;
+    overflow: hidden;
+  }
+  .detail::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 80% 80% at 50% 0%, rgba(232,189,138,0.10), transparent 55%);
+    pointer-events: none;
+  }
+  .detail-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 8px;
+  }
+  .detail-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 17px;
+    color: #f0e6d2;
+    letter-spacing: 0.02em;
+  }
+  .detail-role {
+    font-family: 'Cinzel', serif;
+    font-weight: 500;
+    font-size: 10px;
+    color: #7f95a3;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+  }
+  .detail-body {
+    font-family: 'Inter', sans-serif;
+    font-size: 11.5px;
+    line-height: 1.55;
+    color: rgba(240,230,210,0.75);
+    margin-bottom: 10px;
+  }
+  .detail-body b {
+    color: #e8bd8a;
+    font-weight: 600;
+  }
+  .match-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 8px 0;
+    margin-bottom: 8px;
+  }
+  .mchip {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    padding: 6px 10px;
+    background: rgba(74,92,106,0.35);
+    border: 1px solid rgba(74,92,106,0.7);
+    border-radius: 6px;
+    color: #cddce3;
+    text-transform: uppercase;
+  }
+  .mchip.match {
+    background: rgba(232,189,138,0.16);
+    border-color: rgba(232,189,138,0.6);
+    color: #e8bd8a;
+  }
+  .check {
+    font-family: 'Cinzel', serif;
+    font-weight: 700;
+    font-size: 20px;
+    color: #e8bd8a;
+    text-shadow: 0 0 8px rgba(232,189,138,0.6);
+  }
+  .contribution {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 8px;
+    border-top: 1px dashed rgba(139,111,71,0.35);
+  }
+  .contrib-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    color: rgba(240,230,210,0.55);
+    text-transform: uppercase;
+  }
+  .contrib-value {
+    font-family: 'Cinzel', serif;
+    font-weight: 700;
+    font-size: 18px;
+    color: #e8bd8a;
+    text-shadow: 0 0 8px rgba(232,189,138,0.5);
+  }
+
+  /* ─── Next preview ─── */
+  .next-preview {
+    margin-top: 14px;
+    padding: 10px 12px 12px;
+    background: rgba(139,111,71,0.08);
+    border: 1px dashed rgba(139,111,71,0.35);
+    border-radius: 10px;
+  }
+  .next-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.16em;
+    color: rgba(240,230,210,0.5);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .mini-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .mini-card {
+    flex: 1;
+    aspect-ratio: 2 / 3.1;
+    background: linear-gradient(160deg, rgba(240,230,210,0.35) 0%, rgba(217,201,168,0.25) 100%);
+    border: 1px solid rgba(139,111,71,0.5);
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 3px 2px;
+    opacity: 0.55;
+    max-width: 60px;
+  }
+  .mini-card .m-slot {
+    font-family: 'Space Mono', monospace;
+    font-size: 7px;
+    color: rgba(240,230,210,0.65);
+    letter-spacing: 0.10em;
+  }
+  .mini-card .m-portrait {
+    font-size: 14px;
+    filter: grayscale(0.4);
+  }
+  .mini-card .m-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 6px;
+    color: rgba(240,230,210,0.7);
+    text-align: center;
+    line-height: 1.05;
+    padding: 0 1px;
+  }
+  .mini-card .m-id {
+    font-size: 8px;
+    opacity: 0.7;
+  }
+
+  /* ─── Footer hint ─── */
+  .footer {
+    margin-top: 16px;
+    text-align: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 12.5px;
+    color: rgba(240,230,210,0.5);
+    letter-spacing: 0.02em;
+  }
+  .footer .prefix {
+    font-family: 'Space Mono', monospace;
+    font-style: normal;
+    font-size: 9px;
+    color: rgba(212,165,116,0.55);
+    letter-spacing: 0.16em;
+    margin-right: 4px;
+  }
+</style>
+</head>
+<body>
+
+<div class="phone">
+  <div class="dust" aria-hidden="true">
+    <span style="left: 8%;  animation-duration: 14s; animation-delay:  0s;"></span>
+    <span style="left: 22%; animation-duration: 18s; animation-delay:  4s;"></span>
+    <span style="left: 35%; animation-duration: 16s; animation-delay:  8s;"></span>
+    <span style="left: 48%; animation-duration: 20s; animation-delay:  2s;"></span>
+    <span style="left: 62%; animation-duration: 15s; animation-delay:  6s;"></span>
+    <span style="left: 74%; animation-duration: 19s; animation-delay: 11s;"></span>
+    <span style="left: 86%; animation-duration: 17s; animation-delay:  1s;"></span>
+    <span style="left: 15%; animation-duration: 22s; animation-delay: 12s;"></span>
+    <span style="left: 55%; animation-duration: 21s; animation-delay:  9s;"></span>
+    <span style="left: 78%; animation-duration: 14s; animation-delay:  5s;"></span>
+  </div>
+
+  <div class="stage">
+
+    <!-- Header -->
+    <div class="header">
+      <div class="chip"><span class="dot"></span>07c · RECKONING</div>
+      <div class="mono-r">// FINAL · 6/8</div>
+    </div>
+
+    <!-- Title -->
+    <div class="title-block">
+      <h1>RECKONING</h1>
+      <div class="title-sub">가면이 벗겨졌으니, 이제 계산의 시간</div>
+    </div>
+
+    <!-- Scoreboard -->
+    <div class="scoreboard">
+      <div class="score-card me">
+        <div class="side">
+          <div class="who">내 갤러리</div>
+          <div class="lead-chip">앞섬</div>
+        </div>
+        <div class="total">47</div>
+        <div class="break">표면 <b>20</b> · 정체 <b>27</b></div>
+      </div>
+      <div class="score-card">
+        <div class="side">
+          <div class="who">말콤 백작</div>
+        </div>
+        <div class="total">34</div>
+        <div class="break">표면 <b>18</b> · 정체 <b>16</b></div>
+      </div>
+    </div>
+
+    <!-- Scan direction hint -->
+    <div class="scan-hint">
+      <span>◀ R1 · 왼쪽</span>
+      <span class="mid">채점 방향 →</span>
+      <span>R8 · 오른쪽 ▶</span>
+    </div>
+
+    <!-- Gallery strip -->
+    <div class="gallery-wrap">
+      <div class="spotlight" style="left: calc((100%/8) * 4 + (100%/16)); "></div>
+
+      <div class="gallery">
+
+        <!-- #1 붉은 나비 부인 · 왕족 -->
+        <div class="card scored">
+          <div class="aura royalty"></div>
+          <div class="slot-n">S1</div>
+          <div class="portrait">🦋</div>
+          <div class="name">붉은 나비<br>부인</div>
+          <div class="idbadge">👑</div>
+          <div class="pop gold">+3</div>
+        </div>
+
+        <!-- #2 가스통 자작 · 도둑 -->
+        <div class="card scored">
+          <div class="aura thief"></div>
+          <div class="slot-n">S2</div>
+          <div class="portrait">🗡</div>
+          <div class="name">가스통<br>자작</div>
+          <div class="idbadge">🗡</div>
+          <div class="pop red">+5</div>
+        </div>
+
+        <!-- #3 은빛 여우 남작 · 왕족 (robbed) -->
+        <div class="card scored">
+          <div class="aura royalty"></div>
+          <div class="slot-n">S3</div>
+          <div class="portrait">🦊</div>
+          <div class="name">은빛 여우<br>남작</div>
+          <div class="idbadge">👑</div>
+          <div class="pop gold">+2</div>
+        </div>
+
+        <!-- #4 루비아나 백작부인 · 신비주의자 -->
+        <div class="card scored">
+          <div class="aura mystic"></div>
+          <div class="slot-n">S4</div>
+          <div class="portrait">🔮</div>
+          <div class="name">루비아나<br>백작부인</div>
+          <div class="idbadge">🔮</div>
+          <div class="pop mystic">+5</div>
+        </div>
+
+        <!-- #5 이반 남작 · 학자 · ACTIVE -->
+        <div class="card active">
+          <div class="aura scholar"></div>
+          <div class="slot-n">S5</div>
+          <div class="portrait">📚</div>
+          <div class="name">이반<br>남작</div>
+          <div class="idbadge">📚</div>
+          <div class="pop big">+8</div>
+          <div class="sparkles" aria-hidden="true">
+            <span></span><span></span><span></span><span></span><span></span>
+          </div>
+        </div>
+
+        <!-- #6 에스텔 부인 · 왕족 · dim -->
+        <div class="card dim">
+          <div class="slot-n">S6</div>
+          <div class="portrait">👑</div>
+          <div class="name">에스텔<br>부인</div>
+          <div class="idbadge">👑</div>
+        </div>
+
+        <!-- #7 라오나 신관 · 사냥꾼 · dim -->
+        <div class="card dim">
+          <div class="slot-n">S7</div>
+          <div class="portrait">🏹</div>
+          <div class="name">라오나<br>신관</div>
+          <div class="idbadge">🏹</div>
+        </div>
+
+        <!-- #8 레오나르 자작 · 왕족 · dim -->
+        <div class="card dim">
+          <div class="slot-n">S8</div>
+          <div class="portrait">🎭</div>
+          <div class="name">레오나르<br>자작</div>
+          <div class="idbadge">👑</div>
+        </div>
+
+      </div>
+
+      <!-- Thief steal arrow between #2 and #3 -->
+      <div class="steal-arrow" style="
+        left: calc((100%/8) * 1);
+        width: calc((100%/8) * 2);
+        top: 44%;">
+        <svg viewBox="0 0 100 20" preserveAspectRatio="none">
+          <defs>
+            <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5"
+                    markerWidth="6" markerHeight="6" orient="auto">
+              <path d="M0,0 L10,5 L0,10 z" fill="#8b0000"/>
+            </marker>
+          </defs>
+          <path d="M 80 6 Q 50 -8 20 6"
+                stroke="#8b0000" stroke-width="1.5"
+                fill="none"
+                stroke-dasharray="3 2"
+                marker-end="url(#arr)"/>
+        </svg>
+        <div class="steal-chip">−3 훔침 →</div>
+      </div>
+
+      <!-- Row labels -->
+      <div class="row-slots">
+        <span>R1</span>
+        <span>R2</span>
+        <span>R3</span>
+        <span>R4</span>
+        <span class="here">R5</span>
+        <span>R6</span>
+        <span>R7</span>
+        <span>R8</span>
+      </div>
+    </div>
+
+    <!-- Scoring detail panel -->
+    <div class="detail">
+      <div class="detail-head">
+        <div class="detail-name">이반 남작</div>
+        <div class="detail-role">SCHOLAR · 학자</div>
+      </div>
+      <div class="detail-body">
+        슬롯 번호와 카드 번호가 <b>3 이내</b>로 가까우면 학자가 자기 자리를 찾은 것으로 간주 — <b>+8 학자 보너스</b>. 이번 카드는 <b>슬롯 5 · 카드 #5</b>로 완벽히 겹칩니다.
+      </div>
+      <div class="match-row">
+        <div class="mchip match">SLOT 5</div>
+        <div class="check">✓</div>
+        <div class="mchip match">CARD #5</div>
+      </div>
+      <div class="contribution">
+        <div class="contrib-label">// 학자 보너스</div>
+        <div class="contrib-value">+8</div>
+      </div>
+    </div>
+
+    <!-- Next preview -->
+    <div class="next-preview">
+      <div class="next-label">// 다음 채점 예정 · R6 → R8</div>
+      <div class="mini-row">
+        <div class="mini-card">
+          <div class="m-slot">S6</div>
+          <div class="m-portrait">👑</div>
+          <div class="m-name">에스텔<br>부인</div>
+          <div class="m-id">👑</div>
+        </div>
+        <div class="mini-card">
+          <div class="m-slot">S7</div>
+          <div class="m-portrait">🏹</div>
+          <div class="m-name">라오나<br>신관</div>
+          <div class="m-id">🏹</div>
+        </div>
+        <div class="mini-card">
+          <div class="m-slot">S8</div>
+          <div class="m-portrait">🎭</div>
+          <div class="m-name">레오나르<br>자작</div>
+          <div class="m-id">👑</div>
+        </div>
+        <div style="flex:1; font-family:'Cormorant Garamond',serif; font-style:italic; font-size:11px; color:rgba(240,230,210,0.45); text-align:center; padding: 0 4px;">
+          최종 점수<br>미정 · <span style="color:#d4a574;">???</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer hint -->
+    <div class="footer">
+      <span class="prefix">//</span>6번째 손님 채점 중… 계속 →
+    </div>
+
+  </div>
+</div>
+
+<script>
+  // Re-trigger score pop animation on the active card every 3.5s
+  (function(){
+    const pop = document.querySelector('.pop.big');
+    if (!pop) return;
+    setInterval(() => {
+      pop.style.animation = 'none';
+      // reflow
+      void pop.offsetWidth;
+      pop.style.animation = '';
+    }, 3500);
+  })();
+</script>
+</body>
+</html>

@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>07a · MASQUERADE — Gallery (R3/8)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Cinzel:wght@500;700&family=Space+Mono:wght@400&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --night: #1a0f1e;
+    --violet: #3d1f4a;
+    --bronze: #8b6f47;
+    --gold: #d4a574;
+    --cream: #f0e6d2;
+    --red: #8b0000;
+    --mist: #4a5c6a;
+    --moss: #88a065;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    background: #0a0510;
+    min-height: 100vh;
+    font-family: 'Inter', sans-serif;
+    color: var(--cream);
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  /* Page background: marble + candlelight radial */
+  body {
+    background:
+      radial-gradient(ellipse 60% 40% at 50% 0%, rgba(212, 165, 116, 0.18) 0%, rgba(139, 111, 71, 0.06) 40%, transparent 70%),
+      radial-gradient(ellipse 100% 80% at 50% 50%, #1a0f1e 0%, #0a0510 100%);
+    display: flex;
+    justify-content: center;
+    padding: 24px 0;
+    min-height: 100vh;
+    position: relative;
+  }
+
+  /* Subtle marble texture overlay on body */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      repeating-linear-gradient(45deg, transparent 0, transparent 2px, rgba(212, 165, 116, 0.008) 2px, rgba(212, 165, 116, 0.008) 3px),
+      repeating-linear-gradient(-30deg, transparent 0, transparent 40px, rgba(139, 111, 71, 0.015) 40px, rgba(139, 111, 71, 0.015) 41px);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Phone frame */
+  .phone {
+    position: relative;
+    width: 375px;
+    min-height: 812px;
+    background:
+      radial-gradient(ellipse 80% 30% at 50% 0%, rgba(212, 165, 116, 0.22) 0%, transparent 60%),
+      radial-gradient(ellipse 90% 60% at 50% 15%, rgba(139, 111, 71, 0.10) 0%, transparent 70%),
+      linear-gradient(180deg, #1f1226 0%, #150b1a 40%, #0d0713 100%);
+    border-radius: 32px;
+    box-shadow:
+      0 0 0 1px rgba(139, 111, 71, 0.3),
+      0 0 60px rgba(212, 165, 116, 0.08),
+      0 30px 80px rgba(0, 0, 0, 0.6);
+    overflow: hidden;
+    padding: 14px 14px 100px;
+    z-index: 1;
+  }
+
+  /* Vignette */
+  .phone::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 90% 90% at 50% 50%, transparent 55%, rgba(0, 0, 0, 0.55) 100%);
+    pointer-events: none;
+    z-index: 10;
+  }
+
+  /* Marble texture inside phone */
+  .phone::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      repeating-linear-gradient(35deg, transparent 0, transparent 60px, rgba(212, 165, 116, 0.02) 60px, rgba(212, 165, 116, 0.02) 61px),
+      repeating-linear-gradient(-55deg, transparent 0, transparent 40px, rgba(139, 111, 71, 0.02) 40px, rgba(139, 111, 71, 0.02) 41px);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .phone > * { position: relative; z-index: 2; }
+
+  /* Dust particles */
+  .dust {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 3;
+  }
+  .particle {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: radial-gradient(circle, rgba(212, 165, 116, 0.9) 0%, rgba(212, 165, 116, 0) 70%);
+    border-radius: 50%;
+    animation: float linear infinite;
+  }
+  @keyframes float {
+    0% { transform: translateY(0) translateX(0); opacity: 0; }
+    10% { opacity: 0.8; }
+    90% { opacity: 0.6; }
+    100% { transform: translateY(-900px) translateX(var(--drift)); opacity: 0; }
+  }
+
+  /* === HEADER === */
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 4px 4px 2px;
+  }
+  .chip {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    color: var(--gold);
+    padding: 5px 10px;
+    border: 1px solid rgba(139, 111, 71, 0.55);
+    border-radius: 3px;
+    background: rgba(61, 31, 74, 0.35);
+    text-transform: uppercase;
+  }
+  .round-dots {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: var(--gold);
+    letter-spacing: 0.1em;
+  }
+  .round-dots .dots {
+    letter-spacing: 2px;
+    font-size: 9px;
+    color: var(--bronze);
+  }
+  .round-dots .dots .active { color: var(--gold); }
+
+  .header-sub {
+    text-align: right;
+    padding: 4px 4px 12px;
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    color: var(--mist);
+    letter-spacing: 0.14em;
+  }
+
+  /* === OPPONENT STRIP === */
+  .opponent-strip {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 8px 12px;
+    background: linear-gradient(180deg, rgba(61, 31, 74, 0.85), rgba(45, 22, 55, 0.7));
+    border: 1px solid var(--bronze);
+    border-radius: 4px;
+    box-shadow: inset 0 0 12px rgba(0, 0, 0, 0.3), 0 1px 0 rgba(212, 165, 116, 0.08);
+    margin-bottom: 10px;
+  }
+  .opp-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .opp-mask { font-size: 16px; }
+  .opp-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 14px;
+    color: var(--cream);
+  }
+  .opp-stats {
+    display: flex;
+    gap: 8px;
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    color: var(--mist);
+    letter-spacing: 0.08em;
+  }
+  .opp-stat b {
+    color: var(--gold);
+    font-weight: 400;
+  }
+
+  /* === OPPONENT GALLERY === */
+  .opp-gallery {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 4px;
+    margin-bottom: 22px;
+  }
+  .opp-slot {
+    aspect-ratio: 3/4;
+    border-radius: 2px;
+    position: relative;
+  }
+  .opp-slot.filled {
+    background: linear-gradient(160deg, #f5ecd6, #d9c9a2);
+    border: 1px solid var(--bronze);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.5), inset 0 0 0 1px rgba(139, 111, 71, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    color: var(--violet);
+    position: relative;
+  }
+  .opp-slot.filled::before {
+    content: '✦';
+    position: absolute;
+    top: 1px;
+    left: 2px;
+    font-size: 6px;
+    color: var(--gold);
+  }
+  .opp-slot.filled::after {
+    content: '✦';
+    position: absolute;
+    top: 1px;
+    right: 2px;
+    font-size: 6px;
+    color: var(--gold);
+  }
+  .opp-slot.empty {
+    border: 1px dashed rgba(139, 111, 71, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Space Mono', monospace;
+    font-size: 8px;
+    color: rgba(139, 111, 71, 0.5);
+  }
+
+  /* === SECTION LABEL === */
+  .section-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 4px;
+    padding: 0 2px;
+  }
+  .label-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 15px;
+    color: var(--cream);
+    font-weight: 500;
+  }
+  .label-title b {
+    font-weight: 600;
+    color: var(--gold);
+    font-style: italic;
+  }
+  .label-hint {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    color: var(--mist);
+    letter-spacing: 0.08em;
+  }
+  .flourish {
+    text-align: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 11px;
+    color: var(--bronze);
+    letter-spacing: 8px;
+    margin-bottom: 10px;
+  }
+
+  /* === MY GALLERY === */
+  .my-gallery-wrap {
+    margin-bottom: 18px;
+    position: relative;
+  }
+  .my-gallery {
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    padding: 2px 0 6px;
+    scrollbar-width: none;
+  }
+  .my-gallery::-webkit-scrollbar { display: none; }
+
+  .my-gallery::after {
+    content: '';
+    position: absolute;
+    right: 0; top: 0; bottom: 6px;
+    width: 30px;
+    background: linear-gradient(90deg, transparent, #150b1a 80%);
+    pointer-events: none;
+  }
+
+  .guest-slot {
+    flex: 0 0 76px;
+    aspect-ratio: 3/4;
+    border-radius: 3px;
+    position: relative;
+  }
+
+  /* Filled guest card in my gallery */
+  .guest-card {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(160deg, #f5ecd6 0%, #ead9b3 60%, #d9c9a2 100%);
+    border: 1px solid var(--bronze);
+    box-shadow:
+      0 0 0 2px #150b1a,
+      0 0 0 3px rgba(139, 111, 71, 0.5),
+      0 3px 8px rgba(0,0,0,0.6),
+      inset 0 0 12px rgba(139, 111, 71, 0.15);
+    border-radius: 2px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 6px 4px 4px;
+    position: relative;
+    color: var(--night);
+  }
+  /* Ornate corner filigrees for guest card */
+  .guest-card::before,
+  .guest-card::after {
+    position: absolute;
+    color: var(--gold);
+    font-size: 9px;
+    line-height: 1;
+    text-shadow: 0 0 2px rgba(139, 111, 71, 0.5);
+  }
+  .guest-card::before { content: '✦'; top: 2px; left: 3px; }
+  .guest-card::after  { content: '✦'; top: 2px; right: 3px; }
+
+  .gc-mask {
+    font-size: 30px;
+    margin-top: 4px;
+    filter: drop-shadow(0 1px 2px rgba(0,0,0,0.4));
+  }
+  .gc-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 9px;
+    color: var(--violet);
+    text-align: center;
+    line-height: 1.1;
+    font-weight: 600;
+  }
+  .gc-surface {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+    padding: 0 2px;
+  }
+  .gc-surface .lbl {
+    font-family: 'Space Mono', monospace;
+    font-size: 7px;
+    color: var(--bronze);
+    letter-spacing: 0.05em;
+  }
+  .gc-surface .val {
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    color: var(--red);
+    font-weight: 700;
+  }
+
+  .guest-slot.empty {
+    border: 1px dashed rgba(139, 111, 71, 0.35);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: rgba(139, 111, 71, 0.5);
+    background: rgba(61, 31, 74, 0.15);
+  }
+
+  /* === ROUND PREVIEW === */
+  .round-preview {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    background: linear-gradient(90deg, rgba(61, 31, 74, 0.85), rgba(45, 22, 55, 0.5));
+    border: 1px solid rgba(139, 111, 71, 0.6);
+    border-left: 2px solid var(--gold);
+    border-radius: 3px;
+    margin-bottom: 18px;
+    position: relative;
+    overflow: hidden;
+  }
+  .round-preview::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 60% 100% at 0% 50%, rgba(212, 165, 116, 0.12), transparent 60%);
+    pointer-events: none;
+  }
+  .rp-pulse {
+    width: 8px;
+    height: 8px;
+    background: var(--gold);
+    border-radius: 50%;
+    box-shadow: 0 0 12px var(--gold), 0 0 4px #fff;
+    animation: rpPulse 1.8s ease-in-out infinite;
+    flex-shrink: 0;
+  }
+  @keyframes rpPulse {
+    0%, 100% { opacity: 0.5; transform: scale(0.9); box-shadow: 0 0 4px var(--gold); }
+    50% { opacity: 1; transform: scale(1.15); box-shadow: 0 0 14px var(--gold), 0 0 6px #fff; }
+  }
+  .rp-body { flex: 1; }
+  .rp-title {
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--gold);
+    letter-spacing: 0.14em;
+  }
+  .rp-desc {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 11px;
+    color: var(--cream);
+    margin-top: 1px;
+  }
+
+  /* === HAND SECTION === */
+  .hand-label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 13px;
+    color: var(--cream);
+    margin-bottom: 8px;
+  }
+  .hand-label .orn {
+    color: var(--gold);
+    font-size: 10px;
+  }
+
+  .hand {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 20px;
+    padding: 0 4px;
+  }
+
+  .hand-card {
+    flex: 0 0 102px;
+    aspect-ratio: 3/4;
+    background: linear-gradient(165deg, #f5ecd6 0%, #eeddb8 55%, #dbc9a0 100%);
+    border-radius: 5px;
+    box-shadow:
+      0 0 0 2px #150b1a,
+      0 0 0 3px var(--bronze),
+      0 0 0 4px rgba(139, 111, 71, 0.4),
+      0 4px 12px rgba(0,0,0,0.6),
+      inset 0 0 20px rgba(139, 111, 71, 0.18);
+    padding: 8px 6px 6px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    color: var(--night);
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .hand-card:hover {
+    transform: translateY(-3px);
+  }
+  .hand-card.elevated {
+    transform: translateY(-8px);
+    box-shadow:
+      0 0 0 2px #150b1a,
+      0 0 0 3px var(--gold),
+      0 0 0 4px rgba(212, 165, 116, 0.6),
+      0 0 22px 4px rgba(212, 165, 116, 0.45),
+      0 8px 20px rgba(0,0,0,0.7),
+      inset 0 0 20px rgba(212, 165, 116, 0.2);
+  }
+
+  /* Filigree corners */
+  .hand-card .fil {
+    position: absolute;
+    color: var(--gold);
+    font-size: 11px;
+    text-shadow: 0 0 2px rgba(139, 111, 71, 0.4);
+    line-height: 1;
+  }
+  .hand-card .fil.tl { top: 3px; left: 4px; }
+  .hand-card .fil.tr { top: 3px; right: 4px; }
+  .hand-card .fil.bl { bottom: 3px; left: 4px; }
+  .hand-card .fil.br { bottom: 3px; right: 4px; }
+
+  .hc-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-weight: 600;
+    font-size: 11px;
+    color: var(--violet);
+    text-align: center;
+    line-height: 1.15;
+    padding: 0 8px;
+    margin-top: 2px;
+    letter-spacing: 0.02em;
+  }
+  /* Inner double frame around mask */
+  .hc-inner {
+    position: relative;
+    margin: 6px 0 4px;
+    width: 60px;
+    height: 60px;
+    border: 1px solid rgba(139, 111, 71, 0.7);
+    box-shadow: inset 0 0 0 2px rgba(245, 236, 214, 0.6), inset 0 0 0 3px rgba(139, 111, 71, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(ellipse at center, rgba(212, 165, 116, 0.15), transparent 70%);
+    border-radius: 2px;
+  }
+  .hc-mask {
+    font-size: 38px;
+    filter: drop-shadow(0 2px 3px rgba(0,0,0,0.5));
+  }
+  .hc-surface {
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+    margin-top: 2px;
+  }
+  .hc-surface .lbl {
+    font-family: 'Space Mono', monospace;
+    font-size: 8px;
+    color: var(--bronze);
+    letter-spacing: 0.06em;
+  }
+  .hc-surface .val {
+    font-family: 'Cinzel', serif;
+    font-weight: 700;
+    font-size: 18px;
+    color: var(--gold);
+    text-shadow: 0 1px 0 rgba(139, 111, 71, 0.35);
+    letter-spacing: 0.02em;
+  }
+  .hc-identity {
+    font-family: 'Space Mono', monospace;
+    font-size: 7px;
+    color: var(--mist);
+    letter-spacing: 0.14em;
+    margin-top: auto;
+    padding-bottom: 2px;
+    text-transform: uppercase;
+  }
+
+  /* === MARKET === */
+  .market-label {
+    text-align: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 12px;
+    color: var(--cream);
+    margin-bottom: 6px;
+  }
+  .market-label .orn {
+    color: var(--gold);
+    font-size: 9px;
+    margin: 0 5px;
+  }
+  .market {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    margin-bottom: 8px;
+    padding: 0 8px;
+  }
+  .market-card {
+    flex: 0 0 66px;
+    aspect-ratio: 3/4;
+    background: linear-gradient(165deg, #ead9b3, #d0bd94);
+    border-radius: 3px;
+    box-shadow:
+      0 0 0 1px #150b1a,
+      0 0 0 2px var(--bronze),
+      0 2px 4px rgba(0,0,0,0.5),
+      inset 0 0 8px rgba(139, 111, 71, 0.2);
+    padding: 4px 2px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+  }
+  .market-card::before,
+  .market-card::after {
+    position: absolute;
+    color: var(--gold);
+    font-size: 7px;
+    line-height: 1;
+  }
+  .market-card::before { content: '✦'; top: 2px; left: 3px; }
+  .market-card::after  { content: '✦'; top: 2px; right: 3px; }
+  .mc-mask { font-size: 22px; margin-top: 4px; }
+  .mc-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 8px;
+    color: var(--violet);
+    text-align: center;
+    line-height: 1.1;
+    font-weight: 600;
+  }
+  .draw-hint {
+    text-align: center;
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    color: var(--bronze);
+    letter-spacing: 0.14em;
+    border-top: 1px dashed rgba(139, 111, 71, 0.4);
+    padding-top: 6px;
+    margin: 4px 60px 0;
+  }
+
+  /* === FOOTER === */
+  .footer {
+    position: absolute;
+    left: 14px;
+    right: 14px;
+    bottom: 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 14px;
+    background: linear-gradient(180deg, rgba(26, 15, 30, 0.85), rgba(26, 15, 30, 0.98));
+    border-top: 1px solid rgba(139, 111, 71, 0.4);
+    z-index: 20;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+  }
+  .journey-chip {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: var(--mist);
+    letter-spacing: 0.14em;
+    padding: 6px 10px;
+    border: 1px solid rgba(74, 92, 106, 0.6);
+    border-radius: 2px;
+    background: rgba(61, 31, 74, 0.4);
+  }
+  .journey-chip b { color: var(--gold); font-weight: 400; }
+
+  .cta {
+    position: relative;
+    padding: 10px 22px;
+    background: linear-gradient(180deg, #d4a574 0%, #b8894e 50%, #8b6f47 100%);
+    border: 1px solid #6a5236;
+    border-radius: 3px;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-weight: 600;
+    font-size: 14px;
+    color: #1a0f1e;
+    letter-spacing: 0.06em;
+    cursor: pointer;
+    box-shadow:
+      0 0 0 1px rgba(212, 165, 116, 0.6),
+      0 2px 6px rgba(0,0,0,0.5),
+      inset 0 1px 0 rgba(255, 255, 255, 0.35),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .cta::before,
+  .cta::after {
+    content: '✦';
+    font-size: 9px;
+    color: rgba(26, 15, 30, 0.75);
+  }
+  .cta:hover {
+    filter: brightness(1.08);
+  }
+
+</style>
+</head>
+<body>
+
+<div class="phone">
+
+  <!-- Dust particles -->
+  <div class="dust" id="dust"></div>
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="chip">07a · MASQUERADE</div>
+    <div class="round-dots">
+      R3/8
+      <span class="dots"><span class="active">●●●</span>○○○○○</span>
+    </div>
+  </div>
+  <div class="header-sub">// 전반 · 정체 비공개</div>
+
+  <!-- OPPONENT STRIP -->
+  <div class="opponent-strip">
+    <div class="opp-left">
+      <span class="opp-mask">🎭</span>
+      <span class="opp-name">말콤 백작</span>
+    </div>
+    <div class="opp-stats">
+      <div class="opp-stat">HAND <b>3</b></div>
+      <div class="opp-stat">GAL <b>3/8</b></div>
+    </div>
+  </div>
+
+  <!-- OPPONENT GALLERY -->
+  <div class="opp-gallery">
+    <div class="opp-slot filled">🎭</div>
+    <div class="opp-slot filled">🎭</div>
+    <div class="opp-slot filled">🎭</div>
+    <div class="opp-slot empty">4</div>
+    <div class="opp-slot empty">5</div>
+    <div class="opp-slot empty">6</div>
+    <div class="opp-slot empty">7</div>
+    <div class="opp-slot empty">8</div>
+  </div>
+
+  <!-- MY GALLERY LABEL -->
+  <div class="section-label">
+    <div class="label-title"><i>내 갤러리</i> · <b>3 / 8</b></div>
+    <div class="label-hint">왼쪽부터 시간순</div>
+  </div>
+  <div class="flourish">— ✦ —</div>
+
+  <!-- MY GALLERY -->
+  <div class="my-gallery-wrap">
+    <div class="my-gallery">
+      <!-- Slot 1 -->
+      <div class="guest-slot">
+        <div class="guest-card">
+          <div class="gc-mask">🎭</div>
+          <div class="gc-name">붉은 나비<br>부인</div>
+          <div class="gc-surface"><span class="lbl">표면</span><span class="val">+3</span></div>
+        </div>
+      </div>
+      <!-- Slot 2 -->
+      <div class="guest-slot">
+        <div class="guest-card">
+          <div class="gc-mask">🎭</div>
+          <div class="gc-name">가스통<br>자작</div>
+          <div class="gc-surface"><span class="lbl">표면</span><span class="val">+4</span></div>
+        </div>
+      </div>
+      <!-- Slot 3 -->
+      <div class="guest-slot">
+        <div class="guest-card">
+          <div class="gc-mask">🎭</div>
+          <div class="gc-name">은빛 여우<br>남작</div>
+          <div class="gc-surface"><span class="lbl">표면</span><span class="val">+2</span></div>
+        </div>
+      </div>
+      <!-- Empty slots -->
+      <div class="guest-slot empty">4</div>
+      <div class="guest-slot empty">5</div>
+      <div class="guest-slot empty">6</div>
+      <div class="guest-slot empty">7</div>
+      <div class="guest-slot empty">8</div>
+    </div>
+  </div>
+
+  <!-- ROUND PREVIEW -->
+  <div class="round-preview">
+    <div class="rp-pulse"></div>
+    <div class="rp-body">
+      <div class="rp-title">R5 · GRAND UNMASKING</div>
+      <div class="rp-desc">2 라운드 후 모든 가면이 벗겨집니다</div>
+    </div>
+  </div>
+
+  <!-- HAND -->
+  <div class="hand-label">
+    <span class="orn">✦</span>
+    <span><i>손패 · 3장 중 1장을 탭</i></span>
+    <span class="orn">✦</span>
+  </div>
+
+  <div class="hand">
+    <!-- Card 1 -->
+    <div class="hand-card">
+      <span class="fil tl">✦</span>
+      <span class="fil tr">✦</span>
+      <span class="fil bl">✦</span>
+      <span class="fil br">✦</span>
+      <div class="hc-name">루비아나<br>백작부인</div>
+      <div class="hc-inner"><span class="hc-mask">🎭</span></div>
+      <div class="hc-surface">
+        <span class="lbl">✦ 표면</span>
+        <span class="val">+5</span>
+      </div>
+      <div class="hc-identity">정체 : ???</div>
+    </div>
+
+    <!-- Card 2 (elevated) -->
+    <div class="hand-card elevated">
+      <span class="fil tl">✦</span>
+      <span class="fil tr">✦</span>
+      <span class="fil bl">✦</span>
+      <span class="fil br">✦</span>
+      <div class="hc-name">이반<br>남작</div>
+      <div class="hc-inner"><span class="hc-mask">🎭</span></div>
+      <div class="hc-surface">
+        <span class="lbl">✦ 표면</span>
+        <span class="val">+2</span>
+      </div>
+      <div class="hc-identity">정체 : ???</div>
+    </div>
+
+    <!-- Card 3 -->
+    <div class="hand-card">
+      <span class="fil tl">✦</span>
+      <span class="fil tr">✦</span>
+      <span class="fil bl">✦</span>
+      <span class="fil br">✦</span>
+      <div class="hc-name">미스터리<br>손님</div>
+      <div class="hc-inner"><span class="hc-mask">🎭</span></div>
+      <div class="hc-surface">
+        <span class="lbl">✦ 표면</span>
+        <span class="val">+4</span>
+      </div>
+      <div class="hc-identity">정체 : ???</div>
+    </div>
+  </div>
+
+  <!-- MARKET -->
+  <div class="market-label">
+    <span class="orn">✦</span><i>시장 · 뽑을 손님 카드</i><span class="orn">✦</span>
+  </div>
+  <div class="market">
+    <div class="market-card">
+      <div class="mc-mask">🎭</div>
+      <div class="mc-name">에스텔<br>부인</div>
+    </div>
+    <div class="market-card">
+      <div class="mc-mask">🎭</div>
+      <div class="mc-name">라오나<br>신관</div>
+    </div>
+    <div class="market-card">
+      <div class="mc-mask">🎭</div>
+      <div class="mc-name">레오나르<br>자작</div>
+    </div>
+  </div>
+  <div class="draw-hint">뽑기 →</div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="journey-chip">여정 · <b>3/8</b></div>
+    <button class="cta">다음 라운드 →</button>
+  </div>
+
+</div>
+
+<script>
+  // Generate floating dust particles
+  const dust = document.getElementById('dust');
+  const N = 22;
+  for (let i = 0; i < N; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    const size = 1 + Math.random() * 2.5;
+    p.style.width = size + 'px';
+    p.style.height = size + 'px';
+    p.style.left = Math.random() * 100 + '%';
+    p.style.bottom = '-10px';
+    p.style.setProperty('--drift', (Math.random() * 80 - 40) + 'px');
+    p.style.animationDuration = (14 + Math.random() * 14) + 's';
+    p.style.animationDelay = (-Math.random() * 20) + 's';
+    p.style.opacity = 0.3 + Math.random() * 0.5;
+    dust.appendChild(p);
+  }
+
+  // Hand hover elevation (simple sync — elevated class already set on middle card)
+  document.querySelectorAll('.hand-card').forEach(card => {
+    card.addEventListener('mouseenter', () => {
+      document.querySelectorAll('.hand-card').forEach(c => c.classList.remove('elevated'));
+      card.classList.add('elevated');
+    });
+  });
+</script>
+
+</body>
+</html>

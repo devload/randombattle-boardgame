@@ -1,0 +1,635 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>07b · MASQUERADE — GRAND UNMASKING</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Cormorant+Garamond:ital,wght@0,500;1,400;1,500;1,600&family=Inter:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --night: #0a050f;
+    --night2: #1a0f1e;
+    --violet-deep: #3d1f4a;
+    --bronze: #8b6f47;
+    --gold: #d4a574;
+    --cream: #f0e6d2;
+    --red: #8b0000;
+    --mist: #4a5c6a;
+    --moss: #88a065;
+  }
+
+  *{ box-sizing: border-box; }
+
+  html, body{
+    margin: 0;
+    padding: 0;
+    min-height: 100%;
+    background:
+      radial-gradient(120% 80% at 50% 50%, #14091a 0%, #08040c 55%, #020104 100%);
+    color: var(--cream);
+    font-family: 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 12px;
+  }
+
+  /* device / stage frame */
+  .stage-wrap{
+    position: relative;
+    width: 375px;
+    height: 812px;
+    border-radius: 44px;
+    overflow: hidden;
+    background:
+      radial-gradient(90% 60% at 50% 22%, #1c0d24 0%, #0f0616 55%, #06030b 100%);
+    box-shadow:
+      0 0 0 1px rgba(212,165,116,0.09),
+      0 0 60px rgba(139,0,0,0.15),
+      0 40px 140px rgba(0,0,0,0.85),
+      inset 0 0 120px rgba(0,0,0,0.55);
+  }
+
+  /* heavy vignette around device */
+  body::before{
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(60% 55% at 50% 50%, transparent 0%, transparent 55%, #000 100%);
+    pointer-events: none;
+    z-index: 20;
+  }
+
+  /* inner deep vignette */
+  .stage-wrap::after{
+    content:'';
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(85% 65% at 50% 45%, transparent 40%, rgba(0,0,0,0.75) 100%);
+    pointer-events: none;
+    z-index: 6;
+  }
+
+  /* falling glitter dust */
+  .glitter{
+    position: absolute; inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 5;
+  }
+  .glitter span{
+    position: absolute;
+    top: -12px;
+    width: 2px; height: 2px;
+    background: var(--gold);
+    border-radius: 50%;
+    opacity: 0;
+    box-shadow: 0 0 6px rgba(212,165,116,0.9);
+    animation: fall linear infinite;
+  }
+  @keyframes fall{
+    0%{ transform: translateY(0) translateX(0); opacity: 0; }
+    8%{ opacity: 0.9; }
+    100%{ transform: translateY(880px) translateX(var(--dx, 0px)); opacity: 0; }
+  }
+
+  /* horizontal scanline of gold light */
+  .scanline{
+    position: absolute;
+    left: -20%;
+    right: -20%;
+    top: 40%;
+    height: 120px;
+    background: linear-gradient(180deg, transparent 0%, rgba(212,165,116,0.12) 45%, rgba(240,230,210,0.18) 50%, rgba(212,165,116,0.10) 55%, transparent 100%);
+    filter: blur(2px);
+    transform: translateY(-400px) skewY(-2deg);
+    animation: scan 6.5s ease-in-out infinite;
+    pointer-events: none;
+    z-index: 7;
+  }
+  @keyframes scan{
+    0%{ transform: translateY(-350px) skewY(-2deg); opacity: 0; }
+    10%{ opacity: 1; }
+    50%{ opacity: 1; }
+    90%{ opacity: 1; }
+    100%{ transform: translateY(500px) skewY(-2deg); opacity: 0; }
+  }
+
+  /* content */
+  .stage{
+    position: relative;
+    z-index: 8;
+    padding: 14px 16px 12px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* top header */
+  .top{
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'Space Mono', monospace;
+    font-size: 9.5px;
+    letter-spacing: 0.12em;
+    color: rgba(240,230,210,0.42);
+  }
+  .chip07{
+    padding: 4px 8px;
+    border: 1px solid rgba(139,111,71,0.35);
+    border-radius: 999px;
+    color: rgba(212,165,116,0.75);
+    background: rgba(26,15,30,0.6);
+  }
+  .top .r{
+    color: rgba(139,0,0,0.7);
+  }
+
+  /* dramatic title */
+  .title-block{
+    text-align: center;
+    margin-top: 14px;
+    position: relative;
+  }
+  .title-eyebrow{
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    color: rgba(212,165,116,0.55);
+    letter-spacing: 0.35em;
+    margin-bottom: 6px;
+  }
+  .grand-title{
+    font-family: 'Cinzel', serif;
+    font-weight: 700;
+    font-size: 26px;
+    letter-spacing: 0.15em;
+    color: var(--gold);
+    text-shadow:
+      0 0 22px rgba(212,165,116,0.45),
+      0 0 4px rgba(212,165,116,0.6),
+      0 2px 0 rgba(0,0,0,0.4);
+    line-height: 1.05;
+    display: inline-block;
+    animation: titlePulse 3.4s ease-in-out infinite;
+  }
+  @keyframes titlePulse{
+    0%,100%{ transform: scale(1); text-shadow: 0 0 18px rgba(212,165,116,0.35), 0 0 4px rgba(212,165,116,0.5); }
+    50%{ transform: scale(1.035); text-shadow: 0 0 30px rgba(212,165,116,0.7), 0 0 6px rgba(240,230,210,0.7); }
+  }
+  .subtitle-kr{
+    margin-top: 6px;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-weight: 500;
+    font-size: 15px;
+    color: rgba(240,230,210,0.58);
+    letter-spacing: 0.02em;
+  }
+  .flourish{
+    margin-top: 5px;
+    font-family: 'Cinzel', serif;
+    color: var(--bronze);
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    opacity: 0.75;
+  }
+
+  /* spotlight stage - big card fan */
+  .stage-area{
+    position: relative;
+    margin-top: 18px;
+    height: 340px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+  }
+
+  /* dark stage floor gradient */
+  .stage-area::before{
+    content:'';
+    position: absolute;
+    left: -12px; right: -12px; bottom: -8px;
+    height: 90px;
+    background:
+      radial-gradient(65% 100% at 50% 0%, rgba(139,111,71,0.20) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .fan{
+    position: relative;
+    width: 340px;
+    height: 320px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+  }
+
+  /* individual card container */
+  .card{
+    position: absolute;
+    bottom: 8px;
+    width: 108px;
+    height: 156px;
+    border-radius: 10px;
+    background: linear-gradient(180deg, #f2e8d0 0%, #e6d8b8 60%, #d4c298 100%);
+    border: 1.5px solid var(--bronze);
+    box-shadow:
+      0 6px 18px rgba(0,0,0,0.55),
+      inset 0 0 0 1px rgba(240,230,210,0.35);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 8px 6px 10px;
+    color: #221211;
+  }
+
+  /* card positions in fan */
+  .c1{ transform: translateX(-115px) rotate(-11deg); }
+  .c2{ transform: translateX(-40px)  rotate(-4deg); }
+  .c3{ transform: translateX(40px)   rotate(4deg); }
+  .c4{ transform: translateX(115px)  rotate(11deg); }
+
+  .card .guest-name{
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-weight: 600;
+    font-size: 11px;
+    color: #3a1e0a;
+    text-align: center;
+    line-height: 1.15;
+    height: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 2px;
+  }
+
+  .card .portrait{
+    margin-top: 4px;
+    width: 78px;
+    height: 78px;
+    border-radius: 50%;
+    background:
+      radial-gradient(circle at 50% 55%, #2a1224 0%, #14060f 65%, #0a0308 100%);
+    border: 1.5px solid rgba(139,111,71,0.55);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    box-shadow: inset 0 0 12px rgba(0,0,0,0.7);
+  }
+
+  .card .revealed{
+    font-size: 32px;
+    filter: drop-shadow(0 0 8px currentColor);
+  }
+
+  .card .identity-chip{
+    margin-top: auto;
+    font-family: 'Cinzel', serif;
+    font-weight: 700;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    padding: 3px 8px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.65);
+    border: 1.2px solid currentColor;
+    text-align: center;
+  }
+
+  /* per-identity accents */
+  .card.gold{ border-color: var(--gold); }
+  .card.gold .identity-chip{ color: #8a5a10; border-color: var(--gold); background: linear-gradient(180deg, rgba(255,240,210,0.85), rgba(255,220,160,0.7)); }
+  .card.gold .portrait{ box-shadow: inset 0 0 14px rgba(0,0,0,0.7), 0 0 24px rgba(212,165,116,0.4); }
+  .card.gold .revealed{ color: #d4a574; }
+
+  .card.red{ border-color: var(--red); }
+  .card.red .identity-chip{ color: #7a0000; border-color: var(--red); background: linear-gradient(180deg, rgba(255,220,220,0.85), rgba(240,180,180,0.7)); }
+  .card.red .portrait{ box-shadow: inset 0 0 14px rgba(0,0,0,0.7), 0 0 24px rgba(139,0,0,0.5); }
+  .card.red .revealed{ color: #b91c1c; }
+
+  .card.mist{ border-color: var(--mist); }
+  .card.mist .identity-chip{ color: #2b3944; border-color: var(--mist); background: linear-gradient(180deg, rgba(220,230,240,0.85), rgba(180,200,215,0.7)); }
+  .card.mist .portrait{ box-shadow: inset 0 0 14px rgba(0,0,0,0.7), 0 0 24px rgba(74,92,106,0.55); }
+  .card.mist .revealed{ color: #6b8598; }
+
+  .card.violet{ border-color: #6b3a80; }
+  .card.violet .identity-chip{ color: #3d1f4a; border-color: #6b3a80; background: linear-gradient(180deg, rgba(230,215,240,0.85), rgba(200,175,220,0.7)); }
+  .card.violet .portrait{ box-shadow: inset 0 0 14px rgba(0,0,0,0.7), 0 0 24px rgba(61,31,74,0.65); }
+  .card.violet .revealed{ color: #8b5cba; }
+
+  /* aura ring around card */
+  .aura{
+    position: absolute;
+    inset: -12px;
+    border-radius: 16px;
+    pointer-events: none;
+    z-index: -1;
+    filter: blur(6px);
+    animation: auraPulse 2.4s ease-in-out infinite;
+  }
+  .card.gold .aura{ background: radial-gradient(60% 55% at 50% 50%, rgba(212,165,116,0.65) 0%, transparent 75%); animation-duration: 2.1s; }
+  .card.red .aura{ background: radial-gradient(60% 55% at 50% 50%, rgba(139,0,0,0.65) 0%, transparent 75%); animation-duration: 2.6s; }
+  .card.mist .aura{ background: radial-gradient(60% 55% at 50% 50%, rgba(74,92,106,0.65) 0%, transparent 75%); animation-duration: 3.0s; }
+  .card.violet .aura{ background: radial-gradient(60% 55% at 50% 50%, rgba(61,31,74,0.85) 0%, transparent 75%); animation-duration: 2.8s; }
+  @keyframes auraPulse{
+    0%,100%{ opacity: 0.55; transform: scale(1); }
+    50%{ opacity: 1; transform: scale(1.08); }
+  }
+
+  /* spotlight cones above each card */
+  .spot{
+    position: absolute;
+    top: -180px;
+    width: 160px;
+    height: 250px;
+    pointer-events: none;
+    z-index: -1;
+    background:
+      radial-gradient(50% 70% at 50% 100%, var(--spotcolor, rgba(212,165,116,0.55)) 0%, transparent 70%);
+    filter: blur(6px);
+    clip-path: polygon(38% 0%, 62% 0%, 100% 100%, 0% 100%);
+    animation: spotBreath 3.6s ease-in-out infinite;
+  }
+  @keyframes spotBreath{
+    0%,100%{ opacity: 0.65; }
+    50%{ opacity: 1; }
+  }
+  .card.gold .spot{ --spotcolor: rgba(212,165,116,0.75); animation-duration: 3.0s; }
+  .card.red .spot{ --spotcolor: rgba(139,0,0,0.75); animation-duration: 3.4s; }
+  .card.mist .spot{ --spotcolor: rgba(74,92,106,0.75); animation-duration: 4.0s; }
+  .card.violet .spot{ --spotcolor: rgba(61,31,74,0.85); animation-duration: 3.7s; }
+
+  /* mask floating away */
+  .mask{
+    position: absolute;
+    font-size: 28px;
+    z-index: 2;
+    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.7));
+    animation: maskFloat 4s ease-in-out infinite;
+  }
+  .card.gold .mask{ top: -22px; left: 36%; transform-origin: center; --rot: 120deg; }
+  .card.red .mask{ top: -14px; left: 42%; --rot: 60deg; animation-duration: 3.5s; }
+  .card.mist .mask{ top: -8px; left: 30%; --rot: -75deg; animation-duration: 4.5s; }
+  .card.violet .mask{ top: 6px; left: 46%; --rot: 25deg; animation-duration: 3.8s; }
+  @keyframes maskFloat{
+    0%,100%{ transform: translateY(0) rotate(var(--rot, 90deg)); opacity: 0.95; }
+    50%{ transform: translateY(-8px) rotate(calc(var(--rot, 90deg) + 12deg)); opacity: 0.75; }
+  }
+
+  /* explanation text */
+  .explain{
+    text-align: center;
+    margin-top: 6px;
+    padding: 0 22px;
+  }
+  .explain .cor{
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-weight: 500;
+    font-size: 14px;
+    color: rgba(240,230,210,0.78);
+    line-height: 1.35;
+  }
+  .explain .mono{
+    margin-top: 6px;
+    font-family: 'Space Mono', monospace;
+    font-size: 9.5px;
+    letter-spacing: 0.14em;
+    color: rgba(212,165,116,0.62);
+  }
+
+  /* legend strip */
+  .legend{
+    margin-top: 14px;
+    display: flex;
+    gap: 6px;
+    justify-content: center;
+    align-items: center;
+  }
+  .legend .lchip{
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 7px;
+    border-radius: 999px;
+    border: 1px solid rgba(139,111,71,0.35);
+    background: rgba(20,10,26,0.6);
+    font-family: 'Cinzel', serif;
+    font-weight: 500;
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    color: rgba(240,230,210,0.85);
+  }
+  .legend .lchip .emo{ font-size: 12px; }
+  .legend .lchip.on-gold{ border-color: var(--gold); color: var(--gold); box-shadow: 0 0 12px rgba(212,165,116,0.35); }
+  .legend .lchip.on-red{ border-color: #b93030; color: #ff6a6a; box-shadow: 0 0 12px rgba(139,0,0,0.45); }
+  .legend .lchip.on-mist{ border-color: #6b8598; color: #a8c0d2; box-shadow: 0 0 12px rgba(74,92,106,0.45); }
+  .legend .lchip.on-violet{ border-color: #8b5cba; color: #c9a2e6; box-shadow: 0 0 12px rgba(61,31,74,0.55); }
+  .legend .lchip.dim{ opacity: 0.35; }
+
+  /* bottom progression */
+  .progress{
+    margin-top: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 6px;
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    color: rgba(240,230,210,0.45);
+  }
+  .progress .arrow{
+    color: var(--gold);
+    font-family: 'Cinzel', serif;
+    font-size: 12px;
+    letter-spacing: 0.2em;
+    animation: arrowPulse 1.6s ease-in-out infinite;
+  }
+  @keyframes arrowPulse{
+    0%,100%{ opacity: 0.55; transform: translateX(0); }
+    50%{ opacity: 1; transform: translateX(3px); }
+  }
+
+  /* candle flicker corners */
+  .candle{
+    position: absolute;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: #ffcf7a;
+    filter: blur(1px);
+    box-shadow: 0 0 24px 6px rgba(255,175,90,0.55);
+    animation: flicker 1.7s ease-in-out infinite;
+    z-index: 4;
+  }
+  .candle.tl{ top: 40px; left: 22px; }
+  .candle.tr{ top: 60px; right: 24px; animation-delay: 0.5s; }
+  .candle.bl{ bottom: 90px; left: 20px; animation-delay: 0.9s; }
+  .candle.br{ bottom: 130px; right: 22px; animation-delay: 0.3s; }
+  @keyframes flicker{
+    0%,100%{ opacity: 0.75; transform: scale(1); }
+    30%{ opacity: 1; transform: scale(1.15); }
+    60%{ opacity: 0.55; transform: scale(0.9); }
+  }
+
+  /* proscenium arch feel */
+  .proscenium{
+    position: absolute;
+    left: 0; right: 0;
+    top: 0;
+    height: 78px;
+    background:
+      linear-gradient(180deg, rgba(139,111,71,0.15) 0%, transparent 100%);
+    border-bottom: 1px solid rgba(139,111,71,0.15);
+    pointer-events: none;
+    z-index: 3;
+  }
+</style>
+</head>
+<body>
+
+<div class="stage-wrap">
+
+  <div class="proscenium"></div>
+
+  <!-- glitter dust falling -->
+  <div class="glitter" id="glitter"></div>
+
+  <!-- horizontal scanline of gold light -->
+  <div class="scanline"></div>
+
+  <!-- candles -->
+  <div class="candle tl"></div>
+  <div class="candle tr"></div>
+  <div class="candle bl"></div>
+  <div class="candle br"></div>
+
+  <div class="stage">
+
+    <!-- top header -->
+    <div class="top">
+      <div class="chip07">07b · UNMASKING</div>
+      <div class="r">// R5 · CUTSCENE</div>
+    </div>
+
+    <!-- dramatic title -->
+    <div class="title-block">
+      <div class="title-eyebrow">MASQUERADE · 가면의 무도회</div>
+      <div class="grand-title">GRAND&nbsp;UNMASKING</div>
+      <div class="subtitle-kr">가면이 벗겨진다</div>
+      <div class="flourish">— &nbsp;✦&nbsp; ✦&nbsp; ✦&nbsp; —</div>
+    </div>
+
+    <!-- spotlight stage -->
+    <div class="stage-area">
+      <div class="fan">
+
+        <!-- Card 1 · Royalty -->
+        <div class="card gold c1">
+          <div class="spot"></div>
+          <div class="aura"></div>
+          <div class="mask">🎭</div>
+          <div class="guest-name">붉은 나비 부인</div>
+          <div class="portrait"><span class="revealed">👑</span></div>
+          <div class="identity-chip">왕족</div>
+        </div>
+
+        <!-- Card 2 · Thief -->
+        <div class="card red c2">
+          <div class="spot"></div>
+          <div class="aura"></div>
+          <div class="mask">🎭</div>
+          <div class="guest-name">가스통 자작</div>
+          <div class="portrait"><span class="revealed">🗡</span></div>
+          <div class="identity-chip">도둑</div>
+        </div>
+
+        <!-- Card 3 · Scholar -->
+        <div class="card mist c3">
+          <div class="spot"></div>
+          <div class="aura"></div>
+          <div class="mask">🎭</div>
+          <div class="guest-name">은빛 여우 남작</div>
+          <div class="portrait"><span class="revealed">📚</span></div>
+          <div class="identity-chip">학자</div>
+        </div>
+
+        <!-- Card 4 · Mystic -->
+        <div class="card violet c4">
+          <div class="spot"></div>
+          <div class="aura"></div>
+          <div class="mask">🎭</div>
+          <div class="guest-name">루비아나 백작부인</div>
+          <div class="portrait"><span class="revealed">🔮</span></div>
+          <div class="identity-chip">신비주의자</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- explanation text -->
+    <div class="explain">
+      <div class="cor">각 손님의 진짜 정체가 드러납니다…</div>
+      <div class="mono">// 이제 채점 방식이 결정됨</div>
+    </div>
+
+    <!-- legend strip -->
+    <div class="legend">
+      <div class="lchip on-gold"><span class="emo">👑</span>왕족</div>
+      <div class="lchip on-red"><span class="emo">🗡</span>도둑</div>
+      <div class="lchip on-mist"><span class="emo">📚</span>학자</div>
+      <div class="lchip dim"><span class="emo">🏹</span>사냥꾼</div>
+      <div class="lchip on-violet"><span class="emo">🔮</span>신비</div>
+    </div>
+
+    <!-- bottom progression -->
+    <div class="progress">
+      <div>손님 4명 중 4명 공개 · 후반 4라운드로 진행</div>
+      <div class="arrow">→</div>
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+  // spawn glitter dust particles
+  (function(){
+    const g = document.getElementById('glitter');
+    if(!g) return;
+    const N = 42;
+    for(let i=0;i<N;i++){
+      const s = document.createElement('span');
+      const x = Math.random()*100;
+      const dx = (Math.random()*40 - 20);
+      const dur = 6 + Math.random()*7;
+      const delay = Math.random()*8;
+      const size = 1 + Math.random()*2.2;
+      const hueChance = Math.random();
+      let col = '#d4a574';
+      if(hueChance > 0.85) col = '#f0e6d2';
+      else if(hueChance > 0.75) col = '#ffcf7a';
+      s.style.left = x + '%';
+      s.style.width = size + 'px';
+      s.style.height = size + 'px';
+      s.style.setProperty('--dx', dx + 'px');
+      s.style.animationDuration = dur + 's';
+      s.style.animationDelay = delay + 's';
+      s.style.background = col;
+      s.style.boxShadow = '0 0 6px ' + col;
+      g.appendChild(s);
+    }
+  })();
+</script>
+
+</body>
+</html>
