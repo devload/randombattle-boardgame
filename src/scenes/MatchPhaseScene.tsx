@@ -63,31 +63,37 @@ export function MatchPhaseScene() {
     el.classList.add('shake-anim')
   }
 
-  // Boot: if no match is loaded, spin up a demo one so the scene works standalone.
+  // Boot: if no match is loaded AND no tournament is active, spin up a
+  // demo one so the scene works standalone (used only when someone lands
+  // on /match directly from the dev SceneSwitcher — never during a real
+  // tournament). Gating on the tournament roster prevents a race where
+  // clicking CONTINUE briefly leaves `result` null while the scene is
+  // still 'match' — without this guard the fallback could spawn a bogus
+  // demo match on top of an in-progress tournament and desync the flow.
   useEffect(() => {
-    if (!result) {
-      const playerDeck: CardData[] = [
-        ...makeStarterDeck(),
-        cardById('a_ghost'),
-        cardById('a_stim'),
-        cardById('b_overclock'),
-        cardById('b_synth'),
-      ]
-      const robotDeck: CardData[] = [
-        ...makeStarterDeck(),
-        cardById('a_ghost'),
-        cardById('a_blade'),
-        cardById('b_netrunner'),
-      ]
-      start({
-        deckA: playerDeck,
-        deckB: robotDeck,
-        seed: Date.now() & 0xffffffff,
-        firstPlayer: 'A',
-        labelA: { name: 'YOU', icon: '👤' },
-        labelB: { name: 'GHOST.BOT', icon: '🥷' },
-      })
-    }
+    if (result) return
+    if (useTournament.getState().players.length > 0) return
+    const playerDeck: CardData[] = [
+      ...makeStarterDeck(),
+      cardById('a_ghost'),
+      cardById('a_stim'),
+      cardById('b_overclock'),
+      cardById('b_synth'),
+    ]
+    const robotDeck: CardData[] = [
+      ...makeStarterDeck(),
+      cardById('a_ghost'),
+      cardById('a_blade'),
+      cardById('b_netrunner'),
+    ]
+    start({
+      deckA: playerDeck,
+      deckB: robotDeck,
+      seed: Date.now() & 0xffffffff,
+      firstPlayer: 'A',
+      labelA: { name: 'YOU', icon: '👤' },
+      labelB: { name: 'GHOST.BOT', icon: '🥷' },
+    })
   }, [result, start])
 
   // Auto-advance cursor while playing (paused during intro).
@@ -398,20 +404,24 @@ export function MatchPhaseScene() {
                     stats.recordMatchResult(result.winner === 'A')
                     if (tour.inFinal) {
                       tour.finishFinal(result)
-                      useMatch.getState().reset()
+                      // Change the scene BEFORE clearing the match store so
+                      // this scene unmounts first — otherwise the demo-boot
+                      // useEffect above could observe `result === null`
+                      // while still mounted and spawn a bogus demo match.
                       setScene('result')
+                      useMatch.getState().reset()
                     } else {
                       tour.finishMatch(result, recoverHumanDeck(result))
-                      useMatch.getState().reset()
                       const post = useTournament.getState()
                       if (post.finished) setScene('result')
                       else if (post.inFinal) setScene('final')
                       else setScene('tourboard')
+                      useMatch.getState().reset()
                     }
                   } else {
                     // Standalone demo path (no active tournament).
-                    useMatch.getState().reset()
                     setScene('lobby')
+                    useMatch.getState().reset()
                   }
                 }}
                 className="mt-5 w-full py-3 clip-cyber bg-holo-gradient text-arena-void

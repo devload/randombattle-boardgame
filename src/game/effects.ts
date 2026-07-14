@@ -98,9 +98,13 @@ export function benchAllyBonus(bench: readonly BenchStack[]): number {
    ------------------------------------------------------------ */
 
 /**
- * In-flag effects on the current flag pile: `reduce-opponent` subtracts
- * from the attacker's required power. We express this as a positive
- * "defensive bonus" that gets added to the flag pile's effective power.
+ * In-flag effects on the current flag pile.
+ *
+ * `reduce-opponent` is modeled as a positive defensive bonus that gets
+ * added to the flag pile's effective power. From the attacker's point of
+ * view this is equivalent to their required breach power being higher —
+ * so the card text on those cards reads "상대 필요 파워 +N" (opponent's
+ * required power +N), which is what the mechanic actually does.
  */
 export function flagInFlagBonus(flagPile: readonly Card[]): number {
   let bonus = 0
@@ -181,4 +185,43 @@ export function isFromBench(e: Effect): e is FromBenchEffect {
 }
 export function isInFlag(e: Effect): e is InFlagEffect {
   return e.trigger === 'in-flag'
+}
+
+/* ------------------------------------------------------------
+   when-picked resolver — fires once at draft time.
+   Currently supports gain-fans (deposit into the picker's fan pool).
+   ------------------------------------------------------------ */
+
+export type WhenPickedFanGain = {
+  card: Card
+  fans: number
+}
+
+/**
+ * Given a list of freshly picked cards, return the sum of when-picked
+ * gain-fans effects that should be credited to the picker (plus a
+ * per-card breakdown for UI / event log purposes).
+ *
+ * This is a pure function — the store decides where to add the fans.
+ * Non-fan when-picked bodies are silently ignored for MVP scope.
+ */
+export function whenPickedFanGains(picks: readonly Card[]): {
+  total: number
+  gains: WhenPickedFanGain[]
+} {
+  const gains: WhenPickedFanGain[] = []
+  let total = 0
+  for (const card of picks) {
+    let cardTotal = 0
+    for (const e of card.effects) {
+      if (e.trigger === 'when-picked' && e.body.kind === 'gain-fans') {
+        cardTotal += e.body.value
+      }
+    }
+    if (cardTotal > 0) {
+      gains.push({ card, fans: cardTotal })
+      total += cardTotal
+    }
+  }
+  return { total, gains }
 }

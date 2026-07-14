@@ -84,6 +84,47 @@ describe('match · simulateMatch', () => {
     }
   })
 
+  it('flag-loss fires BEFORE the flag pile is cleared (event order)', () => {
+    // Set up a match where DAEMON is the initial flag and B breaches immediately.
+    // Expected order of events for that breach:
+    //   ... reveal(s) by B ...
+    //   effectTriggered(flag-loss, DAEMON, A)    ← must appear BEFORE flagTaken
+    //   flagTaken(from: A, to: B, benched: [DAEMON])
+    const deckA: Card[] = [cardById('c_daemon'), cardById('s_grunt'), cardById('s_grunt')]
+    const deckB: Card[] = [cardById('c_daemon'), cardById('c_daemon'), cardById('c_daemon')]
+    const r = simulateMatch(deckA, deckB, 1, { firstPlayer: 'A' })
+
+    const flagTakenIdx = r.events.findIndex(
+      (e) => e.type === 'flagTaken' && e.from === 'A' && e.to === 'B',
+    )
+    const flagLossIdx = r.events.findIndex(
+      (e) =>
+        e.type === 'effectTriggered'
+        && e.effect.trigger === 'flag-loss'
+        && e.player === 'A',
+    )
+    expect(flagTakenIdx).toBeGreaterThan(-1)
+    expect(flagLossIdx).toBeGreaterThan(-1)
+    expect(flagLossIdx).toBeLessThan(flagTakenIdx)
+  })
+
+  it('in-flag reduce-opponent boosts the defender (attacker needs more power)', () => {
+    // A opens with EXEC.AI (base 3 + in-flag +1) → effective flag power = 4.
+    // B reveals STIM PACK (base 2 + immediate +1 = 3). 3 < 4 → B needs a
+    // second reveal. This asserts the in-flag effect is applied to the
+    // required-power calculation (whichever direction the design chose).
+    const deckA: Card[] = [cardById('b_execAI'), cardById('s_grunt')]
+    const deckB: Card[] = [cardById('a_stim'), cardById('s_grunt'), cardById('s_grunt')]
+    const r = simulateMatch(deckA, deckB, 1, { firstPlayer: 'A' })
+    const flagTakenIdx = r.events.findIndex((e) => e.type === 'flagTaken')
+    const revealsBeforeBreach = r.events
+      .slice(0, flagTakenIdx >= 0 ? flagTakenIdx : r.events.length)
+      .filter((e) => e.type === 'reveal' && e.player === 'B')
+    // Without the in-flag bonus, B would breach on first STIM (3 ≥ 3).
+    // With the +1 bonus, B needs at least 2 cards.
+    expect(revealsBeforeBreach.length).toBeGreaterThanOrEqual(2)
+  })
+
   it('flag-loss effect awards fans (DAEMON.EXE gives 3)', () => {
     // Player A starts with DAEMON.EXE as the initial flag card.
     const deckA: Card[] = [cardById('c_daemon'), cardById('s_grunt'), cardById('s_grunt')]

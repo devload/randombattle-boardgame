@@ -11,15 +11,23 @@ import type { Card, CardSet, Level } from '../game/types'
  */
 
 const SET_META: Record<CardSet, { label: string; color: string }> = {
-  basic:       { label: 'BASIC',       color: 'text-neon-cyan border-neon-cyan' },
-  corpOps:     { label: 'CORP OPS',    color: 'text-neon-magenta border-neon-magenta' },
-  underground: { label: 'UNDERGROUND', color: 'text-neon-green border-neon-green' },
+  basic:        { label: 'BASIC',        color: 'text-neon-cyan border-neon-cyan' },
+  corpOps:      { label: 'CORP OPS',     color: 'text-neon-magenta border-neon-magenta' },
+  underground:  { label: 'UNDERGROUND',  color: 'text-neon-green border-neon-green' },
+  neoCitadel:   { label: 'NEO-CITADEL',  color: 'text-neon-cyan border-neon-cyan' },
+  neonPark:     { label: 'NEON PARK',    color: 'text-neon-magenta border-neon-magenta' },
+  ghostNetwork: { label: 'GHOST NET',    color: 'text-neon-green border-neon-green' },
+  orbitZero:    { label: 'ORBIT ZERO',   color: 'text-neon-yellow border-neon-yellow' },
 }
 
 const SET_HINT: Record<CardSet, string> = {
-  basic:       '기본 · 견고한 파워',
-  corpOps:     '기업 · 벤치 시너지',
-  underground: '언더 · 즉시 부스트',
+  basic:        '기본 · 견고한 파워',
+  corpOps:      '기업 · 벤치 시너지',
+  underground:  '언더 · 즉시 부스트',
+  neoCitadel:   '요새 · CHROME KNIGHT 스택 + 깃발 방어',
+  neonPark:     '축제 · 즉시 파워 + 뺏길 때 팬 획득',
+  ghostNetwork: '망령 · 깃발 방어 + 뺏길 때 팬 대량',
+  orbitZero:    '궤도 · 픽하는 순간 팬 획득 (When Picked)',
 }
 
 const LEVEL_META: Record<Level, { label: string; color: string }> = {

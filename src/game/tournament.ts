@@ -30,9 +30,32 @@ export function totalFans(p: TournamentPlayer): number {
   return trophyFans + p.fans
 }
 
-/** Sorted leaderboard, descending by total fans. */
+/**
+ * Highest round number among a player's trophies (0 if none).
+ * Used for the second-tier tiebreak.
+ */
+export function highestTrophyRound(p: TournamentPlayer): number {
+  if (p.trophies.length === 0) return 0
+  let max = 0
+  for (const t of p.trophies) if (t.round > max) max = t.round
+  return max
+}
+
+/**
+ * Sorted leaderboard, descending by total fans.
+ * Tiebreak order (per original rules for the final tie-break):
+ *   1. total fans (primary)
+ *   2. trophy count (more trophies = higher)
+ *   3. highest round trophy owned
+ */
 export function leaderboard(players: readonly TournamentPlayer[]): TournamentPlayer[] {
-  return [...players].sort((a, b) => totalFans(b) - totalFans(a))
+  return [...players].sort((a, b) => {
+    const df = totalFans(b) - totalFans(a)
+    if (df !== 0) return df
+    const dt = b.trophies.length - a.trophies.length
+    if (dt !== 0) return dt
+    return highestTrophyRound(b) - highestTrophyRound(a)
+  })
 }
 
 /** Detect end-of-tournament instant win (fan gap ≥ 11). */
@@ -71,23 +94,33 @@ export function awardTrophy(player: TournamentPlayer, round: number): Tournament
 /**
  * Decide who reveals first this round.
  * Original rules:
- *   Round 1 → coin flip (random)
- *   Round 2+ → player with the higher trophy number (= more trophies) goes first;
- *              tiebreak = coin flip.
+ *   Round 1 → coin flip (random).
+ *   Round 2+ → player who owns the trophy with the highest ROUND number goes
+ *              first. (The rules literally say "the player with the trophy
+ *              with the highest round number" — not the player with more
+ *              trophies.) Tiebreak = coin flip.
+ *
+ * `opponent.trophies` accepts either a full trophy array (preferred, so
+ * highest-round logic works) or a plain count (legacy call site fallback:
+ * treated as if the opponent's highest round == count, which reduces to
+ * the previous "who has more trophies" heuristic).
  */
 export function decideFirstPlayer(
   round: number,
   human: TournamentPlayer,
-  opponent: { trophies: number },
+  opponent: { trophies: Trophy[] } | { trophies: number },
   seed: number,
 ): 'A' | 'B' {
   if (round === 1) {
     // Coin flip from seed.
     return (seed & 1) === 0 ? 'A' : 'B'
   }
-  const humanTrophies = human.trophies.length
-  if (humanTrophies > opponent.trophies) return 'A'
-  if (humanTrophies < opponent.trophies) return 'B'
+  const humanHighest = highestTrophyRound(human)
+  const opponentHighest = typeof opponent.trophies === 'number'
+    ? opponent.trophies
+    : opponent.trophies.reduce((m, t) => Math.max(m, t.round), 0)
+  if (humanHighest > opponentHighest) return 'A'
+  if (humanHighest < opponentHighest) return 'B'
   return (seed & 1) === 0 ? 'A' : 'B'
 }
 

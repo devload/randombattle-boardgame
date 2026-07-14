@@ -10,7 +10,18 @@
 export type Level = 'S' | 'A' | 'B' | 'C'
 
 /** Content set the card belongs to. */
-export type CardSet = 'basic' | 'corpOps' | 'underground'
+export type CardSet =
+  | 'basic'
+  | 'corpOps'
+  | 'underground'
+  /** Castle set — cyberpunk knight/fortress reskin (NEO-CITADEL). */
+  | 'neoCitadel'
+  /** Funfair set — arcade/holo-entertainment reskin (NEON PARK). */
+  | 'neonPark'
+  /** Haunted House set — dead-code / rogue AI reskin (GHOST NETWORK). */
+  | 'ghostNetwork'
+  /** Outer Space set — orbital ops with when-picked triggers (ORBIT ZERO). */
+  | 'orbitZero'
 
 /** Effect trigger keyword (mirrors original game's keywords). */
 export type Trigger =

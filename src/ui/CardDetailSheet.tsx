@@ -3,7 +3,7 @@ import { Card as CardView } from './Card'
 import { Chip } from './Chip'
 import { HintList } from './HintBadge'
 import { hintsFor } from '../game/hints'
-import type { Card, Level, Trigger } from '../game/types'
+import type { Card, CardSet, Level, Trigger } from '../game/types'
 
 const TRIGGER_LABEL: Record<Trigger, string> = {
   'immediate': '즉시 발동',
@@ -38,6 +38,17 @@ const LEVEL_LABEL: Record<Level, string> = {
   C: 'ELITE',
 }
 
+/** Pretty display name per set (fallback: uppercase key). */
+const SET_DISPLAY: Record<CardSet, string> = {
+  basic:        'BASIC',
+  corpOps:      'CORP OPS',
+  underground:  'UNDERGROUND',
+  neoCitadel:   'NEO-CITADEL',
+  neonPark:     'NEON PARK',
+  ghostNetwork: 'GHOST NETWORK',
+  orbitZero:    'ORBIT ZERO',
+}
+
 /**
  * Bottom sheet with the full card breakdown.
  * Layout (top-to-bottom):
@@ -61,7 +72,7 @@ export function CardDetailSheet({
     <Sheet
       open={!!card}
       onClose={onClose}
-      eyebrow={card ? `// CARD DOSSIER · ${card.set.toUpperCase()}` : ''}
+      eyebrow={card ? `// CARD DOSSIER · ${SET_DISPLAY[card.set] ?? card.set.toUpperCase()}` : ''}
       title={card?.name}
     >
       {card && (

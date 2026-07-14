@@ -5,6 +5,7 @@ import { makeStarterDeck } from '../game/cards.ts'
 import { awardTrophy, humanInFinal, isInstantWin, makeInitialRoster, opponentForRound, TOTAL_ROUNDS, FINAL_TROPHY_FANS, finalists } from '../game/tournament.ts'
 import { ROBOTS, robotPicksForRound } from '../game/robots.ts'
 import { recoverDeck } from '../game/deck.ts'
+import { whenPickedFanGains } from '../game/effects.ts'
 
 /**
  * Tournament store: tracks round, players, human's deck between rounds,
@@ -36,6 +37,13 @@ type TournamentState = {
   startTournament: () => void
   /** Called after the player finishes drafting; sets the human deck. */
   setHumanDeck: (deck: Card[]) => void
+  /**
+   * Fire `when-picked` gain-fans effects for the human's fresh picks.
+   * Call this exactly once, when the player commits their pile picks
+   * (before the trim stage). Returns the total fans gained so the UI
+   * can toast / highlight the reward.
+   */
+  applyHumanWhenPicked: (picks: readonly Card[]) => number
   /** Called when the current match completes; updates fans/trophies + advances round. */
   finishMatch: (result: MatchResult, deckRecovered: Card[]) => void
   /** Called when the final ends; awards championship trophy. */
@@ -84,6 +92,16 @@ export const useTournament = create<TournamentState>()(
       s.humanDeck = deck
     }),
 
+    applyHumanWhenPicked: (picks) => {
+      const { total } = whenPickedFanGains(picks)
+      if (total <= 0) return 0
+      set((s) => {
+        const humanIdx = s.players.findIndex((p) => p.isHuman)
+        if (humanIdx >= 0) s.players[humanIdx]!.fans += total
+      })
+      return total
+    },
+
     finishMatch: (result, deckRecovered) => set((s) => {
       s.lastMatchResult = result
       s.humanDeck = deckRecovered
@@ -118,9 +136,16 @@ export const useTournament = create<TournamentState>()(
       }
 
       // Grow every robot's deck with round picks (they simulate a draft too).
+      // Also credit `when-picked` gain-fans effects for each bot's picks
+      // so orbitZero (and any future when-picked set) works symmetrically.
       for (const r of ROBOTS) {
         const picks = robotPicksForRound(r, s.round, s.currentSeed ^ 0xC0FFEE)
         s.robotDecks[r.id] = [...(s.robotDecks[r.id] ?? r.makeDeck()), ...picks]
+        const wp = whenPickedFanGains(picks).total
+        if (wp > 0) {
+          const idx = s.players.findIndex((p) => p.id === r.id)
+          if (idx >= 0) s.players[idx]!.fans += wp
+        }
       }
 
       // Advance round or enter final.

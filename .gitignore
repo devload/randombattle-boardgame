@@ -28,3 +28,18 @@ npm-debug.log*
 # Local
 .local/
 .vercel
+
+# E2E artifacts (Playwright)
+e2e/screenshots/
+e2e/report/
+e2e/report.json
+test-results/
+playwright-report/
+
+# Hybrid concept drafts (out of scope)
+docs/HYBRID_*.md
+docs/HYBRID_*.html
+docs/MIX_INGREDIENTS.md
+docs/UI_RESEARCH.md
+docs/proposals/simulations/hybrid-*.mjs
+mockups/hybrid-*.html

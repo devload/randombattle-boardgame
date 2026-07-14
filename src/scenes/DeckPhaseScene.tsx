@@ -37,6 +37,7 @@ export function DeckPhaseScene() {
   const round = useTournament((s) => s.round)
   const humanDeck = useTournament((s) => s.humanDeck)
   const setHumanDeck = useTournament((s) => s.setHumanDeck)
+  const applyHumanWhenPicked = useTournament((s) => s.applyHumanWhenPicked)
   const currentOpponentId = useTournament((s) => s.currentOpponentId)
   const currentSeed = useTournament((s) => s.currentSeed)
   const players = useTournament((s) => s.players)
@@ -139,6 +140,13 @@ export function DeckPhaseScene() {
       toast.warn(validation)
       return
     }
+    // Fire when-picked triggers once, at commit time. Any later trim/reroll
+    // must NOT re-trigger — that's why this is here (after review, before
+    // trim) rather than inside togglePick.
+    const gained = applyHumanWhenPicked(picked)
+    if (gained > 0) {
+      toast.info(`픽 보너스 팬 +${gained}`)
+    }
     setStage('trim')
   }
 
@@ -163,7 +171,7 @@ export function DeckPhaseScene() {
     const human = players.find((p) => p.isHuman)
     const opponentPlayer = players.find((p) => p.id === opponent.id)
     const firstPlayer = human && opponentPlayer
-      ? decideFirstPlayer(round, human, { trophies: opponentPlayer.trophies.length }, currentSeed)
+      ? decideFirstPlayer(round, human, { trophies: opponentPlayer.trophies }, currentSeed)
       : 'A'
     const opponentDeck = robotDecks[opponent.id] ?? opponent.makeDeck()
     startMatch({

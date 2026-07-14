@@ -1,10 +1,15 @@
 import { describe, it, expect } from 'vitest'
 import { CARDS, cardById, cardsByLevel, cardsBySet, makeStarterDeck } from './cards.ts'
 import { ROBOTS } from './robots.ts'
+import type { CardSet } from './types.ts'
 
 describe('cards · database integrity', () => {
   it('has 40+ cards total (M7 goal)', () => {
     expect(CARDS.length).toBeGreaterThanOrEqual(40)
+  })
+
+  it('has 80+ cards after Additional Sets expansion', () => {
+    expect(CARDS.length).toBeGreaterThanOrEqual(80)
   })
 
   it('every card has a unique id', () => {
@@ -40,12 +45,40 @@ describe('cards · database integrity', () => {
     for (const c of cardsByLevel('C')) expect(c.level).toBe('C')
   })
 
-  it('all 3 sets have Level A/B/C cards', () => {
+  it('all 3 original sets have Level A/B/C cards', () => {
     for (const set of ['basic', 'corpOps', 'underground'] as const) {
       const cards = cardsBySet(set)
       expect(cards.some((c) => c.level === 'A')).toBe(true)
       expect(cards.some((c) => c.level === 'B')).toBe(true)
       expect(cards.some((c) => c.level === 'C')).toBe(true)
+    }
+  })
+
+  it('all 4 additional sets have Level A/B/C cards', () => {
+    for (const set of ['neoCitadel', 'neonPark', 'ghostNetwork', 'orbitZero'] as const) {
+      const cards = cardsBySet(set)
+      expect(cards.some((c) => c.level === 'A')).toBe(true)
+      expect(cards.some((c) => c.level === 'B')).toBe(true)
+      expect(cards.some((c) => c.level === 'C')).toBe(true)
+    }
+  })
+
+  it('each set has ≥ 5 Level A cards (adequate draft variety)', () => {
+    const sets: CardSet[] = ['basic', 'corpOps', 'underground',
+                             'neoCitadel', 'neonPark', 'ghostNetwork', 'orbitZero']
+    for (const set of sets) {
+      const aCount = cardsBySet(set).filter((c) => c.level === 'A').length
+      expect(aCount, `set=${set}`).toBeGreaterThanOrEqual(5)
+    }
+  })
+
+  it('orbitZero is the only set using the when-picked trigger', () => {
+    const withWhenPicked = CARDS.filter(
+      (c) => c.effects.some((e) => e.trigger === 'when-picked'),
+    )
+    expect(withWhenPicked.length).toBeGreaterThan(0)
+    for (const c of withWhenPicked) {
+      expect(c.set).toBe('orbitZero')
     }
   })
 

@@ -33,7 +33,7 @@ export function FinalScene() {
     const human = players.find((p) => p.isHuman)
     const opponentPlayer = players.find((p) => p.id === opponent.id)
     const firstPlayer = human && opponentPlayer
-      ? decideFirstPlayer(8, human, { trophies: opponentPlayer.trophies.length }, currentSeed)
+      ? decideFirstPlayer(8, human, { trophies: opponentPlayer.trophies }, currentSeed)
       : 'A'
     const opponentDeck = robotDecks[opponent.id] ?? opponent.makeDeck()
     startMatch({

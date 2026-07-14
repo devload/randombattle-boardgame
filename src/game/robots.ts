@@ -100,7 +100,14 @@ export const ROBOTS: readonly Robot[] = [
       cardById('a_ghost'),
       cardById('b_synth'),
     ],
-    preferredIds: ['b_synth', 'b_execAI', 'c_daemon', 'c_megacorp', 'c_apex', 'c_titan', 'c_boardroom'],
+    preferredIds: [
+      'b_synth', 'b_execAI', 'c_daemon', 'c_megacorp',
+      'c_apex', 'c_titan', 'c_boardroom',
+      // Boss also drops in Orbit Zero pieces so When-Picked shows up
+      // in high-tier draft pools; Ghost Network for lategame denial.
+      'a_pulsar', 'b_satellite', 'c_stationprime',
+      'b_poltergeist', 'c_lich', 'c_king',
+    ],
     levelBias: { A: 1, B: 2, C: 3 },
   },
 ] as const
